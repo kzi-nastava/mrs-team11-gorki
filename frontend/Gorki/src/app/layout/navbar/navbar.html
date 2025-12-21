@@ -1,0 +1,34 @@
+<header>
+    <div class="leftItems">
+        <div class="logo">021Ride</div>
+        @if(isLoggedIn || isRegistrationOpen){
+            <div class="home">Home</div>
+        }
+        @if(isLoggedIn){
+            <div class="profile" [matMenuTriggerFor]="menu">Profile▾</div>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item id="menuItem">Personal information</button>
+                <button mat-menu-item id="menuItem">Change Password</button>
+                @if(role == "driver"){
+                    <button mat-menu-item id="menuItem">Vehicle information</button>
+                }
+            </mat-menu>
+
+        }
+    </div>
+    <div class="rightItems">
+        @if(isLoggedIn){
+            <button class="logout">Logout</button>
+        } @else if (isRegistrationOpen) {
+            <p class="hasAcc">Already have an account?</p>
+            <button class="login">Login</button>
+        } @else{
+            <p class="noAcc">Don't have an account?</p>
+            <button class="register">Register</button>
+            <div class="divider"></div>
+            <button class="login">Login</button>
+        }
+    </div>
+</header>
+
+
