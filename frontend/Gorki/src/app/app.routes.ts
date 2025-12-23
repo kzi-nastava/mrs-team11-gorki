@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
+//import { Registration } from './layout/registration/registration';
 import { Navbar } from './layout/navbar/navbar';
-
+import { Reset } from './layout/reset/reset';
 
 export const routes: Routes = [
-    {
-        path: 'frontend\Gorki\src\app\layout\navbar',
-        component: Navbar
-    },
+    { path: 'navbar', component: Navbar },
+    //{ path: 'register', component: Registration },
+    { path: 'reset', component: Reset },
 ];
