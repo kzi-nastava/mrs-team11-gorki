@@ -1,0 +1,68 @@
+<form> 
+    <div class="registrationData">
+        <div class="sectionsWrapper">
+            <div class="leftSection">
+                <div class="formElement">
+                    <label class="fieldName" for="firstName">First name</label>
+                </div>
+                <div class="formElement">
+                    <input class="inputField" id="firstName" name="firstName">
+                </div>
+                <div class="formElement">
+                    <label class="fieldName" for="lastName">Last name</label>
+                </div>
+                <div class="formElement">
+                    <input class="inputField" id="lastName" name="lastNameInput">
+                </div>
+                <div class="formElement">
+                    <label class="fieldName" for="homeAddress">Home address</label>
+                </div>
+                <div class="formElement">
+                    <input class="inputField" id="homeAddress" name="homeAddressInput">
+                </div>
+                <div class="formElement">
+                    <label class="fieldName" for="phoneNumber">Phone number</label>
+                </div>
+                <div class="formElement">
+                    <input class="inputField" id="phoneNumber" name="phoneNumberInput">
+                </div>
+            </div>
+            <div class="verticalDivider"></div>
+            <div class="rightSection">
+                <div class="formElement">
+                    <label class="fieldName">Choose a picture that others can see</label>
+                </div>
+                <div class="formElement">
+                    <label class="fieldName" for="(optional)">(optional):</label>
+                </div>
+                <!--Insert upload of picture here-->
+                <div class="horizontalDivider"></div>
+                <div class="formElement">
+                    <label class="fieldName" for="email">E-mail</label>
+                </div>
+                <div class="formElement">
+                    <input class="inputField" id="email" name="emailInput" #emailInput>
+                </div>
+                <div class="formElement">
+                    <label class="fieldName" for="password">Password</label>
+                </div>
+                <div class="formElement">
+                    <input class="inputField" id="password" name="passwordInput">
+                </div>
+                <div class="formElement">
+                    <label class="fieldName" for="confirmPassword">Confirm password</label>
+                </div>
+                <div class="formElement">
+                    <input class="inputField" id="confirmPassword" name="confirmPasswordInput">
+                </div>
+            </div>
+        </div>
+        <div class="registerButton" (click)="register(emailInput.value)">Register</div>
+    </div>
+    @if (isConfirmationSent) {
+        <div class="registerConfirmationText">
+        <p>(24h) Confirmation email sent to <b>{{ registeredEmail }}</b></p>
+        <button class="registerConfirmationButton" (click)="confirmEmail()">Open confirmation link</button>
+    </div>
+}
+</form>
