@@ -1,0 +1,146 @@
+.personalInfoForm{
+    background-color: white;
+    margin: 100px auto 0 auto;
+    width: 1100px;
+    height: 550px;
+    border-radius: 50px;
+    font-family: 'Sofia Sans Condensed';
+}
+
+.personalInfoHeader{
+    position: relative;
+    padding-top: 40px;
+    padding-left: 40px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #362D88;
+    margin-bottom: 35px;
+}
+
+.firstDivider{
+    width: 1100px;
+    height: 2px;
+    background-color: #362D88;
+}
+
+.secondDivider{
+    width: 2px;
+    height: 328px;
+    background-color: #362D88;
+    margin: 15px auto 0px auto;
+    padding-top: 20px;
+}
+
+.formWrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.formContentLeft{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 25px;
+}
+
+.formButtons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 500px;
+    justify-content: space-between;
+    margin-top: 42px;
+}
+
+.saveChanges{
+    width: 240px;
+    height: 50px;
+    border-radius: 15px;
+    border: none;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #362D88;
+    color: white;
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.5);
+}
+
+.saveChanges:hover{
+    background-color: #4b448b;
+}
+
+.saveChanges:active{
+    background-color: #5951a5;
+}
+
+.revertChanges{
+    width: 240px;
+    height: 50px;
+    border-radius: 15px;
+    border-color: #362D88;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 24px;
+    font-weight: bold;
+    background-color: white;
+    color: #362D88;
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.2);
+}
+
+.revertChanges:hover{
+    background-color: #e3dfff;
+}
+
+.revertChanges:active{
+    background-color: #d3ceff;
+}
+
+.formContentRight{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 25px;
+}
+
+label{
+    font-size: 24px;
+    font-weight: bold;
+    color: #362D88;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+input{
+    width: 500px;
+    height: 50px;
+    background-color: #ECECEC;
+    border: none;
+    border-radius: 15px;
+    color: #8480AA;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:hover{
+    transform: scale(1.01);
+}
+
+input:focus{
+    outline: 2px solid #362D88;
+}
+
+.userPic{
+    height: 170px;
+    width: 170px;
+    margin-top: 12px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.userPic:hover {
+    transform: scale(1.05);
+}

@@ -1,0 +1,44 @@
+<div class="vehicleInfoForm">
+    <p class="vehicleInfoHeader">
+        Vehicle information
+    </p>
+    <div class="firstDivider"></div>
+    <div class="formWrapper">
+        <div class="formContentLeft">
+            <label>Model</label>
+            <input type="text">
+            <label class="licensePlate">License plate</label>
+            <input type="text">
+            <label>Number of seats</label>
+            <input type="text">
+        </div>
+        <div class="secondDivider"></div>
+        <div class="formContentRight">
+            <label>Type</label>
+            <mat-form-field>
+                <mat-label>Select an option</mat-label>
+                <mat-select>
+                    <mat-option>None</mat-option>
+                    <mat-option value="standard">Standard</mat-option>
+                    <mat-option value="luxury">Luxury</mat-option>
+                    <mat-option value="van">Van</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <label>Baby transport available</label>
+            <mat-radio-group aria-label="Select an option" class="radio">
+                <mat-radio-button value="1">Yes</mat-radio-button>
+                <mat-radio-button value="2">No</mat-radio-button>
+            </mat-radio-group>
+            <label>Pet friendly</label>
+            <mat-radio-group aria-label="Select an option" class="radio">
+                <mat-radio-button value="1">Yes</mat-radio-button>
+                <mat-radio-button value="2">No</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        
+    </div>
+    <div class="formButtons">
+        <button class="saveChanges">Save changes</button>
+        <button class="revertChanges">Revert changes</button>
+    </div>
+</div>
