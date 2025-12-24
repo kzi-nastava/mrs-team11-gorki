@@ -116,11 +116,12 @@ export class RidesList {
   }
   ];
 
-  filteredRides:Ride[]=[]
+  filteredRides:Ride[]=[];
+  allRides:Ride[]=[];
   ngOnInit() {
-  this.filteredRides = [...this.rides];
-}
-
+    this.filteredRides = [...this.rides];
+    this.allRides=[...this.rides];
+  }
 
   openRideDetails(ride: Ride) {
     this.selectedRide = ride;
@@ -155,8 +156,9 @@ export class RidesList {
   }
 
   filterByDate(event: { from: Date | null; to: Date | null }) {
+    this.rides=[...this.allRides];
     const { from, to } = event;
-
+   
     if (!from && !to) {
       this.filteredRides = [...this.rides];
       return;

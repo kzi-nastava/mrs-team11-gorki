@@ -17,6 +17,9 @@
 }
 
 h2 {
+  font-family: 'Sofia Sans Condensed';
+  color: #362D88;
+  font-weight: bold;
   text-align: center;
   margin-bottom: 16px;
 }
@@ -47,6 +50,7 @@ th {
   border: none;
   background: #3c2f8f;
   color: white;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
+  font-family: 'Sofia Sans Condensed';
 }

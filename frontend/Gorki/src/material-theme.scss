@@ -9,29 +9,10 @@ html {
   height: 100%;
   @include mat.theme((
     color: (
-      primary: mat.$magenta-palette,
+      primary: mat.$violet-palette,
       tertiary: mat.$violet-palette,
     ),
     density: 0,
-  ));
-}
-:root {
-  @include mat.form-field-overrides((
-    filled-container-color:#362D88,
-    filled-input-text-color:#ffffff,
-    trailing-icon-color:#ffffff,
-    filled-focus-active-indicator-color: #362D88,
-    filled-active-indicator-color:#8480AA
-  ));
-
-}
-
-:root {
-  @include mat.select-overrides((
-      enabled-trigger-text-color:#ffffff,
-      enabled-arrow-color:#ffffff,
-      disabled-arrow-color:#ffffff,
-      focused-arrow-color:#ffffff
   ));
 }
 
@@ -45,6 +26,97 @@ html {
     item-hover-state-layer-color:#b6b2d4,
     container-color: white
   ));
+  @include mat.datepicker-overrides((
+    calendar-body-label-text-color: #362D88,
+    calendar-container-background-color: #ffffff,
+    calendar-container-text-color: #362D88,
+    calendar-date-disabled-state-text-color:#362D88,
+    calendar-date-focus-state-background-color:#8480AA,
+    calendar-date-hover-state-background-color:#b6b2d4,
+    calendar-date-in-comparison-range-state-background-color: #362D88,
+    calendar-date-in-overlap-range-selected-state-background-color: #362D88,
+    calendar-date-in-overlap-range-state-background-color: #362D88,
+    calendar-date-in-range-state-background-color: #362D88,
+    calendar-date-preview-state-outline-color: #362D88,
+    calendar-date-selected-disabled-state-background-color: #362D88,
+    calendar-date-selected-state-background-color:#362D88,
+    calendar-date-selected-state-text-color:#ffffff,
+    calendar-date-text-color:#362D88,
+    calendar-date-today-disabled-state-outline-color:#362D88,
+    calendar-date-today-outline-color:#362D88,
+    calendar-date-today-selected-state-outline-color:#362D88,
+    calendar-header-divider-color:#362D88,
+    calendar-header-text-color:#362D88,
+    calendar-navigation-button-icon-color:#362D88,
+    calendar-period-button-icon-color:#362D88,
+    calendar-period-button-text-color:#362D88,
+    range-input-disabled-state-separator-color:#362D88,
+    range-input-disabled-state-text-color:#362D88,
+    range-input-separator-color:#362D88,
+
+    calendar-text-font:'Sofia Sans Condensed',
+    calendar-text-size: 20px,
+    calendar-body-label-text-size: 20px,
+    calendar-body-label-text-weight: 700,
+    calendar-header-text-size: 20px,
+    calendar-header-text-weight: 700,
+    calendar-period-button-text-size: 20px,
+    calendar-period-button-text-weight: 700,
+  ));
+}
+
+app-date-filter {
+  @include mat.form-field-overrides((
+    filled-container-color:#362D88,
+    filled-input-text-color:#ffffff,
+    trailing-icon-color:#ffffff,
+    filled-focus-active-indicator-color: #ffffff,
+    filled-active-indicator-color:#ffffff,
+    filled-hover-active-indicator-color: #ffffff,
+  ));
+}
+
+app-sort-filter{
+  @include mat.form-field-overrides((
+    filled-container-color:#362D88,
+    filled-input-text-color:#ffffff,
+    trailing-icon-color:#ffffff,
+    filled-focus-active-indicator-color: #ffffff,
+    filled-active-indicator-color:#ffffff,
+    filled-hover-active-indicator-color: #ffffff,
+    
+  ));
+  @include mat.select-overrides((
+    panel-background-color: #ffffff,
+    enabled-trigger-text-color: #ffffff,
+    disabled-trigger-text-color: #ffffff,
+    placeholder-text-color: #ffffff,
+    trigger-text-font: 'Sofia Sans Condensed',
+    enabled-arrow-color: #ffffff,
+    disabled-arrow-color: #ffffff,
+    focused-arrow-color: #ffffff,
+    trigger-text-size: 20px,
+    trigger-text-weight: 700,
+  ));
+}
+
+app-date-filter
+  .mat-mdc-form-field.mat-form-field-appearance-fill
+    .mat-mdc-text-field-wrapper {
+  background-color: #362D88;
+  border-radius: 15px;
+  box-shadow: none;
+}
+
+app-sort-filter
+  .mat-mdc-form-field.mat-form-field-appearance-fill
+    .mat-mdc-text-field-wrapper {
+  background-color: #362D88;
+  border-radius: 15px;
+  box-shadow: none;
+}
+
+app-vehicle-information{
   @include mat.radio-overrides((
     checked-ripple-color: #362D88,
     selected-focus-icon-color: #362D88,
@@ -75,8 +147,9 @@ html {
   ));
 }
 
-.mat-mdc-form-field.mat-form-field-appearance-fill
-  .mat-mdc-text-field-wrapper {
+app-vehicle-information
+  .mat-mdc-form-field.mat-form-field-appearance-fill
+    .mat-mdc-text-field-wrapper {
   background-color: #ECECEC;
   border-radius: 15px;
   box-shadow: none;

@@ -40,6 +40,7 @@ mat-form-field{
 }
 mat-option{
   color: #362D88;
-  font-size: 22px;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 20px;
   font-weight: bold;
 }

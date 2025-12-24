@@ -81,6 +81,7 @@ strong{
   border: none;
   background: #3c2f8f;
   color: white;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
+  font-family: 'Sofia Sans Condensed';
 }

@@ -7,11 +7,11 @@
         @if(isLoggedIn){
             <div class="profile" [matMenuTriggerFor]="menu">Profile▾</div>
             <mat-menu #menu="matMenu" id="profileMenu">
-                <button mat-menu-item id="menuItem"><a routerLink="/personal-info">Personal information</a></button>
+                <button mat-menu-item id="menuItem"><a routerLink="personal-info">Personal information</a></button>
                 <button mat-menu-item id="menuItem"><a routerLink="change-password">Change Password</a></button>
                 @if(role == "driver"){
                     <button mat-menu-item id="menuItem"><a routerLink="vehicle-information">Vehicle information</a></button>
-                    <button mat-menu-item id="menuItem">Ride history</button>
+                    <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history</a></button>
                 }
             </mat-menu>
 

@@ -23,10 +23,20 @@ mat-form-field{
   height: 70px;
 }
 
+mat-datepicker-toggle{
+  color: #ffffff;
+}
+
 .label {
   font-weight:bolder;
   font-size: 32px;
-  margin-left: 105px;
+  margin-left: 113px;
   color:#362D88;
   font-family: 'Sofia Sans Condensed';
+}
+
+#dateInput{
+  font-family: 'Sofia Sans Condensed';
+  font-size: 20px;
+  font-weight: bold;
 }

@@ -18,7 +18,7 @@ export const routes: Routes = [
         component: VehicleInformation
     },
     {
-        path:'',
+        path:'rides-list',
         component:RidesList
     }
 ];
