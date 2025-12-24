@@ -1,4 +1,3 @@
-
 // Include theming for Angular Material with `mat.theme()`.
 // This Sass mixin will define CSS variables that are used for styling Angular Material
 // components according to the Material 3 design spec.
@@ -14,6 +13,25 @@ html {
       tertiary: mat.$violet-palette,
     ),
     density: 0,
+  ));
+}
+:root {
+  @include mat.form-field-overrides((
+    filled-container-color:#362D88,
+    filled-input-text-color:#ffffff,
+    trailing-icon-color:#ffffff,
+    filled-focus-active-indicator-color: #362D88,
+    filled-active-indicator-color:#8480AA
+  ));
+
+}
+
+:root {
+  @include mat.select-overrides((
+      enabled-trigger-text-color:#ffffff,
+      enabled-arrow-color:#ffffff,
+      disabled-arrow-color:#ffffff,
+      focused-arrow-color:#ffffff
   ));
 }
 
