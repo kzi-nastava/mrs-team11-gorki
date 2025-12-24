@@ -12,7 +12,6 @@ html {
       primary: mat.$magenta-palette,
       tertiary: mat.$violet-palette,
     ),
-    typography: Sofia Sans Condensed,
     density: 0,
   ));
 }
@@ -36,6 +35,53 @@ html {
   ));
 }
 
+:root {
+  @include mat.menu-overrides((
+    item-label-text-font: 'Sofia Sans Condensed',
+    item-label-text-line-height: 60px,
+    item-label-text-size: 20px,
+    item-label-text-weight: 500,
+    item-label-text-color: #362D88,
+    item-hover-state-layer-color:#b6b2d4,
+    container-color: white
+  ));
+  @include mat.radio-overrides((
+    checked-ripple-color: #362D88,
+    selected-focus-icon-color: #362D88,
+    selected-hover-icon-color: #362D88,
+    selected-icon-color: #362D88,
+    selected-pressed-icon-color: #362D88,
+    label-text-font: 'Sofia Sans Condensed',
+    label-text-line-height: 20px,
+    label-text-size: 20px,
+    label-text-weight: 700,
+    label-text-color: #362D88,
+  ));
+  @include mat.select-overrides((
+    panel-background-color: #ECECEC,
+    enabled-trigger-text-color: #8480AA,
+    disabled-trigger-text-color: #8480AA,
+    placeholder-text-color: #8480AA,
+    trigger-text-font: 'Sofia Sans Condensed',
+    enabled-arrow-color: #362D88,
+    disabled-arrow-color: #362D88,
+    focused-arrow-color: #362D88,
+    trigger-text-size: 20px,
+    trigger-text-weight: 700,
+  ));
+  @include mat.form-field-overrides((
+    filled-focus-active-indicator-color: #362D88,
+    filled-active-indicator-color:#8480AA
+  ));
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-fill
+  .mat-mdc-text-field-wrapper {
+  background-color: #ECECEC;
+  border-radius: 15px;
+  box-shadow: none;
+}
+
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
@@ -47,7 +93,6 @@ body {
   // variables at https://material.angular.dev/guide/system-variables
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
-  font: 700 var(--mat-sys-body-medium-font-size) / var(--mat-sys-body-medium-line-height) 'Sofia Sans Condensed', sans-serif;
 
   // Reset the user agent margin.
   margin: 0;
