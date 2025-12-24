@@ -41,15 +41,27 @@
 }
 
 .newPasswordInput, .confirmNewPasswordInput {
+    width: 500px;
     height: 50px;
-    width: 100%;
-    font-size: 30px;
-    border-radius: 20px;
-    padding-left: 10px;
     background-color: #ECECEC;
-    font-family: 'Sofia Sans Condensed';
     border: none;
-    margin-bottom: 20px;
+    outline: none;
+    border-radius: 15px;
+    color: #8480AA;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.newPasswordInput:hover, .confirmNewPasswordInput:hover{
+    transform: scale(1.01);
+}
+
+.newPasswordInput:focus, .confirmNewPasswordInput:focus{
+    outline: 2px solid #362D88;
 }
 
 .resetText {
@@ -60,6 +72,7 @@
 }
 
 .resetButton {
+    margin-top: 25px;
     font-family: 'Sofia Sans Condensed';
     font-size: 32px;
     font-weight: bold;

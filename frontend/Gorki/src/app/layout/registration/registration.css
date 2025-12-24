@@ -33,14 +33,29 @@
 }
 
 .inputField {
-    height: 50px;
     width: 500px;
-    border-radius: 15px;
+    height: 50px;
     background-color: #ECECEC;
     border: none;
+    outline: none;
+    border-radius: 15px;
+    color: #8480AA;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 15px;
     margin-bottom: 5px;
-    font-size: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.inputField:hover{
+    transform: scale(1.01);
+}
+
+.inputField:focus{
+    outline: 2px solid #362D88;
+}
+
 
 .verticalDivider{
     width: 2px;
@@ -97,9 +112,10 @@
     color: white;
     background-color: #362D88;
     border: none;
-    border-radius: 25px;
+    border-radius: 15px;
     width: 25%;
     height: 50px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .registerConfirmationButton:hover {
@@ -142,4 +158,8 @@
 
 .userPic:hover {
     transform: scale(1.05);
+}
+
+.info{
+    font-family: 'Sofia Sans Condensed';
 }

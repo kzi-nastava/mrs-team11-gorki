@@ -21,6 +21,8 @@ mat-button-toggle{
     selected-state-text-color: white,
     height: 50px,
   ));
+}
+
 :root {
   @include mat.menu-overrides((
     item-label-text-font: 'Sofia Sans Condensed',

@@ -51,37 +51,45 @@
 }
 
 .emailInput, .passwordInput {
+    width: 500px;
     height: 50px;
-    width: 100%;
-    font-size: 30px;
-    border-radius: 20px;
-    padding-left: 10px;
     background-color: #ECECEC;
-    font-family: 'Sofia Sans Condensed';
     border: none;
-    margin-bottom: 20px;
+    outline: none;
+    border-radius: 15px;
+    color: #8480AA;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.emailInput:hover, .passwordInput:hover{
+    transform: scale(1.01);
+}
+
+.emailInput:focus, .passwordInput:focus{
+    outline: 2px solid #362D88;
 }
 
 .forgotPassword {
-    display: inline-block;
+    display: inline;
     transition: 0.2s ease;
     border-radius: 7px;
     font-size: 24px;
     font-style: italic;
     font-weight: 500;
-    color: #5044b9;
+    color: #362D88;
     text-decoration: none;
     margin-top: 5px;
-    margin-left: 250px;
+    margin-left: 244px;
 }
 
 .forgotPassword:hover {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    transform: scale(1.05);
-}
-
-.forgotPassword:active {
-    background-color: #e2e1e9;
+    color: #8480AA;
+    cursor: pointer;
 }
 
 .resetText {
@@ -92,7 +100,6 @@
 }
 
 .resetButton {
-    margin-top: 20px;
     text-align: center;
     font-family: 'Sofia Sans Condensed';
     font-size: 32px;
@@ -100,9 +107,10 @@
     color: white;
     background-color: #362D88;
     border: none;
-    border-radius: 25px;
+    border-radius: 15px;
     width: 50%;
     height: 50px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .resetButton:hover {
@@ -124,6 +132,7 @@
     border-radius: 25px;
     width: 103%;
     height: 80px;
+    margin-top: 25px;
     box-shadow: 0 6px 15px rgb(0, 0, 0, 0.5);
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
