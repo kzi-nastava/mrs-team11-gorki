@@ -29,13 +29,18 @@
             </div>
             <div class="verticalDivider"></div>
             <div class="rightSection">
-                <div class="formElement">
-                    <label class="fieldName">Choose a picture that others can see</label>
+
+
+                <div class="pictureSection">
+                    <div class="pictureText">
+                        <label class="fieldName">Choose a picture that others can see</label>
+                        <label class="fieldName" for="(optional)">(optional):</label>
+                    </div>
+                    <img [src]="imagePreview || '/user-pic.png'" class="userPic" (click)="fileInput.click()"/>
+                    <input type="file" #fileInput accept="image/*" hidden (change)="onImageSelected($event)"/>
                 </div>
-                <div class="formElement">
-                    <label class="fieldName" for="(optional)">(optional):</label>
-                </div>
-                <!--Insert upload of picture here-->
+
+
                 <div class="horizontalDivider"></div>
                 <div class="formElement">
                     <label class="fieldName" for="email">E-mail</label>

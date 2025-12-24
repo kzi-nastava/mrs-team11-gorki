@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,8 +11,9 @@ export class Registration {
 
   isConfirmationSent: boolean = false;
   registeredEmail: string = '';
+  imagePreview: string | ArrayBuffer | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   register(email: string) {
     if(!email){
@@ -27,5 +28,23 @@ export class Registration {
 
   confirmEmail() {
     this.router.navigateByUrl('/');
+  }
+
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+      this.cdr.detectChanges();
+    };
+
+    reader.readAsDataURL(file);
   }
 }
