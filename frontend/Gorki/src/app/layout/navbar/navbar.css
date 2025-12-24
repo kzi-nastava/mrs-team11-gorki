@@ -158,3 +158,19 @@ header {
 #menuItem:hover{
     background-color: #b6b2d4;
 }
+
+.activityLabelButton{
+    font-family: 'Sofia Sans Condensed';
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+}
+
+.activityLabelButton:hover{
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+.activityLabelButton:active{
+    background-color: #b6b2d4;
+}

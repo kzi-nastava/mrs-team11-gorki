@@ -24,7 +24,13 @@
     </div>
     <div class="rightItems">
         @if(isLoggedIn){
-            <button class="logout" (click)="isLoggedIn=false">Logout</button>
+            <mat-button-toggle-group class="activityLabelGroup" id="activeLabelGroup">
+                <mat-button-toggle style="background-color: green;" class="activityLabelButton" id="activeLabel" [value]="true" 
+                    (click)="setActive(true)" [checked]="isActive">Active</mat-button-toggle>
+                <mat-button-toggle style="background-color: red;" class="activityLabelButton" id="inactiveLabel" [value]="false" 
+                    (click)="setActive(false)" [checked]="!isActive">Inactive</mat-button-toggle>
+            </mat-button-toggle-group>
+            <button class="logout" (click)="logout()">Logout</button>
         } @else if (isRegistrationOpen) {
             <p class="hasAcc">Already have an account?</p>
             <button class="login" (click)="openLogin()">Login</button>
