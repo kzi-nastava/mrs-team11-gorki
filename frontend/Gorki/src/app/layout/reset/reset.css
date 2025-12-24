@@ -1,0 +1,83 @@
+.resetForm {
+    display: block;
+    width: 500px;
+    height: 500px;
+    font-family: 'Sofia Sans Condensed';
+    color: #362D88;
+    margin: 0 auto;
+    position: fixed;
+}
+
+.credentialsResetBox {
+    width: 500px;
+    height: 400px;
+    background: white;
+    border-radius: 50px;
+    padding: 50px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.resetYourPasswordText {
+    font-size: 48px;
+    font-weight: 800;
+    color: #362D88;
+    margin-left: 70px;
+}
+
+.divider {
+    height: 5px;
+    width: 600px;
+    background-color: #362D88;
+    margin: 10px -50px 25px -50px;
+}
+
+.newPassword, .confirmNewPassword {
+    font-size: 32px;
+    font-weight: bold;
+    color: #362D88;
+}
+
+.newPasswordInput, .confirmNewPasswordInput {
+    height: 50px;
+    width: 100%;
+    font-size: 30px;
+    border-radius: 20px;
+    padding-left: 10px;
+    background-color: #ECECEC;
+    font-family: 'Sofia Sans Condensed';
+    border: none;
+    margin-bottom: 20px;
+}
+
+.resetText {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 32px;
+    color: white;
+}
+
+.resetButton {
+    font-family: 'Sofia Sans Condensed';
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    background-color: #362D88;
+    border: none;
+    border-radius: 25px;
+    width: 103%;
+    height: 80px;
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.5);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.resetButton:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
+}
+
+.resetButton:active {
+    background-color: #b6b2d4;
+}

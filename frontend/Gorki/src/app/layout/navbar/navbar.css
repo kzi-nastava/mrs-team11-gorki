@@ -154,6 +154,24 @@ header {
     background-color: #b6b2d4;
 }
 
+.activityLabelGroup{
+    margin-right: 10px;
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.5);
+}
+
+.activityLabelButton{
+    font-family: 'Sofia Sans Condensed';
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.activityLabelButton:hover{
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
 a{
     text-decoration: none;
     color: inherit;

@@ -1,3 +1,10 @@
+@if(isLoginOpen) { 
+    <app-login 
+        (close)="closeLogin()" 
+        (loggedIn)="onLoggedIn()">
+    </app-login>
+}
+
 <header>
     <div class="leftItems">
         <div class="logo">021Ride</div>
@@ -14,23 +21,30 @@
                     <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history</a></button>
                 }
             </mat-menu>
-
         }
     </div>
     <div class="rightItems">
         @if(isLoggedIn){
-            <button class="logout">Logout</button>
+            @if(role == "driver"){
+                <mat-button-toggle-group class="activityLabelGroup" id="activeLabelGroup">
+                    <mat-button-toggle style="background-color: green;" class="activityLabelButton" id="activeLabel" [value]="true" 
+                        (click)="setActive(true)" [checked]="isActive">Active</mat-button-toggle>
+                    <mat-button-toggle style="background-color: red;" class="activityLabelButton" id="inactiveLabel" [value]="false" 
+                        (click)="setActive(false)" [checked]="!isActive">Inactive</mat-button-toggle>
+                </mat-button-toggle-group>
+                <div class="divider"></div>
+            }   
+            <button class="logout" (click)="logout()">Logout</button>
         } @else if (isRegistrationOpen) {
             <p class="hasAcc">Already have an account?</p>
-            <button class="login">Login</button>
+            <button class="login" (click)="openLogin()">Login</button>
         } @else{
             <p class="noAcc">Don't have an account?</p>
-            <button class="register">Register</button>
+            <button class="register" routerLink="/register">Register</button>
             <div class="divider"></div>
-            <button class="login">Login</button>
+            <button class="login" (click)="openLogin()">Login</button>
         }
     </div>
 </header>
 <router-outlet/>
-
 
