@@ -1,0 +1,39 @@
+<div class="personalInfoForm">
+    <p class="personalInfoHeader">
+        Personal information
+    </p>
+    <div class="firstDivider"></div>
+    <div class="formWrapper">
+        <div class="formContentLeft">
+            <img
+            [src]="imagePreview || '/user-pic.png'"
+            class="userPic"
+            (click)="fileInput.click()"
+            />
+            <input
+            type="file"
+            #fileInput
+            accept="image/*"
+            hidden
+            (change)="onImageSelected($event)"
+            />
+            <label>Email</label>
+            <input type="text">
+            <div class="formButtons">
+                <button class="saveChanges">Save changes</button>
+                <button class="revertChanges">Revert changes</button>
+            </div>
+        </div>
+        <div class="secondDivider"></div>
+        <div class="formContentRight">
+            <label>First name</label>
+            <input type="text">
+            <label>Last name</label>
+            <input type="text">
+            <label>Home address</label>
+            <input type="text">
+            <label>Phone number</label>
+            <input type="text">
+        </div>
+    </div>
+</div>

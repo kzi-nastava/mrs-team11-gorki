@@ -1,0 +1,46 @@
+.main-div {
+  display: flex;
+  align-items: center;
+  margin-top:30px ;
+  margin-bottom: 20px;
+  gap: 60px;
+}
+
+.formField{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-radius: 50px;
+}
+
+mat-label{
+  color: #ffffff;
+  font-family: 'Sofia Sans Condensed';
+  font-weight: bold;
+  font-size: 20px;
+}
+mat-form-field{
+  width: 306px;
+  height: 70px;
+}
+
+.label {
+  font-weight:bolder;
+  font-size: 32px;
+  margin-left: 105px;
+  color:#362D88;
+  font-family: 'Sofia Sans Condensed';
+}
+.label2 {
+  font-weight:bolder;
+  font-size: 32px;
+  margin-left: 35px;
+  color:#362D88;
+  font-family: 'Sofia Sans Condensed';
+}
+mat-option{
+  color: #362D88;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 20px;
+  font-weight: bold;
+}

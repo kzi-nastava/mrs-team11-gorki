@@ -9,15 +9,16 @@
     <div class="leftItems">
         <div class="logo">021Ride</div>
         @if(isLoggedIn || isRegistrationOpen){
-            <div class="home">Home</div>
+            <div class="home"><a routerLink="/">Home</a></div>
         }
         @if(isLoggedIn){
             <div class="profile" [matMenuTriggerFor]="menu">Profile▾</div>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item id="menuItem">Personal information</button>
-                <button mat-menu-item id="menuItem">Change Password</button>
+            <mat-menu #menu="matMenu" id="profileMenu">
+                <button mat-menu-item id="menuItem"><a routerLink="personal-info">Personal information</a></button>
+                <button mat-menu-item id="menuItem"><a routerLink="change-password">Change Password</a></button>
                 @if(role == "driver"){
-                    <button mat-menu-item id="menuItem">Vehicle information</button>
+                    <button mat-menu-item id="menuItem"><a routerLink="vehicle-information">Vehicle information</a></button>
+                    <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history</a></button>
                 }
             </mat-menu>
         }
@@ -45,3 +46,5 @@
         }
     </div>
 </header>
+<router-outlet/>
+

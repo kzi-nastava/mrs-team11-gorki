@@ -1,5 +1,7 @@
 header {
     height: 100px;
+    width: 100%;
+    min-width: max-content;
     font-family: 'Sofia Sans Condensed';
     display: flex;
     align-items: center;
@@ -48,6 +50,7 @@ header {
 
 .profile:hover{
     color: #b6b2d4;
+    cursor: pointer;
 }
 
 .profile:active{
@@ -151,14 +154,6 @@ header {
     background-color: #b6b2d4;
 }
 
-#menuItem{
-    color: #362D88;
-}
-
-#menuItem:hover{
-    background-color: #b6b2d4;
-}
-
 .activityLabelGroup{
     margin-right: 10px;
     box-shadow: 0 6px 15px rgb(0, 0, 0, 0.5);
@@ -177,3 +172,7 @@ header {
     transform: scale(1.1);
 }
 
+a{
+    text-decoration: none;
+    color: inherit;
+}

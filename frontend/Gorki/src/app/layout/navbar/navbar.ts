@@ -13,7 +13,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 })
 
 export class Navbar {
-  
   isLoggedIn: boolean = false;
   isRegistrationOpen: boolean = false;
   isLoginOpen: boolean = false;
