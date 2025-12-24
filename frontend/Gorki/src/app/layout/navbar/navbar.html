@@ -1,30 +1,39 @@
-<!--@if(isLoginOpen) { 
+@if(isLoginOpen) { 
     <app-login 
         (close)="closeLogin()" 
         (loggedIn)="onLoggedIn()">
     </app-login>
-} -->
-
+}
 <header>
     <div class="leftItems">
         <div class="logo">021Ride</div>
         @if(isLoggedIn || isRegistrationOpen){
-            <div class="home">Home</div>
+            <div class="home"><a routerLink="/">Home</a></div>
         }
         @if(isLoggedIn){
             <div class="profile" [matMenuTriggerFor]="menu">Profile▾</div>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item id="menuItem">Personal information</button>
-                <button mat-menu-item id="menuItem">Change Password</button>
+            <mat-menu #menu="matMenu" id="profileMenu">
+                <button mat-menu-item id="menuItem"><a routerLink="personal-info">Personal information</a></button>
+                <button mat-menu-item id="menuItem"><a routerLink="change-password">Change Password</a></button>
                 @if(role == "driver"){
-                    <button mat-menu-item id="menuItem">Vehicle information</button>
+                    <button mat-menu-item id="menuItem"><a routerLink="vehicle-information">Vehicle information</a></button>
+                    <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history</a></button>
                 }
             </mat-menu>
         }
     </div>
     <div class="rightItems">
         @if(isLoggedIn){
-            <button class="logout" (click)="isLoggedIn=false">Logout</button>
+            @if(role == "driver"){
+                <mat-button-toggle-group class="activityLabelGroup" id="activeLabelGroup">
+                    <mat-button-toggle style="background-color: green;" class="activityLabelButton" id="activeLabel" [value]="true" 
+                        (click)="setActive(true)" [checked]="isActive">Active</mat-button-toggle>
+                    <mat-button-toggle style="background-color: red;" class="activityLabelButton" id="inactiveLabel" [value]="false" 
+                        (click)="setActive(false)" [checked]="!isActive">Inactive</mat-button-toggle>
+                </mat-button-toggle-group>
+                <div class="divider"></div>
+            }   
+            <button class="logout" (click)="logout()">Logout</button>
         } @else if (isRegistrationOpen) {
             <p class="hasAcc">Already have an account?</p>
             <button class="login" (click)="openLogin()">Login</button>
@@ -36,3 +45,5 @@
         }
     </div>
 </header>
+<router-outlet/>
+

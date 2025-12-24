@@ -1,0 +1,33 @@
+<div class="overlay" (click)="closeLogin()"></div>
+<form class="loginForm">
+    <div class="credentials">
+        <div class="formElement">
+          <label class="yourCredentialsText" for="email">Enter your credentials</label>
+        </div>
+        <div class="formElement">
+          <div class="divider"></div>
+        </div>
+        <div class="formElement">
+          <label class="email">Email:</label>
+        </div>
+        <div class="formElement">
+          <input class="emailInput" id="email" name="email" #emailInput>
+        </div>
+        <div class="formElement">
+          <label class="password">Password:</label> 
+          <a class="forgotPassword" (click)="forgotPassword(emailInput.value)">Forgot password?</a>
+        </div>
+        <div class="formElement">
+          <input class="passwordInput" name="password">
+        </div>
+        <div class="formElement">
+          <button class="loginButton" type="button" (click)="login()">Login</button>
+        </div>
+    </div>
+    @if (isResetSent) {
+      <div class="resetText">
+      <p>Reset link sent to <b>{{ resetEmail }}</b></p>
+      <button class="resetButton" (click)="goToReset()">Open reset link</button>
+    </div>
+}
+</form>
