@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mrsteam11GorkiProjekat">
         <activity
+            android:name=".RegistrationPage"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPage"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
