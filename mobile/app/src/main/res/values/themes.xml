@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Mrsteam11GorkiProjekat" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+    <style name="navLabelColor">
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+    <style name="buttonBold">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Theme.Mrsteam11GorkiProjekat" parent="Base.Theme.Mrsteam11GorkiProjekat" />
+</resources>

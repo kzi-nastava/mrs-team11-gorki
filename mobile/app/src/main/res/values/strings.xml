@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">mrs-team11-Gorki-Projekat</string>
+    <string name="logo">021Ride</string>
+    <string name="dontHaveAcc">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="cardQuestion">Where would you like to go?</string>
+    <string name="cardButtonText">Estimate your ride</string>
+</resources>
