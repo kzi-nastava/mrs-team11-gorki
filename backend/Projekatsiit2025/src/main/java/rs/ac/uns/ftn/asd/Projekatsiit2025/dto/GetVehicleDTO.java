@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 
 public class GetVehicleDTO {
 	private Long id;
@@ -10,13 +11,14 @@ public class GetVehicleDTO {
 	private int seats;
 	private Boolean babyTransport;
 	private Boolean petFriendly;
+  private Location currentLocation;
 	
 	public GetVehicleDTO() {
 		super();
 	}
 	
 	public GetVehicleDTO(Long id, String model, VehicleType type, String plateNumber, int seats, Boolean babyTransport,
-			Boolean petFriendly) {
+			Boolean petFriendly, Location currentLocation) {
 		super();
 		this.id = id;
 		this.model = model;
@@ -25,6 +27,7 @@ public class GetVehicleDTO {
 		this.seats = seats;
 		this.babyTransport = babyTransport;
 		this.petFriendly = petFriendly;
+    this.currentLocation=currentLocation;
 	}
 	
 	public Long getId() {
@@ -69,5 +72,10 @@ public class GetVehicleDTO {
 	public void setPetFriendly(Boolean petFriendly) {
 		this.petFriendly = petFriendly;
 	}
-	
+  public Location getCurrentLocation() {
+    return currentLocation;
+  }
+  public void setCurrentLocation(Location currentLocation) {
+    this.currentLocation = currentLocation;
+  }
 }
