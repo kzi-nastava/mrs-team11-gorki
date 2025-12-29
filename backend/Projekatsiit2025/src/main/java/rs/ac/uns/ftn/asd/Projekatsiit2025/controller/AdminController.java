@@ -35,7 +35,7 @@ public class AdminController {
         locations.add(new Location(45.2671, 19.8335, "Starting Point"));
         locations.add(new Location(45.2550, 19.8450, "Ending Point"));
 
-        Route route = new Route(locations, 5.0, LocalDateTime.now().plusMinutes(15));
+        Route route = new Route(1L,locations, 5.0, LocalDateTime.now().plusMinutes(15));
 
         RideHistoryResponseDTO ride = new RideHistoryResponseDTO();
         ride.setRoute(route);

@@ -94,6 +94,8 @@ public class DriverController {
 			return new ResponseEntity<GetDriverDTO>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<GetDriverDTO>(driver, HttpStatus.OK);
+	}
+	
 	@GetMapping("/{driverId}/rides/history")
 	public ResponseEntity<Collection<DriverRideHistoryDTO>> getDriverRideHistory(
 	        @PathVariable Long driverId,
@@ -130,7 +132,7 @@ public class DriverController {
 	    ride1.setRideId(1L);
 	    ride1.setStartingTime(LocalDateTime.of(2025, 1, 10, 14, 30));
 	    ride1.setEndingTime(LocalDateTime.of(2025, 1, 10, 15, 0));
-	    ride1.setRoute(new Route(locations,3.7,LocalDateTime.of(2025, 1, 10, 14, 55)));
+	    ride1.setRoute(new Route(1L,locations,3.7,LocalDateTime.of(2025, 1, 10, 14, 55)));
 	    ride1.setCanceled(false);
 	    ride1.setCanceledBy(null);
 	    ride1.setPrice(850.00);

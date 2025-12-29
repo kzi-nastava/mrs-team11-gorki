@@ -202,7 +202,7 @@ public class RideController {
                 new Location(45.2671, 19.8335, request.getStartingAddress()),
                 new Location(45.2550, 19.8450, request.getEndingAddress())
         );
-        Route route = new Route(locations, 5.0, LocalDateTime.now().plusMinutes(15));
+        Route route = new Route(1L,locations, 5.0, LocalDateTime.now().plusMinutes(15));
 
         RideHistoryResponseDTO dto = new RideHistoryResponseDTO();
         dto.setRoute(route);
@@ -247,7 +247,7 @@ public class RideController {
                 new Location(45.2671, 19.8335, "Start Address"),
                 new Location(45.2550, 19.8450, "End Address")
         );
-        Route route = new Route(locations, 5.0, LocalDateTime.now().plusMinutes(15));
+        Route route = new Route(1L,locations, 5.0, LocalDateTime.now().plusMinutes(15));
 
         RideHistoryResponseDTO ride = new RideHistoryResponseDTO();
         ride.setRoute(route);
