@@ -1,31 +1,36 @@
-package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
+package rs.ac.uns.ftn.asd.Projekatsiit2025.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Route {
+public class GetRouteDTO {
 	private Long id;
-	private List<Location> locations;
+	private List<LocationDTO> locations;
 	private double distance;
 	private LocalDateTime estimatedTime;
-	public Route(Long id, List<Location> locations, double distance, LocalDateTime estimatedTime) {
+	
+	public GetRouteDTO() {
+		super();
+	}
+	
+	public GetRouteDTO(Long id, List<LocationDTO> locations, double distance, LocalDateTime estimatedTime) {
+		super();
 		this.id = id;
 		this.locations = locations;
 		this.distance = distance;
 		this.estimatedTime = estimatedTime;
 	}
-	public Route() {
-	}
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public List<Location> getLocations() {
+	public List<LocationDTO> getLocations() {
 		return locations;
 	}
-	public void setLocations(List<Location> locations) {
+	public void setLocations(List<LocationDTO> locations) {
 		this.locations = locations;
 	}
 	public double getDistance() {
@@ -40,6 +45,5 @@ public class Route {
 	public void setEstimatedTime(LocalDateTime estimatedTime) {
 		this.estimatedTime = estimatedTime;
 	}
-	
 	
 }

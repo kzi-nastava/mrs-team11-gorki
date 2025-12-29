@@ -1,11 +1,9 @@
-package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
+package rs.ac.uns.ftn.asd.Projekatsiit2025.dto;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
 
-public class Vehicle {
+public class UpdatedVehicleDTO {
 	private Long id;
-	private Location currentLocation;
-	private Boolean occupied;
 	private String model;
 	private VehicleType type;
 	private String plateNumber;
@@ -13,14 +11,14 @@ public class Vehicle {
 	private Boolean babyTransport;
 	private Boolean petFriendly;
 	
-	public Vehicle() {
-		
+	public UpdatedVehicleDTO() {
+		super();
 	}
-	public Vehicle(Long id, Location currentLocation, Boolean occupied, String model, VehicleType type,
-			String plateNumber, int seats, Boolean babyTransport, Boolean petFriendly) {
+	
+	public UpdatedVehicleDTO(Long id, String model, VehicleType type, String plateNumber, int seats,
+			Boolean babyTransport, Boolean petFriendly) {
+		super();
 		this.id = id;
-		this.currentLocation=currentLocation;
-		this.occupied = occupied;
 		this.model = model;
 		this.type = type;
 		this.plateNumber = plateNumber;
@@ -28,23 +26,12 @@ public class Vehicle {
 		this.babyTransport = babyTransport;
 		this.petFriendly = petFriendly;
 	}
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public Location getCurrentLocation() {
-		return currentLocation;
-	}
-	public void setCurrentLocation(Location currentLocation) {
-		this.currentLocation = currentLocation;
-	}
-	public Boolean getOccupied() {
-		return occupied;
-	}
-	public void setOccupied(Boolean occupied) {
-		this.occupied = occupied;
 	}
 	public String getModel() {
 		return model;
@@ -82,7 +69,5 @@ public class Vehicle {
 	public void setPetFriendly(Boolean petFriendly) {
 		this.petFriendly = petFriendly;
 	}
-
-	
 	
 }
