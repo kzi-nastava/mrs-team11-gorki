@@ -15,5 +15,14 @@
     <style name="buttonBold">
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="labelBold">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="datePickerText">
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="CardText">
+    </style>
     <style name="Theme.Mrsteam11GorkiProjekat" parent="Base.Theme.Mrsteam11GorkiProjekat" />
 </resources>
