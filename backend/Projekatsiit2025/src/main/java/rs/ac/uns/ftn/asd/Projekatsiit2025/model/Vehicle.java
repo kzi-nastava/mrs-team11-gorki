@@ -3,6 +3,8 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
 
 public class Vehicle {
+	private Long id;
+	private Location currentLocation;
 	private String model;
 	private VehicleType type;
 	private String plateNumber;
@@ -11,15 +13,30 @@ public class Vehicle {
 	private Boolean petFriendly;
 	
 	public Vehicle() {
+		
 	}
-	public Vehicle(String model, VehicleType type, String plateNumber, int seats, Boolean babyTransport,
-			Boolean petFriendly) {
+	public Vehicle(Long id,Location currentLocation, String model, VehicleType type,
+			String plateNumber, int seats, Boolean babyTransport, Boolean petFriendly) {
+		this.id = id;
+		this.currentLocation=currentLocation;
 		this.model = model;
 		this.type = type;
 		this.plateNumber = plateNumber;
 		this.seats = seats;
 		this.babyTransport = babyTransport;
 		this.petFriendly = petFriendly;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Location getCurrentLocation() {
+		return currentLocation;
+	}
+	public void setCurrentLocation(Location currentLocation) {
+		this.currentLocation = currentLocation;
 	}
 	public String getModel() {
 		return model;
@@ -57,6 +74,7 @@ public class Vehicle {
 	public void setPetFriendly(Boolean petFriendly) {
 		this.petFriendly = petFriendly;
 	}
+
 	
 	
 }

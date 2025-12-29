@@ -14,6 +14,7 @@ public class Ride {
 	private LocalDateTime endingTime;
 	private Boolean panicActivated;
 	private String cancellationReason;
+	private String cancelledBy;
 	private Driver driver;
 	private Route route;
 	private PriceConfig priceConfig;
@@ -23,7 +24,7 @@ public class Ride {
 	public Ride() {
 	}
 	public Ride(Long id, RideStatus status, double price, LocalDateTime scheduledTime, LocalDateTime startingTime,
-			LocalDateTime endingTime, Boolean panicActivated, String cancellationReason, Driver driver, Route route,
+			LocalDateTime endingTime, Boolean panicActivated, String cancellationReason, String cancelledBy, Driver driver, Route route,
 			PriceConfig priceConfig, List<Passenger> linkedPassengers, Passenger creator) {
 		this.id = id;
 		this.status = status;
@@ -33,6 +34,7 @@ public class Ride {
 		this.endingTime = endingTime;
 		this.panicActivated = panicActivated;
 		this.cancellationReason = cancellationReason;
+		this.cancelledBy = cancelledBy;
 		this.driver = driver;
 		this.route = route;
 		this.priceConfig = priceConfig;
@@ -86,6 +88,12 @@ public class Ride {
 	}
 	public void setCancellationReason(String cancellationReason) {
 		this.cancellationReason = cancellationReason;
+	}
+	public String getCancelledBy() {
+		return cancelledBy;
+	}
+	public void setCancelledBy(String cancelledBy) {
+		this.cancelledBy = cancelledBy;
 	}
 	public Driver getDriver() {
 		return driver;
