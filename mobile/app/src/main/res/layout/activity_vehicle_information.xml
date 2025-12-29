@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".VehicleInformation">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/navbar"
+        android:layout_width="411dp"
+        android:layout_height="77dp"
+        android:background="@color/custom"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="021Ride"
+        app:titleTextAppearance="@style/ToolbarTitleStyle"
+        app:titleTextColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="304dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/white"
+        android:text="@string/navbarMenuText"
+        android:textColor="@color/custom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="77dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="30dp">
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:background="@drawable/container_bg">
+
+            <!-- Header -->
+            <TextView
+                android:layout_height="45dp"
+                android:layout_width="300dp"
+                android:text="@string/vehicleInformation"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/custom"
+                android:gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <View
+                android:layout_width="350dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/custom"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/model"
+                android:textStyle="bold"
+                android:textColor="@color/custom"
+                android:textSize="16sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:labelFor="@id/modelInput"/>
+
+            <EditText
+                android:id="@+id/modelInput"
+                android:hint=""
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg"
+                android:padding="12dp"
+                android:text="@string/modelFIll"
+                android:textColor="@color/inputFormTextColor"
+                android:textStyle="bold"/>
+
+            <!-- First name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/licensePlate"
+                android:textStyle="bold"
+                android:textColor="@color/custom"
+                android:textSize="16sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:labelFor="@id/licensePlateInput"/>
+
+            <EditText
+                android:id="@+id/licensePlateInput"
+                android:hint=""
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg"
+                android:padding="12dp"
+                android:text="@string/licensePlateFill"
+                android:textColor="@color/inputFormTextColor"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/numberOfSeats"
+                android:textStyle="bold"
+                android:textColor="@color/custom"
+                android:textSize="16sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:labelFor="@id/numberOfSeatsInput"/>
+
+            <EditText
+                android:id="@+id/numberOfSeatsInput"
+                android:hint="2"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg"
+                android:padding="12dp"
+                android:text="@string/numberOfSeatsFill"
+                android:textColor="@color/inputFormTextColor"
+                android:textStyle="bold"/>
+
+            <!-- Last name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type"
+                android:textStyle="bold"
+                android:textColor="@color/custom"
+                android:textSize="16sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:labelFor="@id/typeInput"/>
+
+            <EditText
+                android:id="@+id/typeInput"
+                android:hint="Standard"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg"
+                android:padding="12dp"
+                android:text="@string/typeFill"
+                android:textColor="@color/inputFormTextColor"
+                android:textStyle="bold"/>
+
+            <!-- Address -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/babyTransport"
+                android:textStyle="bold"
+                android:textColor="@color/custom"
+                android:textSize="16sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
+
+            <!-- Phone -->
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/babyYes"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:textStyle="bold"
+                    android:textColor="@color/custom"
+                    android:textSize="16sp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"/>
+
+                <RadioButton
+                    android:id="@+id/babyNo"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:textStyle="bold"
+                    android:textColor="@color/custom"
+                    android:textSize="16sp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phone"
+                android:textStyle="bold"
+                android:textColor="@color/custom"
+                android:textSize="16sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:labelFor="@id/phoneInput"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/petYes"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:textStyle="bold"
+                    android:textColor="@color/custom"
+                    android:textSize="16sp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"/>
+
+                <RadioButton
+                    android:id="@+id/petNo"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:textStyle="bold"
+                    android:textColor="@color/custom"
+                    android:textSize="16sp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"/>
+            </RadioGroup>
+
+            <!-- Buttons -->
+            <Button
+                android:text="@string/saveChanges"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginTop="24dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:backgroundTint="@color/custom"
+                />
+
+            <Button
+                android:text="@string/revertChanges"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="12dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/custom"
+                android:backgroundTint="@color/white"
+                android:foreground="@drawable/button_border"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

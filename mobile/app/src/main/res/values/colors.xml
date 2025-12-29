@@ -3,4 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="custom">#362D88</color>
+    <color name="inputFormBackgroundColor">#ECECEC</color>
+    <color name="inputFormTextColor">#8480AA</color>
 </resources>
