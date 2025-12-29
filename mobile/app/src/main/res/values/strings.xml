@@ -8,7 +8,6 @@
     <string name="cardButtonText">Estimate your ride</string>
     <string name="navbarMenuText">Menu</string>
     <string name="personalInfoText">Personal information</string>
-    <string name="email">Email</string>
     <string name="firstName">First Name</string>
     <string name="lastName">Last Name</string>
     <string name="phone">Phone number</string>
@@ -39,4 +38,48 @@
     <string name="typeFill">Standard</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="dateLabel">Pick a date</string>
+    <string name="fromDate">   Wednesday, January 1 </string>
+    <string name="toDate">   Friday, January 3 </string>
+    <string name="choseCriteria">Choose</string>
+    <string name="orderText">Order</string>
+    <string name="cardTitle">"Ride No.1"</string>
+    <string name="rideInfo">• Starting time - 17:05\n• Ending time - 17:20\n• Starting point
+        - Miše Dimitrijevića 5,\t\tGrbavica\n• Destination -
+        Jerneja Kopitara 32, Telep"</string>
+    <string name="rideInfo2">
+       • $ Price - 15.00$\n• Canceled\n• PANIC activated
+    </string>
+    <string-array name="ride_status">
+        <item>All rides</item>
+        <item>Completed</item>
+        <item>Canceled</item>
+        <item>Panic</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Registration labels -->
+    <string name="registration">Registration</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="home_address">Home address</string>
+    <string name="phone_number">Phone number</string>
+    <string name="choose_picture">Choose a picture that others can see (optional): </string>
+    <string name="select_image">Select image</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="open_confirmation_link">Open confirmation link</string>
+    <string name="confirmation_email_sent">(24h) Confirmation email sent to %1$s</string>
+
+    <!-- Login labels -->
+     <string name="enter_credentials">Enter your credentials</string>
+    <string name="email_label">Email:</string>
+    <string name="password_label">Password:</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="login_button">Login</string>
+    <string name="reset_text">Reset link sent to %1$s</string>
+    <string name="open_reset_link">Open reset link</string>
+
 </resources>

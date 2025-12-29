@@ -5,4 +5,6 @@
     <color name="custom">#362D88</color>
     <color name="inputFormBackgroundColor">#ECECEC</color>
     <color name="inputFormTextColor">#8480AA</color>
+    <color name="divider">#9E9E9E </color>
+    <color name="inputFieldColor">#ECECEC</color>
 </resources>
