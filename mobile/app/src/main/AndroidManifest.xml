@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mrsteam11GorkiProjekat">
         <activity
+            android:name=".VehicleInformation"
+            android:exported="false" />
+        <activity
+            android:name=".ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".PersonalInformation"
+            android:exported="false" />
+        <activity
             android:name=".LoginPageActivity"
             android:exported="false" />
         <activity
@@ -24,6 +33,7 @@
             android:name=".LoginPage"
             android:exported="false" /> 
         <activity
+
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
