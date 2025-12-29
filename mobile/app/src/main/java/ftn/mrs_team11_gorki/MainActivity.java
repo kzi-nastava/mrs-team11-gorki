@@ -3,6 +3,8 @@ package ftn.mrs_team11_gorki;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -30,8 +32,20 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        //Button register = findViewById(R.id.register);
+        Button login = findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("MainActivity", "Login kliknuto");
+                // Toast za korisnika (opciono)
+                // Toast.makeText(MainActivity.this, "Login kliknuto", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    //Button register = findViewById(R.id.register);
-   // Button login = findViewById(R.id.login);
+
+
+
 }
