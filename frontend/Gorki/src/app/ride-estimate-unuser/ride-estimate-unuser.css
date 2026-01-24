@@ -1,0 +1,64 @@
+.card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  width: 320px;
+  height: 320px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+  font-family: 'Sofia Sans Condensed'!important;
+}
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.inputs input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.inputs input:focus {
+  outline: none;
+  border-color: #362D88;
+  box-shadow: 0 0 0 2px rgba(54, 45, 136, 0.15);
+}
+h1 {
+  font-size: 32px;
+  padding-bottom: 14px;
+  margin-top:5px ;
+  font-weight: bolder;
+  font-family: 'Sofia Sans Condensed'!important;
+  color: #362D88;
+}
+
+.primary {
+  width: 100%;
+  background: #362D88;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 14px;
+  cursor: pointer;
+}
+
+.primary:hover {
+  opacity: 0.9;
+}
+
+.estimate-panel {
+  margin: 16px 0;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Sofia Sans Condensed';
+  color: #362D88;
+}
