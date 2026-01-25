@@ -17,7 +17,7 @@ export class EndOfRide implements OnInit {
   async ngOnInit(){
     this.mapService.clearAll();
     this.mapService.clearRoute();
-    const pickupAddress = 'Futoška 13a, Novi Sad';
+    const pickupAddress = 'Jerneja Kopitara 32, Novi Sad';
     const dropoffAddress = 'Hadži Ruvimova 45, Novi Sad';
 
     const pickupCoords = await this.geocode(pickupAddress);
