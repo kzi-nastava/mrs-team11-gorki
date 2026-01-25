@@ -1,0 +1,42 @@
+<div class="backdrop">
+  <div class="modal">
+    <h2> <span class="driver-badge">Driver</span> and passengers</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>E-mail</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Phone number</th>
+          <th>Inconsistency report</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of passengers; let i = index" [ngClass]="{ 'driver-row': i === 0 }">
+          <td>{{ p.email }}</td>
+          <td>{{ p.firstName }}</td>
+          <td>{{ p.lastName }}</td>
+          <td>{{ p.phoneNumber }}</td>
+          <td [ngClass]="{ 'driver-cell': i === 0 }">
+            <ng-container *ngIf="i === 0; else showButton">
+              <span>None</span>
+            </ng-container>
+            <ng-template #showButton>
+              <button class="report-btn" (click)="showReport(p)">Show</button>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="close-btn" (click)="onClose()">Close</button>
+  </div>
+</div>
+
+<app-show-ride-inconsistencies
+  *ngIf="showInconsistencies"
+  [passenger]="showInconsistencies ? selectedPassenger : null"
+  (close)="closeReport()"
+></app-show-ride-inconsistencies>

@@ -1,0 +1,19 @@
+.person-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 110px;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 20px;
+}
+
+.clear-btn {
+  background: #362D88;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+}

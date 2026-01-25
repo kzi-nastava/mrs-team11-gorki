@@ -1,0 +1,73 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 50px;
+  width: 500px;
+  max-width: 100%;
+}
+
+h2 {
+  font-family: 'Sofia Sans Condensed';
+  color: #362D88;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 16px;
+  font-size : 48px;
+}
+
+.divider {
+  height: 4px;
+  background: #362D88;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.note {
+  font-family: 'Sofia Sans Condensed';
+  color: #362D88;
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.reason-input {
+  border-radius: 8px;
+  width : 400px;
+  height : 160px;
+  border: 0px;
+  background-color : #ECECEC;
+  font-size: 20px;
+  font-family: 'Sofia Sans Condensed';
+  margin : 0 auto;
+  display: block;
+  padding-top: 0px !important;
+  resize: none;
+}
+
+.cancel-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 40px;
+  border-radius: 20px;
+  border: none;
+  background: #3c2f8f;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Sofia Sans Condensed';
+  width : 400px;
+  height : 70px;
+  font-size : 32px;
+  margin-top : 30px;
+  margin-bottom : 50px;
+}

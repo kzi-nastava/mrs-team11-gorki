@@ -1,0 +1,47 @@
+<div class="ride-card">
+  <h1>Ride No. {{ ride.id }}</h1>
+
+  <div class="rating">
+    ⭐⭐⭐⭐☆ <span>{{ ride.rating }}</span>
+  </div>
+
+  <hr />
+
+  <ul>
+    <li><strong>Date</strong> - {{ ride.date | date:'dd.MM.yyyy' }}</li>
+    <li><strong>Starting time</strong> - {{ ride.startTime }}</li>
+    <li><strong>Ending time</strong> - {{ ride.endTime }}</li>
+    <li>
+      <strong>Starting point</strong> -
+      {{ ride.startLocation }}
+    </li>
+    <li>
+      <strong>Destination</strong> -
+      {{ ride.destination }}
+    </li>
+  </ul>
+
+  <hr />
+
+  <ul>
+    <li><strong>$ Price</strong> - {{ ride.price }}$</li>
+
+    <li class="status">
+      <strong>Canceled</strong>
+      <span class="icon" [class.active]="ride.canceled"></span>
+    </li>
+
+    <li><strong>Canceled By</strong> - {{ ride.canceledBy }}</li>
+
+    <li><strong>Cancellation reason</strong> - {{ ride.cancellationReason }}</li>
+
+    <li class="status">
+      <strong>PANIC activated</strong>
+      <span class="icon" [class.active]="ride.panic"></span>
+    </li>
+  </ul>
+
+  <button class="go-to-map" (click)="openDetails()">
+    GO TO MAP
+  </button>
+</div>

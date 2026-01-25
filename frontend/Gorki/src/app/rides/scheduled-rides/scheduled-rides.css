@@ -8,7 +8,7 @@
   align-items: center;
 }
 
-.ride-list {
+.ride-list-scheduled {
   display: flex;
   gap: 32px;
   overflow-x: auto;
@@ -17,16 +17,17 @@
   background: transparent;
   padding: 20px;
   max-width: 100%;
+  margin-top: 160px;
 }
 
 /* sakrij scrollbar */
-.ride-list::-webkit-scrollbar {
+.ride-list-scheduled::-webkit-scrollbar {
   display: none;
   background: transparent;
 }
 
 /* kartice se NE SMEJU skupljati */
-app-ride-card-scheduled {
+app-ride-card {
   flex: 0 0 auto;
 }
 
