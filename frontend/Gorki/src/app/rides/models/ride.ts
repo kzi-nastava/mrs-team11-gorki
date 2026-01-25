@@ -65,3 +65,17 @@ export interface UserHistoryRide {
   panic: boolean;
   passengers: Passenger [];
 }
+
+export interface DriverScheduledRide {
+  id: number;
+  rating: number;
+  startTime: string;
+  startLocation: string;
+  destination: string;
+  date:Date;
+  price: number;
+  canceled: boolean;
+  cancelationReason:string;
+  panic: boolean;
+  passengers:Passenger []; 
+}

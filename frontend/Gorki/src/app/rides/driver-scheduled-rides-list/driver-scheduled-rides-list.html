@@ -1,0 +1,19 @@
+<div class="carousel-wrapper">
+  <button class="nav left" (click)="scrollLeft()">‹</button>
+
+  <div class="ride-list" #carousel>
+    <app-driver-scheduled-ride-card
+      *ngFor="let ride of scheduledRides"
+      [scheduledRide]="ride"
+      (moreInfo)="openDetails($event)"
+      (cacneledRide)="cancelSelectedRide($event)"
+    ></app-driver-scheduled-ride-card>
+  </div>
+
+  <button class="nav right" (click)="scrollRight()">›</button>
+</div>
+<app-driver-scheduled-ride-details
+  *ngIf="selectedRide"
+  [passengers]="selectedRide.passengers"
+  (close)="closeDetails()"
+></app-driver-scheduled-ride-details>

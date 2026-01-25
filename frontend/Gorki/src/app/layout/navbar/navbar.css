@@ -176,3 +176,11 @@ a{
     text-decoration: none;
     color: inherit;
 }
+
+.currentRide{
+    font-style: italic;
+    font-weight: bold;
+    font-size: 32px;
+    margin-left: 25px;
+    margin-top: 9px;
+}
