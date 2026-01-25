@@ -1,0 +1,33 @@
+<div class="ride-card">
+  <h1>Ride No. {{ ride.id }}</h1>
+
+  <div class="rating">
+    ⭐⭐⭐⭐☆ <span>{{ ride.rating }}</span>
+  </div>
+
+  <hr />
+
+  <ul>
+    <li><strong>Date</strong> - {{ ride.date | date:'dd.MM.yyyy' }}</li>
+    <li><strong>Starting time</strong> - {{ ride.startTime }}</li>
+    <li><strong>Ending time</strong> - {{ ride.endTime }}</li>
+    <li>
+      <strong>Starting point</strong> -
+      {{ ride.startLocation }}
+    </li>
+    <li>
+      <strong>Destination</strong> -
+      {{ ride.destination }}
+    </li>
+  </ul>
+
+  <hr />
+
+  <ul>
+    <li><strong>$ Price</strong> - {{ ride.price }}$</li>
+  </ul>
+
+  <button class="more-info" (click)="openDetails()">
+    MORE INFO
+  </button>
+</div>
