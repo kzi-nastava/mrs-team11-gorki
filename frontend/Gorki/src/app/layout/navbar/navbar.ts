@@ -44,7 +44,7 @@ export class Navbar {
 
   onLoggedIn() {
     this.isLoggedIn = true;
-    this.role = "driver";
+    this.role = "user";
     this.setActive(true);
   }
 

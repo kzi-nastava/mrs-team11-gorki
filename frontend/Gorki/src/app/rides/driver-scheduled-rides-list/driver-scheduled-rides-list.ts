@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DriverScheduledRide,Passenger } from '../models/ride';
+import { DriverScheduledRide, Passenger } from '../models/ride';
 import { DriverScheduledRideCard } from '../driver-scheduled-ride-card/driver-scheduled-ride-card';
 import { DriverScheduledRideDetails } from '../driver-scheduled-ride-details/driver-scheduled-ride-details';
 
@@ -37,7 +37,7 @@ export class DriverScheduledRidesList {
     startLocation: 'Miše Dimitrijevića 5, Grbavica',
     destination: 'Jerneja Kopitara 32, Telep',
     price: 15,
-    date: new Date(2026, 0, 16),
+    date: new Date(2026, 0, 26),
     canceled: false,
     cancelationReason: 'None',
     panic: false,
@@ -53,7 +53,7 @@ export class DriverScheduledRidesList {
     startLocation: 'Bulevar Oslobođenja 88',
     destination: 'Trg Slobode',
     price: 8,
-    date: new Date(2026, 0, 25),
+    date: new Date(2026, 0, 27),
     canceled: false,
     cancelationReason: 'None',
     panic: false,

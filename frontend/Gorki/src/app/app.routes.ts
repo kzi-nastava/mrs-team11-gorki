@@ -6,7 +6,7 @@ import { ChangePassword } from './profile/change-password/change-password';
 import { VehicleInformation } from './profile/vehicle-information/vehicle-information';
 import { RidesList } from './rides/rides-list/rides-list';
 import {MapComponent} from './map/map'
-import { Home } from './home/home';
+import { Home } from './layout/home/home';
 import { RideInProgress } from './ride-in-progress/ride-in-progress';
 import { TrackRide } from './rides/track-ride/track-ride';
 import { DriverScheduledRideCard } from './rides/driver-scheduled-ride-card/driver-scheduled-ride-card';

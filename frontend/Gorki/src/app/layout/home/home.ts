@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MapComponent } from '../map/map';
-import { AuthService } from '../auth/auth';
-import { RideEstimateCardComponent } from '../ride-estimate-unuser/ride-estimate-unuser';
-import { MapService } from '../map/map-service';
+import { MapComponent } from '../../map/map';
+import { AuthService } from '../../auth/auth';
+import { RideEstimateCardComponent } from '../../ride-estimate-unuser/ride-estimate-unuser';
+import { MapService } from '../../map/map-service';
 
 @Component({
   selector: 'app-home',

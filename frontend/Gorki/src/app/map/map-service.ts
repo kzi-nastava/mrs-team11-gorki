@@ -8,6 +8,7 @@ export class MapService {
   public map!: any;
   private mapComponent!: MapComponent;
   private pendingAction?: () => void;
+  private lastRoutePoints?: [number, number][];
 
   private pendingRoute?: {
     from: [number, number];
@@ -46,6 +47,7 @@ export class MapService {
         (c: [number, number]) => [c[1], c[0]]
       );
 
+    this.lastRoutePoints = coords;
     this.mapComponent.drawSnappedRoute(coords);
   }
 
@@ -56,6 +58,12 @@ export class MapService {
     }
 
     this.mapComponent.drawVehicles();
+  }
+
+  showCarAnimation(){
+      if (!this.mapComponent || !this.lastRoutePoints) return;
+      this.mapComponent.animateDriver(this.lastRoutePoints);
+      console.log("sta je sa mnom?");
   }
 
   clearRoute() {
