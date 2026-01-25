@@ -21,5 +21,6 @@
 
 <app-cancellation-reason-form
   *ngIf="selectedRideCancellation"
-  (close)="closeCancellationForm()"
-></app-cancellation-reason-form>
+  (submit)="confirmCancellation($event)"
+  (close)="closeCancellationForm()">
+</app-cancellation-reason-form>

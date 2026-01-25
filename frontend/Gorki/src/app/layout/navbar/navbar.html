@@ -16,19 +16,19 @@
             <mat-menu #menu="matMenu" id="profileMenu">
                 <button mat-menu-item id="menuItem"><a routerLink="personal-info">Personal information</a></button>
                 <button mat-menu-item id="menuItem"><a routerLink="change-password">Change Password</a></button>
-                @if(role == "driver"){
-                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
+                @if(role == "driver"){ 
                     <button mat-menu-item id="menuItem"><a routerLink="vehicle-information">Vehicle information</a></button>
                     <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history</a></button>
                 }
-                <!--@if(role == "admin"){-->
+                @if(role == "admin"){
                     <button mat-menu-item id="menuItem"><a routerLink="panic-notifications">Panic notifications</a></button>
+                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>                    
                     <button mat-menu-item id="menuItem"><a routerLink="rides-list-admin">Ride history (Admin)</a></button>
-                <!--}-->
-                <!--@if(role == "user"){-->
-                    <!--<button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>-->
+                }
+                @if(role=="user"){
                     <button mat-menu-item id="menuItem"><a routerLink="rides-list-user">Ride history (User)</a></button>
-                <!--}-->
+                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
+                }
             </mat-menu>
             @if(role == "user"){
                 <div class="currentRide"><a routerLink="ride-in-progress">Track ride</a></div>
@@ -36,7 +36,7 @@
             @if(role=="driver"){
                 <div class="profile" [matMenuTriggerFor]="menu">Rides▾</div>
                 <mat-menu #menu="matMenu" id="rideMenu">
-                    <button mat-menu-item id="menuItem"><a routerLink="driver-sceduled-rides">Scheduled rides</a></button>
+                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
                     <button mat-menu-item id="menuItem"><a routerLink="end-of-ride">End ride</a></button>
                 </mat-menu>
             }

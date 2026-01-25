@@ -1,8 +1,6 @@
 <div class="ride-card-scheduled">
   <h1>Ride No. {{ ride.id }}</h1>
-
   <hr />
-
   <ul>
     <li><strong>Date</strong> - {{ ride.date | date:'dd.MM.yyyy' }}</li>
     <li><strong>Starting time</strong> - {{ ride.startTime }}</li>
@@ -21,10 +19,17 @@
 
   <ul>
     <li><strong>$ Price</strong> - {{ ride.price }}$</li>
+    <li class="status">
+      <strong>Canceled</strong>
+      <span class="icon" [class.active]="ride.canceled"></span>
+    </li>
+    <li><strong>Cancelation reason - </strong>{{ride.cancelationReason}}</li>
   </ul>
-
-   <button class="cancel-button" (click)="openCancellationReasonForm()">
-    CANCEL RIDE
+  <button
+      class="cancel-button"
+      *ngIf="!ride.canceled"
+      (click)="openCancellationReasonForm()">
+      CANCEL RIDE
   </button>
 
   <button class="more-info" (click)="openDetails()">

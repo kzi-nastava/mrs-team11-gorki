@@ -67,6 +67,8 @@ export const routes: Routes = [
     {
         path:'rides-list-admin',
         component:RidesListAdmin
+    },
+    {   
         path:'map',
         component:MapComponent
     },

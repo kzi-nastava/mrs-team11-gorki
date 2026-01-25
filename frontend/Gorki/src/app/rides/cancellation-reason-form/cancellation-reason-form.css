@@ -46,8 +46,8 @@ h2 {
   height : 160px;
   border: 0px;
   background-color : #ECECEC;
-  font-size: 16px;
-  font-size : 32px;
+  resize: none;
+  font-size : 25px;
   font-family: 'Sofia Sans Condensed';
   margin : 0 auto;
   display: block;

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, Output,EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RideDetails } from "../ride-details/ride-details";
 import { Passenger, ScheduledRide } from '../models/ride';
@@ -42,11 +42,13 @@ export class ScheduledRides {
     startLocation: 'Miše Dimitrijevića 5, Grbavica',
     destination: 'Jerneja Kopitara 32, Telep',
     price: 15,
-    date: new Date(2025, 11, 16),
+    date: new Date(2026, 1, 27),
     passengers: [
       { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' },
       { email: 'ana@example.com', firstName: 'Ana', lastName: 'Anić', phoneNumber: '0612345678' }
-    ]
+    ],
+    canceled:false,
+    cancelationReason:"None"
   },
   {
     id: 2,
@@ -56,11 +58,13 @@ export class ScheduledRides {
     startLocation: 'Miše Dimitrijevića 5, Grbavica',
     destination: 'Bul. Mihaila Pupina 68, Centar',
     price: 10,
-    date: new Date(2025, 11, 16),
+    date: new Date(2026, 1, 25),
     passengers: [
       { email: 'ana@example.com', firstName: 'Ana', lastName: 'Anić', phoneNumber: '0612345678' },
       { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' }
-    ]
+    ],
+    canceled:false,
+    cancelationReason:"None"
   },
   {
     id: 3,
@@ -75,7 +79,9 @@ export class ScheduledRides {
       { email: 'marko@example.com', firstName: 'Marko', lastName: 'Marković', phoneNumber: '0623456789' },
       { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
       { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' }
-    ]
+    ],
+    canceled:false,
+    cancelationReason:"None"
   },
   {
     id: 4,
@@ -90,7 +96,9 @@ export class ScheduledRides {
       { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
       { email: 'marko@example.com', firstName: 'Marko', lastName: 'Marković', phoneNumber: '0623456789' },
       { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' }
-    ]
+    ],
+    canceled:false,
+    cancelationReason:"None"
   },
   {
     id: 5,
@@ -103,7 +111,9 @@ export class ScheduledRides {
     date: new Date(2025, 10, 11),
     passengers: [
       { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' }
-    ]
+    ],
+    canceled:false,
+    cancelationReason:"None"
   }
   ];
 
@@ -128,6 +138,18 @@ export class ScheduledRides {
   
   closeCancellationForm() {
     this.selectedRideCancellation = null;
+  }
+
+    confirmCancellation(reason: string) {
+      if (!this.selectedRideCancellation) return;
+
+      if(!this.selectedRideCancellation.canceled && 
+        this.selectedRideCancellation.date.getTime() > Date.now()){
+          this.selectedRideCancellation.canceled = true;
+          this.selectedRideCancellation.cancelationReason = reason || 'No reason provided';
+
+          this.selectedRideCancellation = null;
+    }
   }
 
   sortRides(event: {criteria: string, order: 'asc' | 'desc'}) {

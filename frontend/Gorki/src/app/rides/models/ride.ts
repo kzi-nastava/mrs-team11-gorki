@@ -35,6 +35,8 @@ export interface ScheduledRide {
   destination: string;
   date:Date;
   price: number;
+  canceled: boolean;
+  cancelationReason:string;
   passengers:Passenger [];
 }
 

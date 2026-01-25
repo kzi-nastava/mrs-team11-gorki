@@ -3,7 +3,11 @@
     <h2>Cancellation reason</h2>
     <div class="divider"></div>
     <p class="note">Note</p>
-    <input class="reason-input">
+    <textarea
+        class="reason-input"
+        [(ngModel)]="reason"
+        placeholder="Cancellation reason">
+    </textarea>
     <button class="submit-btn" (click)="onSubmit()">Submit</button>
   </div>
 </div>
