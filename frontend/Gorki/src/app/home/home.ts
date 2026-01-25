@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapComponent } from '../map/map';
 import { AuthService } from '../auth/auth';
@@ -16,9 +16,12 @@ import { MapService } from '../map/map-service';
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class Home {
+export class Home implements OnInit {
   constructor(public auth: AuthService,private mapService: MapService) {}
 
+  ngOnInit(){
+    this.mapService.showInitialVehicles();
+  }
   onEstimateRide() {
     console.log('Estimate ride clicked');
   }
@@ -30,5 +33,4 @@ export class Home {
       this.mapService.showSnappedRoute(event.pickupCoords, event.dropoffCoords);
       
   }
-  
 }

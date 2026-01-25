@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { MapComponent } from "../map/map";
-import { TrackRide } from '../rides/track-ride/track-ride';
-import { MapService } from '../map/map-service';
+import { Component,OnInit } from '@angular/core';
+import { MapComponent } from "../../map/map";
+import { MapService } from '../../map/map-service';
+import { EndOfRidePanel } from "../end-of-ride-panel/end-of-ride-panel";
+import { RideDetails } from "../ride-details/ride-details";
 
 @Component({
-  selector: 'app-ride-in-progress',
-  standalone: true,
-  imports: [MapComponent, TrackRide],
-  templateUrl: './ride-in-progress.html',
-  styleUrls: ['./ride-in-progress.css'],
+  selector: 'app-end-of-ride',
+  imports: [MapComponent, EndOfRidePanel],
+  templateUrl: './end-of-ride.html',
+  styleUrl: './end-of-ride.css',
 })
-export class RideInProgress implements OnInit {
+export class EndOfRide implements OnInit {
 
   constructor(private mapService: MapService) {}
 
-  async ngOnInit() {
+  async ngOnInit(){
     this.mapService.clearAll();
-    this.mapService.clearVehicles();
+    this.mapService.clearRoute();
     const pickupAddress = 'Futoška 13a, Novi Sad';
     const dropoffAddress = 'Hadži Ruvimova 45, Novi Sad';
 
@@ -25,7 +25,9 @@ export class RideInProgress implements OnInit {
 
     this.mapService.showSnappedRoute(
     pickupCoords,
-    dropoffCoords);
+    dropoffCoords
+
+  );
   }
 
   async geocode(address: string): Promise<[number, number]> {
@@ -47,13 +49,4 @@ export class RideInProgress implements OnInit {
     return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
   }
 
-  handleShowOnMap(event: {
-    pickupCoords: [number, number];
-    dropoffCoords: [number, number];
-  }) {
-    this.mapService.showSnappedRoute(
-      event.pickupCoords,
-      event.dropoffCoords
-    );
-  }
 }

@@ -1,0 +1,43 @@
+<div class="card">
+  <h4 class="texts" id="Paid in cash"><span class="material-icons" style="color:#22c345;">check_circle</span>Paid in cash [15$]</h4>
+  <h4 class="texts"><span class="material-icons">schedule</span>17:15</h4>
+
+<button class="primary" (click)="showMoreInfo()">
+  MORE INFO
+</button>
+<button class="primary" (click)="endRide()">
+  END RIDE
+</button>
+</div>
+
+<!-- MODAL BACKDROP -->
+<div class="modal-backdrop" *ngIf="isModalOpen" (click)="closeModal()"></div>
+
+<!-- MODAL -->
+<div class="modal" *ngIf="isModalOpen">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <h3 class="modal-title">New ride</h3>
+    <hr />
+
+    <!-- AKO POSTOJI NOVA VOZNJA -->
+    <div *ngIf="newRides.length > 0; else noRide">
+      <p id="yesRides"><strong>Starting point: </strong>{{newRides[0].startLocation}}</p>
+      <p id="yesRides"><strong>Destination: </strong>{{newRides[0].destination}}</p>
+      <p id="yesRides"><strong>Price: </strong>{{newRides[0].price}}$</p>
+      <button class="primary" (click)="startRide()">
+        START
+      </button>
+    </div>
+
+    <!-- AKO NE POSTOJI -->
+    <ng-template #noRide>
+      <p id="noRides">There is no ride to start.</p>
+
+      <button class="setBtn" (click)="goToScheduledRides()">
+        GO TO SCHEDULED RIDES
+      </button>
+    </ng-template>
+
+  </div>
+</div>

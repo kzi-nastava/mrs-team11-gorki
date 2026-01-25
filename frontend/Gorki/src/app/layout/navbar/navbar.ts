@@ -12,8 +12,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   styleUrls: ['./navbar.css'], 
 })
 
-export class Navbar {
-  
+export class Navbar { 
   isLoggedIn: boolean = false;
   isRegistrationOpen: boolean = false;
   isLoginOpen: boolean = false;
@@ -45,7 +44,7 @@ export class Navbar {
 
   onLoggedIn() {
     this.isLoggedIn = true;
-    this.role = "user";
+    this.role = "driver";
     this.setActive(true);
   }
 
@@ -63,5 +62,4 @@ export class Navbar {
   closeRegistration(){
     this.isRegistrationOpen = false;
   }
-
 }

@@ -9,6 +9,9 @@ import {MapComponent} from './map/map'
 import { Home } from './home/home';
 import { RideInProgress } from './ride-in-progress/ride-in-progress';
 import { TrackRide } from './rides/track-ride/track-ride';
+import { DriverScheduledRideCard } from './rides/driver-scheduled-ride-card/driver-scheduled-ride-card';
+import { DriverScheduledRidesList } from './rides/driver-scheduled-rides-list/driver-scheduled-rides-list';
+import { EndOfRide } from './rides/end-of-ride/end-of-ride';
 
 
 export const routes: Routes = [
@@ -56,5 +59,13 @@ export const routes: Routes = [
     {
         path:'track-ride',
         component:TrackRide
+    },
+    {
+        path:'driver-sceduled-rides',
+        component:DriverScheduledRidesList
+    },
+    {
+        path:'end-of-ride',
+        component:EndOfRide
     }
 ];
