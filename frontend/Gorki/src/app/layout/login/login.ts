@@ -30,6 +30,13 @@ export class Login {
     this.loggedIn.emit();
     this.close.emit();
     this.router.navigateByUrl('/');
+    const el = document.getElementById('estimation');
+
+    if (el) {
+      el.style.filter = 'blur(0px)';
+      el.style.pointerEvents = 'none';
+      el.style.userSelect = 'none';
+    }
   }
 
   goToReset(){

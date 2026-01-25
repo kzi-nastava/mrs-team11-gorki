@@ -15,3 +15,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+app-root {
+  display: block;
+  height: 100%;
+}
