@@ -15,16 +15,19 @@ export class RideInProgress implements OnInit {
   constructor(private mapService: MapService) {}
 
   async ngOnInit() {
+    this.mapService.clearAll();
+    //this.mapService.clearVehicles();
+
     const pickupAddress = 'Futoška 13a, Novi Sad';
     const dropoffAddress = 'Hadži Ruvimova 45, Novi Sad';
 
     const pickupCoords = await this.geocode(pickupAddress);
     const dropoffCoords = await this.geocode(dropoffAddress);
 
-    this.mapService.showSnappedRoute(
-    pickupCoords,
-    dropoffCoords
-  );
+    await this.mapService.showSnappedRoute(pickupCoords, dropoffCoords);
+
+    // 🔥 NEMA ARGUMENATA
+    this.mapService.showCarAnimation()
   }
 
   async geocode(address: string): Promise<[number, number]> {

@@ -7,6 +7,8 @@ export class MapService {
 
   public map!: any;
   private mapComponent!: MapComponent;
+  private pendingAction?: () => void;
+  private lastRoutePoints?: [number, number][];
 
   private pendingRoute?: {
     from: [number, number];
@@ -17,14 +19,9 @@ export class MapService {
     this.map = map;
     this.mapComponent = component;
 
-    if (this.pendingRoute) {
-      console.log(this.pendingRoute.from);
-      console.log(this.pendingRoute.to);
-      this.showSnappedRoute(
-        this.pendingRoute.from,
-        this.pendingRoute.to
-      );
-      this.pendingRoute = undefined;
+    if (this.pendingAction) {
+      this.pendingAction();
+      this.pendingAction = undefined;
     }
 }
 
@@ -50,6 +47,35 @@ export class MapService {
         (c: [number, number]) => [c[1], c[0]]
       );
 
+    this.lastRoutePoints = coords;
     this.mapComponent.drawSnappedRoute(coords);
+  }
+
+  showInitialVehicles() {
+    if (!this.mapComponent) {
+      this.pendingAction = () => this.showInitialVehicles();
+      return;
+    }
+
+    this.mapComponent.drawVehicles();
+  }
+
+  showCarAnimation(){
+      if (!this.mapComponent || !this.lastRoutePoints) return;
+      this.mapComponent.animateDriver(this.lastRoutePoints);
+      console.log("sta je sa mnom?");
+  }
+
+  clearRoute() {
+    this.mapComponent?.clearRoute();
+  }
+
+  clearVehicles(){
+    this.mapComponent.clearVehicles();
+    console.log("radim?");
+  }
+  
+  clearAll() {
+    this.mapComponent?.clearAll();
   }
 }
