@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../infrastructure/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,8 @@ export class Login {
   }
 
   login(){
+
+    //kada napises back, ovde izmene za login sa JWT
     this.loggedIn.emit();
     this.close.emit();
     this.router.navigateByUrl('/');

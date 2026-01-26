@@ -15,6 +15,7 @@
       *ngFor="let ride of rides"
       [ride]="ride"
       (moreInfo)="openRideDetails($event)"
+      (rateRide)="openRatingPanel($event)"
     ></app-ride-card-user>
   </div>
 
@@ -26,3 +27,9 @@
   [passengers]="selectedRide.passengers"
   (close)="closeRideDetails()"
 ></app-ride-details>
+
+<app-rating-panel
+  *ngIf="showRating"
+  (submit)="handleRating($event)"
+  (close)="showRating = false">
+</app-rating-panel>

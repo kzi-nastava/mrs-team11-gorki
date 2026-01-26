@@ -29,7 +29,6 @@ export class MapComponent implements AfterViewInit {
   private markersLayer = L.layerGroup();
   private driverMarker?: L.Marker;
 
-
   constructor(private mapService: MapService) {}
 
   initMap(){

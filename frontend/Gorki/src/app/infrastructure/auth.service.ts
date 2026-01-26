@@ -32,6 +32,7 @@ export class AuthService {
     if (this.isLoggedIn()) {
       const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
+
       return helper.decodeToken(accessToken).role[0].authority;
     }
     return null;

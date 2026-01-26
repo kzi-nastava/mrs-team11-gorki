@@ -2,7 +2,13 @@
   <h1>Ride No. {{ ride.id }}</h1>
 
   <div class="rating">
-    ⭐⭐⭐⭐☆ <span>{{ ride.rating }}</span>
+    ☆☆☆☆☆ <span>{{ ride.rating }}</span>
+      <button
+        class="rateRide"
+        [disabled]="!canRate()"
+        (click)="openRatingModal()">
+        Rate
+      </button>
   </div>
 
   <hr />
