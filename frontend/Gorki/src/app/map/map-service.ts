@@ -78,4 +78,13 @@ export class MapService {
   clearAll() {
     this.mapComponent?.clearAll();
   }
+
+  stopDriverAnimation(): [number, number] | null {
+    return this.mapComponent?.stopDriverAnimation() ?? null;
+  }
+
+
+  setDriverToPanic(){
+    this.mapComponent?.setDriverToPanic();
+  }
 }

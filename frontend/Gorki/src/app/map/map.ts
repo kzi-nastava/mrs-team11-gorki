@@ -13,6 +13,11 @@ var unavailableCar=L.icon({
           iconSize:[37,30],
           iconAnchor:[15,15]
 });
+var alertVehicle=L.icon({
+          iconUrl:'alertVehicle.ico',
+          iconSize:[74,60],
+          iconAnchor:[30,30]
+});
 
 @Component({
   selector: 'app-map',
@@ -29,6 +34,9 @@ export class MapComponent implements AfterViewInit {
   private markersLayer = L.layerGroup();
   private driverMarker?: L.Marker;
 
+  private animationIndex = 0;
+  private animationTimer: any;
+  private animationPoints: [number, number][] = [];
 
   constructor(private mapService: MapService) {}
 
@@ -57,36 +65,38 @@ export class MapComponent implements AfterViewInit {
   }
 
   animateDriver(points: [number, number][]) {
-  if (!points || points.length === 0) return;
+    if (!points || points.length === 0) return;
 
-  const driverIcon = L.icon({
-    iconUrl: 'unavailableCar.ico',
-    iconSize: [37, 30],
-    iconAnchor: [18, 15]
-  });
+    this.animationPoints = points;
+    this.animationIndex = 0;
 
-  // Ako marker ne postoji – napravi ga i dodaj u markersLayer
-  if (!this.driverMarker) {
-    this.driverMarker = L.marker(points[0], { icon: driverIcon });
-    this.driverMarker.addTo(this.markersLayer);
+    const driverIcon = L.icon({
+      iconUrl: 'unavailableCar.ico',
+      iconSize: [37, 30],
+      iconAnchor: [18, 15]
+    });
+
+    if (!this.driverMarker) {
+      this.driverMarker = L.marker(points[0], { icon: driverIcon });
+      this.driverMarker.addTo(this.markersLayer);
+    }
+
+    const move = () => {
+      if (this.animationIndex >= this.animationPoints.length) return;
+
+      this.driverMarker!.setLatLng(
+        this.animationPoints[this.animationIndex]
+      );
+
+      this.animationIndex++;
+
+      this.animationTimer = setTimeout(() => {
+        requestAnimationFrame(move);
+      }, 200);
+    };
+
+    move();
   }
-
-  let i = 0;
-
-  const move = () => {
-    if (i >= points.length) return;
-
-    this.driverMarker!.setLatLng(points[i]);
-    i++;
-
-    setTimeout(() => {
-      requestAnimationFrame(move);
-    }, 200);
-  };
-
-  move();
-
-}
 
   drawSnappedRoute(points: [number, number][]) {
     this.routeLayer.clearLayers();
@@ -169,4 +179,22 @@ export class MapComponent implements AfterViewInit {
     this.clearRoute();
     this.clearVehicles();
   }
+
+  stopDriverAnimation(): [number, number] | null {
+    if (this.animationTimer) {
+      clearTimeout(this.animationTimer);
+    }
+
+    if (!this.driverMarker) return null;
+
+    const pos = this.driverMarker.getLatLng();
+    return [pos.lat, pos.lng];
+  }
+
+  setDriverToPanic() {
+    if (!this.driverMarker) return;
+    this.driverMarker.setIcon(alertVehicle);
+
+  }
+
 }

@@ -16,7 +16,9 @@ import { TrackRide } from './rides/track-ride/track-ride';
 import { DriverScheduledRideCard } from './rides/driver-scheduled-ride-card/driver-scheduled-ride-card';
 import { DriverScheduledRidesList } from './rides/driver-scheduled-rides-list/driver-scheduled-rides-list';
 import { EndOfRide } from './rides/end-of-ride/end-of-ride';
-
+import { TrackRideDriver } from './rides/track-ride-driver/track-ride-driver';
+import { RideInProgressDriver } from './ride-in-progress-driver/ride-in-progress-driver';
+import { RideListMap } from './rides/ride-list-map/ride-list-map';
 
 export const routes: Routes = [
     {
@@ -87,5 +89,13 @@ export const routes: Routes = [
     {
         path:'end-of-ride',
         component:EndOfRide
+    },
+    {
+        path:'ride-in-progress-driver',
+        component:RideInProgressDriver
+    },
+    {
+        path:'ride-list-map/:id',
+        component:RideListMap
     }
 ];

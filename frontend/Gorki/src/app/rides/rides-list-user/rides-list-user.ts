@@ -1,15 +1,15 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { DateFilter } from '../filters/date-filter/date-filter';
 import { SortFilter } from '../filters/sort-filter/sort-filter';
-import { RideDetails } from "../ride-details/ride-details";
 import { Ride,Passenger, UserHistoryRide } from '../models/ride';
 import { RideCardUser } from '../ride-card-user/ride-card-user';
 
 @Component({
   selector: 'app-rides-list-user',
   standalone: true,
-  imports: [CommonModule, RideCardUser, DateFilter, SortFilter, RideDetails],
+  imports: [CommonModule, RideCardUser, DateFilter, SortFilter],
   templateUrl: './rides-list-user.html',
   styleUrl: './rides-list-user.css',
 })
@@ -17,6 +17,8 @@ export class RidesListUser {
   selectedRide: UserHistoryRide | null = null;
   @ViewChild('carousel', { static: true })
   carousel!: ElementRef<HTMLDivElement>;
+  
+  constructor(private router: Router) {}
 
   scrollLeft() {
     this.carousel.nativeElement.scrollBy({
@@ -57,7 +59,7 @@ export class RidesListUser {
     startTime: '14:00',
     endTime: '14:10',
     startLocation: 'Miše Dimitrijevića 5, Grbavica',
-    destination: 'Bul. Mihaila Pupina 68, Centar',
+    destination: 'Hajduk Veljkova 5, Detelinara',
     price: 10,
     date: new Date(2025, 11, 16),
     canceled: false,
@@ -75,7 +77,7 @@ export class RidesListUser {
     startTime: '11:00',
     endTime: '11:08',
     startLocation: 'Bulevar Oslobođenja 189, Liman 2',
-    destination: 'Tolstojeva 34, Centar',
+    destination: 'Tolstojeva 34, Grbavica',
     price: 7,
     date: new Date(2025, 11, 9),
     canceled: true,
@@ -112,8 +114,8 @@ export class RidesListUser {
     rating: 1.0,
     startTime: '19:00',
     endTime: '19:15',
-    startLocation: 'Futoški put 29, Bistrica',
-    destination: 'Sremska 9, Stari grad',
+    startLocation: 'Braće Dronjak 22, Bistrica',
+    destination: 'Narodnog fronta 5, Liman 2',
     price: 20,
     date: new Date(2025, 10, 11),
     canceled: false,
@@ -121,7 +123,8 @@ export class RidesListUser {
     canceledBy : 'Petar Petrović',
     cancellationReason: 'reason5',
     passengers: [
-      { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' }
+      { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' },
+      { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
     ]
   }
   ];
@@ -133,12 +136,8 @@ export class RidesListUser {
     this.allRides=[...this.rides];
   }
 
-  openRideDetails(ride: UserHistoryRide) {
-    this.selectedRide = ride;
-  }
-
-  closeRideDetails() {
-    this.selectedRide = null;
+  openMap(ride: UserHistoryRide) {
+  this.router.navigate(['/ride-list-map', ride.id], { state: { ride } });
   }
 
   sortRides(event: {criteria: string, order: 'asc' | 'desc'}) {

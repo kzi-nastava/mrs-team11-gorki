@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 import { Ride, UserHistoryRide } from '../models/ride';
 
 @Component({
-  selector: 'app-ride-card-user',
+  selector: 'app-ride-card-map',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './ride-card-user.html',
-  styleUrl: './ride-card-user.css'
+  templateUrl: './ride-card-map.html',
+  styleUrl: './ride-card-map.css'
 })
-export class RideCardUser {
+export class RideCardMap {
   @Input() ride!: UserHistoryRide;
-  @Output() goToMap = new EventEmitter<number>();
+  @Output() openRideDetails = new EventEmitter<UserHistoryRide>();
 
-  goToMapClick() {
-    this.goToMap.emit(this.ride.id);
+  showDetails() {
+    this.openRideDetails.emit(this.ride);
   }
 }

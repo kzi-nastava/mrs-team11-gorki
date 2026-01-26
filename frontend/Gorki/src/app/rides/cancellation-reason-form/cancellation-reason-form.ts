@@ -17,4 +17,9 @@ export class CancellationReasonForm {
     this.submit.emit(this.reason);
     this.close.emit();
   }
+
+  onClose() {
+    this.close.emit();
+  }
+
 }
