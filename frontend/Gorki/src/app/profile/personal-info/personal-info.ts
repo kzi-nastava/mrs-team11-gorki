@@ -1,14 +1,24 @@
 import { Component } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { User } from '../../model/ui/user';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-personal-info',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './personal-info.html',
   styleUrl: './personal-info.css',
 })
 export class PersonalInfo {
   imagePreview: string | ArrayBuffer | null = null;
+  user: User = {
+    email:'marko.pavlovic2404004@gmail.com',
+    firstName:'Marko',
+    lastName:'Pavlovic',
+    phoneNumber:381648816145,
+    address:'Mornarska 51, Novi Sad',
+    profileImage:'/user-pic.png',
+  };
 
   constructor(private cdr: ChangeDetectorRef) {}
 
