@@ -1,0 +1,16 @@
+@if (routes.length === 0) {
+        <div class="no-favourite-routes">
+            There are no favourite routes
+        </div>
+} @else {
+<div class="carousel-wrapper">
+  <button class="nav left" (click)="scrollLeft()">‹</button>
+
+  <div class="ride-list" #carousel>
+    @for(route of routes; track route){
+        <app-favourite-route-card [route]="route"></app-favourite-route-card>
+    }
+  </div>
+  <button class="nav right" (click)="scrollRight()">›</button>
+</div>
+}
