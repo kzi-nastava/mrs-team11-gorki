@@ -1,0 +1,85 @@
+<div class="ride-ordering-form">
+    <form class="main-form" [ngClass]="{'hidden': activeForm !== 'main'}">
+        <div class="question-title">Where would you like to go?</div>
+        <div class="favourite-routes-p">You can <a routerLink="/favourite-routes-list">click here</a> to choose your favorite route or fill the route fields down below</div>
+        <input class="starting-point" placeholder="Enter your starting point address"/>
+        <div class="stopping-points">
+            <label class="stopping-points-label">Stopping points (optional):</label>
+            <button class="add" type="button" (click)="openStoppingForm()">Add</button>
+        </div>
+        <input class="ending-point" placeholder="Enter your ending point address">
+        <div class="link-other-passengers">
+            <label class="link-other-passengers-label">Link other passengers:</label>
+            <button class="link" type="button" (click)="openPassengersForm()">Link</button>
+        </div>
+        <input class="scheduled-time" placeholder="Enter scheduled time (optional)">
+        <mat-form-field>
+            <mat-label>Select an option</mat-label>
+            <mat-select placeholder="Choose preferred vehicle type">
+                <mat-option>None</mat-option>
+                <mat-option value="standard">Standard</mat-option>
+                <mat-option value="luxury">Luxury</mat-option>
+                <mat-option value="van">Van</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="questions">
+            <div class="baby-transport">
+                <label class="baby-transport-label">Baby transport?</label>
+                <mat-radio-group aria-label="Select an option" class="radio">
+                    <mat-radio-button value="1">Yes</mat-radio-button>
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="separator"></div>
+            <div class="pet-friendly">
+                <label class="pet-friendly-label">Pet friendly?</label>
+                <mat-radio-group aria-label="Select an option" class="radio">
+                    <mat-radio-button value="1">Yes</mat-radio-button>
+                    <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <button class="order" type="button" (click)="openModal()">Order</button>
+    </form>
+    <form class="stopping-points-form" [ngClass]="{'hidden': activeForm !== 'stopping'}">
+        <div class="stopping-points-header">Enter your stopping points</div>
+        @for (point of points; track point) {
+            <div class="stopping-points-input">
+                <input
+                class="stopping-point-input"
+                [formControl]="point"
+                placeholder="Enter your stopping point address"
+                />
+                <button class="minus" type="button" (click)="removeStoppingPoint(points.indexOf(point))">
+                    <div class="minus-stroke"></div>
+                </button>
+            </div>
+        }
+        <button class="plus" type="button" (click)="addStoppingPoint()">
+            <div class="plus-stroke-vertical">
+                <div class="plus-stroke-horizontal"></div>
+            </div>
+        </button>
+        <button class="submit" type="button" (click)="backToMain()">Submit</button>
+    </form>
+    <form class="passengers-form" [ngClass]="{'hidden': activeForm !== 'passengers'}">
+        <div class="passengers-header">Link other passengers</div>
+        @for(passenger of passengers; track passenger){
+            <div class="passengers-inputs">
+                <input class="passengers-input" [formControl]="passenger" placeholder="Enter passenger email address">
+                <button class="minus" type="button" (click)="removePassenger(passengers.indexOf(passenger))">
+                    <div class="minus-stroke"></div>
+                </button>
+            </div>
+        }
+        <button class="plus" type="button" (click)="addPassenger()">
+            <div class="plus-stroke-vertical">
+                <div class="plus-stroke-horizontal"></div>
+            </div>
+        </button>
+        <button class="submit" type="button" (click)="backToMain()">Submit</button>
+    </form>
+</div>
+@if(isModalOpen){
+        <app-ordering-confirmation></app-ordering-confirmation>
+}
