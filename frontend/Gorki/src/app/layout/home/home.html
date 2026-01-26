@@ -1,0 +1,15 @@
+<div class="map-wrapper" id="homePage">
+  <app-map></app-map>
+  @if (role == "user") {
+    <app-ride-ordering></app-ride-ordering>
+  } @else if (role == "driver") {
+    <app-ride-start></app-ride-start>
+  } @else {
+    <app-ride-estimate-unuser id="estimation"
+        *ngIf="!auth.isLoggedIn()"
+        class="overlay-card"
+          (estimateRide)="onEstimateRide()"
+          (showOnMap)="handleShowOnMap($event)">
+    </app-ride-estimate-unuser>
+ }
+</div>  

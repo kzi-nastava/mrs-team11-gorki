@@ -1,0 +1,35 @@
+<div class="card">
+  
+  <h4 class="texts" id="Pickup"><span class="material-icons" style="color:#3F51B5;">location_on</span>Futoška 13a</h4>
+  <h4 class="texts" id="Dropoff"><span class="material-icons" style="color:#F44336;">place</span>Hadži Ruvimova 45</h4>
+  <h4 class="texts"><span class="material-icons">schedule</span>7 minutes</h4>
+
+<button class="primary" (click)="reportInconsistency()">
+  REPORT INCONSISTENCY
+</button>
+<button class="primary" (click)="panic()" >
+  PANIC
+</button>
+</div>
+<div class="modal-backdrop" *ngIf="showReportModal">
+
+  <div class="modal-card">
+
+    <h3>Report Inconsistency</h3>
+
+    <hr />
+
+    <p class="change">Note</p>
+    <textarea
+      [(ngModel)]="noteText"
+      rows="4"
+      placeholder="Enter note..."
+    ></textarea>
+
+    <div class="modal-actions">
+      <button class="secondary" (click)="closeModal()">Cancel</button>
+      <button class="primary" (click)="submitReport()">Submit</button>
+    </div>
+
+  </div>
+</div>

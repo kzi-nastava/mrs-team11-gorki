@@ -1,0 +1,28 @@
+<div class="ride-card">
+  <h1>Route No. {{ route.id }}</h1>
+  <hr/>
+  <ul>
+    <li>
+      <strong>Starting point</strong> -
+      {{ route.startingPoint }}
+    </li>
+    <li>
+      <strong>Destination</strong> -
+      {{ route.destination }}
+    </li>
+  </ul>
+  <hr />
+  <ul>
+    <li>
+        <strong>Stopping points:</strong>
+        <ul>
+            @for(point of route.stoppingPoints; track point){
+                <li>- {{point}}</li>
+            }
+        </ul>
+    </li>
+  </ul>
+  <button class="more-info" type="button" routerLink="/home">
+    CHOOSE   
+  </button>
+</div>

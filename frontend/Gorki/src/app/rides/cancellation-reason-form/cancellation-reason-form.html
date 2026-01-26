@@ -1,0 +1,13 @@
+<div class="backdrop" (click)="onClose()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Cancellation reason</h2>
+    <div class="divider"></div>
+    <p class="note">Note</p>
+    <textarea
+        class="reason-input"
+        [(ngModel)]="reason"
+        placeholder="Cancellation reason">
+    </textarea>
+    <button class="submit-btn" [disabled]="!reason" (click)="onSubmit()">Submit</button>
+  </div>
+</div>
