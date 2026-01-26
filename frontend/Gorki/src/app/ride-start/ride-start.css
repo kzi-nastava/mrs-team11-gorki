@@ -1,0 +1,203 @@
+.next-ride-card{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 110px;
+    left: 60px;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-family: 'Sofia Sans Condensed';
+    color: #362d88;
+    border-radius: 25px;
+}
+
+.img2{
+    height: 15px;
+    width: 15px;
+    margin-left: 15px;
+    margin-right: 5px;
+    margin-bottom: 20px;
+}
+
+.img1{
+    height: 20px;
+    width: 15px;
+    margin-left: 15px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.next-ride-header{
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.separator3{
+    height: 2px;
+    width: 300px;
+    background-color: #362D88;
+    margin-bottom: 15px;
+}
+
+.view-passengers{
+    width: 250px;
+    height: 50px;
+    border-radius: 25px;
+    border: none;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #362D88;
+    color: white;
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.view-passengers:hover{
+    background-color: #4b448b;
+    transform: scale(1.01);
+}
+
+.view-passengers:active{
+    background-color: #5951a5;
+}
+
+.start-ride{
+    width: 250px;
+    height: 50px;
+    border-radius: 25px;
+    border: none;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #362D88;
+    color: white;
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.start-ride:hover{
+    background-color: #4b448b;
+    transform: scale(1.01);
+}
+
+.start-ride:active{
+    background-color: #5951a5;
+}
+
+.starting-point-loc{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+}
+
+.destination-loc{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+}
+
+.scheduled-arrival{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+}
+
+.price{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.starting-point-text{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.destination-text{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.scheduled-arrival-text{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  width: 800px;
+  max-width: 90%;
+}
+
+h2 {
+  font-family: 'Sofia Sans Condensed';
+  color: #362D88;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  border: 1px solid #bbb;
+  padding: 10px;
+  text-align: left;
+  font-family: 'Sofia Sans Condensed';
+}
+
+th {
+  color: #3c2f8f;
+}
+
+.close-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 40px;
+  border-radius: 20px;
+  border: none;
+  background: #3c2f8f;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Sofia Sans Condensed';
+}
+
+.creator{
+    background-color: #362D88;
+    color: white;
+}
