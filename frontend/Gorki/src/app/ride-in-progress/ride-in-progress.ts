@@ -16,7 +16,6 @@ export class RideInProgress implements OnInit {
 
   async ngOnInit() {
     this.mapService.clearAll();
-    //this.mapService.clearVehicles();
 
     const pickupAddress = 'Futoška 13a, Novi Sad';
     const dropoffAddress = 'Hadži Ruvimova 45, Novi Sad';

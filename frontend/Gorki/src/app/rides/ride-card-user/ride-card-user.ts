@@ -12,8 +12,21 @@ import { Ride, UserHistoryRide } from '../models/ride';
 export class RideCardUser {
   @Input() ride!: UserHistoryRide;
   @Output() moreInfo = new EventEmitter<UserHistoryRide>();
+  @Output() rateRide = new EventEmitter<UserHistoryRide>();
 
   openDetails() {
     this.moreInfo.emit(this.ride);
+  }
+
+  openRatingModal(){
+    this.rateRide.emit(this.ride);
+  }
+
+  canRate(): boolean {
+      const now = new Date();
+      const threeDaysAgo = new Date();
+      threeDaysAgo.setDate(now.getDate() - 3);
+
+      return this.ride.date > threeDaysAgo && !this.ride.canceled && this.ride.rating==0;
   }
 }

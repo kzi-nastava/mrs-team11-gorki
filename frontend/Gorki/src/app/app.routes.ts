@@ -16,7 +16,8 @@ import { TrackRide } from './rides/track-ride/track-ride';
 import { DriverScheduledRideCard } from './rides/driver-scheduled-ride-card/driver-scheduled-ride-card';
 import { DriverScheduledRidesList } from './rides/driver-scheduled-rides-list/driver-scheduled-rides-list';
 import { EndOfRide } from './rides/end-of-ride/end-of-ride';
-
+import { AuthGuard } from './infrastructure/auth.guard';
+import { Login } from './layout/login/login';
 
 export const routes: Routes = [
     {
@@ -89,3 +90,116 @@ export const routes: Routes = [
         component:EndOfRide
     }
 ];
+
+/* OVAKO CE IZGLEDATI APP.ROUTES KADA SE NAPISE SERVIS LOGIKA U JAVI ZA LOGOVANJE
+//JAVNE RUTE, SVI IMAJU PRISTUP
+    {
+        path: '',
+        redirectTo: 'HomePage',
+        pathMatch: 'full'
+    },
+    {
+        path: 'HomePage',
+        component: Home
+    },
+    { 
+        path: 'register', 
+        component: Registration,
+        canActivate: [AuthGuard],
+        data:{role:['ROLE_UNUSER']} 
+    },
+    { 
+        path: 'reset', 
+        component: Reset 
+    },
+    {
+        path:'login',
+        component:Login,
+        canActivate: [AuthGuard],
+        data:{role:['ROLE_UNUSER']}
+    },
+    {   
+        path:'map',
+        component:MapComponent
+    },
+
+    //USER RUTE SVIH REGISTERED USER-A
+    {
+        path: 'personal-info',
+        component: PersonalInfo,
+        canActivate:[AuthGuard],
+        data:{ role : [ 'ROLE_ADMIN' , 'ROLE_DRIVER' , 'ROLE_USER' ] }
+    },
+    {
+        path: 'change-password',
+        component: ChangePassword,
+        canActivate:[AuthGuard],
+        data:{ role : [ 'ROLE_ADMIN' , 'ROLE_DRIVER' , 'ROLE_USER' ] }
+    },
+
+    //DRIVER RUTE
+    {
+        path: 'vehicle-information',
+        component: VehicleInformation,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_DRIVER'] }
+    },
+    {
+        path:'rides-list',
+        component:RidesList,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_DRIVER'] }
+    },
+    {
+        path:'driver-sceduled-rides',
+        component:DriverScheduledRidesList,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_DRIVER'] }
+    },
+    {
+        path:'end-of-ride',
+        component:EndOfRide,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_DRIVER'] }
+    },
+    { // +REGISTERED USER
+        path:'scheduled-rides', 
+        component:ScheduledRides,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_DRIVER' , 'ROLE_USER'] }
+    },
+
+    //REGISTERED USER RUTE    
+    {
+        path:'rides-list-user',
+        component:RidesListUser,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_USER'] }
+    },
+    {
+        path:'ride-in-progress',
+        component:RideInProgress,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_USER'] }
+    },
+    {
+        path:'track-ride',
+        component:TrackRide,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_USER'] }
+    },
+
+    //ADMIN RUTE
+    {
+        path:'panic-notifications',
+        component:PanicNotifications,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_ADMIN'] }
+    },
+    {
+        path:'rides-list-admin',
+        component:RidesListAdmin,
+        canActivate: [AuthGuard],
+        data: { role: ['ROLE_ADMIN'] }
+    }
+*/ 
