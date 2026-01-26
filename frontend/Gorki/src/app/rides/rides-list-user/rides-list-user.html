@@ -22,12 +22,6 @@
   <button class="nav right" (click)="scrollRight()">›</button>
 </div>
 
-<app-ride-details
-  *ngIf="selectedRide"
-  [passengers]="selectedRide.passengers"
-  (close)="closeRideDetails()"
-></app-ride-details>
-
 <app-rating-panel
   *ngIf="showRating"
   (submit)="handleRating($event)"

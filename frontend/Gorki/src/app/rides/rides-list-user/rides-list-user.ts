@@ -10,7 +10,7 @@ import { RatingPanel } from "../rating-panel/rating-panel";
 @Component({
   selector: 'app-rides-list-user',
   standalone: true,
-  imports: [CommonModule, RideCardUser, DateFilter, SortFilter, RideDetails, RatingPanel],
+  imports: [CommonModule, RideCardUser, DateFilter, SortFilter, RatingPanel],
   templateUrl: './rides-list-user.html',
   styleUrl: './rides-list-user.css',
 })
@@ -220,4 +220,6 @@ export class RidesListUser {
           this.selectedRideForRating = null;
       }
     }
+
+
 }
