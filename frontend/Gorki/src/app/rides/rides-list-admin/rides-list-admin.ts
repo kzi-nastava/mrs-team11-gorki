@@ -1,8 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { DateFilter } from '../filters/date-filter/date-filter';
 import { SortFilter } from '../filters/sort-filter/sort-filter';
-import { RideDetails } from "../ride-details/ride-details";
 import { Ride,Passenger, UserHistoryRide } from '../models/ride';
 import { RideCardUser } from '../ride-card-user/ride-card-user';
 import { PersonFilter } from "../filters/person-filter/person-filter";
@@ -10,17 +10,19 @@ import { PersonFilter } from "../filters/person-filter/person-filter";
 @Component({
   selector: 'app-rides-list-admin',
   standalone: true,
-  imports: [CommonModule, RideCardUser, DateFilter, SortFilter, RideDetails, PersonFilter],
+  imports: [CommonModule, RideCardUser, DateFilter, SortFilter, PersonFilter],
   templateUrl: './rides-list-admin.html',
   styleUrl: './rides-list-admin.css',
 })
 export class RidesListAdmin {
   selectedRide: UserHistoryRide | null = null;
+
+  constructor(private router: Router) {}
   @ViewChild('carousel', { static: true })
   carousel!: ElementRef<HTMLDivElement>;
 
   scrollLeft() {
-    this.carousel.nativeElement.scrollBy({
+    this.carousel.nativeElement.scrollBy({  
       left: -300,
       behavior: 'smooth',
     });
@@ -58,7 +60,7 @@ export class RidesListAdmin {
     startTime: '14:00',
     endTime: '14:10',
     startLocation: 'Miše Dimitrijevića 5, Grbavica',
-    destination: 'Bul. Mihaila Pupina 68, Centar',
+    destination: 'Hajduk Veljkova 5, Detelinara',
     price: 10,
     date: new Date(2025, 11, 16),
     canceled: false,
@@ -76,7 +78,7 @@ export class RidesListAdmin {
     startTime: '11:00',
     endTime: '11:08',
     startLocation: 'Bulevar Oslobođenja 189, Liman 2',
-    destination: 'Tolstojeva 34, Centar',
+    destination: 'Tolstojeva 34, Grbavica',
     price: 7,
     date: new Date(2025, 11, 9),
     canceled: true,
@@ -113,8 +115,8 @@ export class RidesListAdmin {
     rating: 1.0,
     startTime: '19:00',
     endTime: '19:15',
-    startLocation: 'Futoški put 29, Bistrica',
-    destination: 'Sremska 9, Stari grad',
+    startLocation: 'Braće Dronjak 22, Bistrica',
+    destination: 'Narodnog fronta 5, Liman 2',
     price: 20,
     date: new Date(2025, 10, 11),
     canceled: false,
@@ -122,7 +124,8 @@ export class RidesListAdmin {
     canceledBy : 'Petar Petrović',
     cancellationReason: 'reason5',
     passengers: [
-      { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' }
+      { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' },
+      { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
     ]
   }
   ];
@@ -134,12 +137,8 @@ export class RidesListAdmin {
     this.allRides=[...this.rides];
   }
 
-  openRideDetails(ride: UserHistoryRide) {
-    this.selectedRide = ride;
-  }
-
-  closeRideDetails() {
-    this.selectedRide = null;
+  openMap(ride: UserHistoryRide) {
+  this.router.navigate(['/ride-list-map', ride.id], { state: { ride } });
   }
 
   sortRides(event: {criteria: string, order: 'asc' | 'desc'}) {
@@ -165,38 +164,37 @@ export class RidesListAdmin {
   }
 
   filterByDate(event: { from: Date | null; to: Date | null }) {
-  const { from, to } = event;
-  this.filteredRides = [...this.allRides]; // reset
+    const { from, to } = event;
+    this.filteredRides = [...this.allRides]; // reset
 
-  if (!from && !to) {
-    return;
+    if (!from && !to) {
+      return;
+    }
+
+    this.filteredRides = this.filteredRides.filter(ride => {
+      const rideDate = new Date(ride.date);
+
+      if (from && to) return rideDate >= from && rideDate <= to;
+      if (from) return rideDate >= from;
+      if (to) return rideDate <= to;
+
+      return true;
+    });
   }
-
-  this.filteredRides = this.filteredRides.filter(ride => {
-    const rideDate = new Date(ride.date);
-
-    if (from && to) return rideDate >= from && rideDate <= to;
-    if (from) return rideDate >= from;
-    if (to) return rideDate <= to;
-
-    return true;
-  });
-}
-
 
   filterByPerson(event: { person: string | null }) {
-  const { person } = event;
+    const { person } = event;
 
-  if (!person) {
-    this.filteredRides = [...this.allRides];
-    return;
+    if (!person) {
+      this.filteredRides = [...this.allRides];
+      return;
+    }
+
+    this.filteredRides = this.allRides.filter(ride =>
+      ride.passengers.some(p =>
+        `${p.firstName} ${p.lastName}`.toLowerCase() === person.toLowerCase()
+      )
+    );
   }
-
-  this.filteredRides = this.allRides.filter(ride =>
-    ride.passengers.some(p =>
-      `${p.firstName} ${p.lastName}`.toLowerCase() === person.toLowerCase()
-    )
-  );
-}
 
 }

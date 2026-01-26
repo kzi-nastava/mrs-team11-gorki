@@ -1,0 +1,43 @@
+.ride-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* MAPA fullscreen */
+app-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+app-ride-card-map {
+  margin-left: 20px;
+}
+
+/* Overlay UI iznad mape */
+.ride-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.back-btn {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  background: #362D88;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  height: 60px;
+  width: 180px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Sofia Sans Condensed';;
+}

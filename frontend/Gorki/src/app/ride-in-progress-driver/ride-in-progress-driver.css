@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  height: 100%;
+}
+.map-wrapper {
+  position: relative;
+  height: 100%;
+}
+.overlay-card {
+  position: absolute;
+  top: 120px;
+  left: 24px;
+  z-index: 1000;
+}

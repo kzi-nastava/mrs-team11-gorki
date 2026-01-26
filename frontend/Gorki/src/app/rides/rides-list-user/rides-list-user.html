@@ -14,7 +14,7 @@
     <app-ride-card-user
       *ngFor="let ride of rides"
       [ride]="ride"
-      (moreInfo)="openRideDetails($event)"
+      (goToMap)="openMap(ride)"
       (rateRide)="openRatingPanel($event)"
     ></app-ride-card-user>
   </div>

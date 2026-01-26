@@ -2,13 +2,7 @@
   <h1>Ride No. {{ ride.id }}</h1>
 
   <div class="rating">
-    ☆☆☆☆☆ <span>{{ ride.rating }}</span>
-      <button
-        class="rateRide"
-        [disabled]="!canRate()"
-        (click)="openRatingModal()">
-        Rate
-      </button>
+    ⭐⭐⭐⭐☆ <span>{{ ride.rating }}</span>
   </div>
 
   <hr />
@@ -47,7 +41,11 @@
     </li>
   </ul>
 
-  <button class="go-to-map" (click)="goToMapClick()">
-    GO TO MAP
+  <button class="ride-details-admin" (click)="showDetails()">
+    MORE INFO
+  </button>
+
+  <button class="order">
+    ORDER
   </button>
 </div>

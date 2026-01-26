@@ -11,11 +11,12 @@ import { Ride, UserHistoryRide } from '../models/ride';
 })
 export class RideCardUser {
   @Input() ride!: UserHistoryRide;
-  @Output() moreInfo = new EventEmitter<UserHistoryRide>();
+  @Output() goToMap = new EventEmitter<number>();
+  //@Output() moreInfo = new EventEmitter<UserHistoryRide>();
   @Output() rateRide = new EventEmitter<UserHistoryRide>();
 
-  openDetails() {
-    this.moreInfo.emit(this.ride);
+  goToMapClick() {
+    this.goToMap.emit(this.ride.id);
   }
 
   openRatingModal(){

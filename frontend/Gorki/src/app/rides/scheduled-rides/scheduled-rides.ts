@@ -144,7 +144,7 @@ export class ScheduledRides {
       if (!this.selectedRideCancellation) return;
 
       if(!this.selectedRideCancellation.canceled && 
-        this.selectedRideCancellation.date.getTime() > Date.now()){
+        this.selectedRideCancellation.date.getTime() - Date.now() > 1000*60*10){
           this.selectedRideCancellation.canceled = true;
           this.selectedRideCancellation.cancelationReason = reason || 'No reason provided';
 
