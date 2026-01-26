@@ -1,0 +1,119 @@
+<form> 
+    <div class="first-step" [ngClass]="{'hidden': firstStep !== true}">
+        <div class="steps-label">
+            <div class="1">1</div>
+            <div class="2">2</div>
+        </div>
+        <div class="steps1">
+            <div class="circle-unfilled">
+                <div class="circle-filled"></div>
+            </div>
+            <div class="line"></div>
+            <div class="circle-unfilled"></div>
+        </div>
+        <div class="registrationData">
+            <div class="sectionsWrapper">
+                <div class="leftSection">
+                    <div class="formElement">
+                        <label class="fieldName" for="firstName">First name</label>
+                    </div>
+                    <div class="formElement">
+                        <input class="inputField" id="firstName" name="firstName">
+                    </div>
+                    <div class="formElement">
+                        <label class="fieldName" for="lastName">Last name</label>
+                    </div>
+                    <div class="formElement">
+                        <input class="inputField" id="lastName" name="lastNameInput">
+                    </div>
+                    <div class="formElement">
+                        <label class="fieldName" for="homeAddress">Home address</label>
+                    </div>
+                    <div class="formElement">
+                        <input class="inputField" id="homeAddress" name="homeAddressInput">
+                    </div>
+                    <div class="formElement">
+                        <label class="fieldName" for="phoneNumber">Phone number</label>
+                    </div>
+                    <div class="formElement">
+                        <input class="inputField" id="phoneNumber" name="phoneNumberInput">
+                    </div>
+                </div>
+                <div class="verticalDivider"></div>
+                <div class="rightSection">
+                    <div class="pictureText">
+                        <label class="fieldName">Choose a picture that others can see (optional):</label>
+                    </div>
+                    <img [src]="imagePreview || '/user-pic-registration.png'" class="userPic" (click)="fileInput.click()"/>
+                    <input type="file" #fileInput accept="image/*" hidden (change)="onImageSelected($event)"/>
+                    <div class="horizontalDivider"></div>
+                    <div class="formElement">
+                        <label id="email-label" class="fieldName" for="email">E-mail</label>
+                    </div>
+                    <div class="formElement">
+                        <input class="inputField" id="email" name="emailInput" #emailInput>
+                    </div>
+                </div>
+            </div>
+            <div class="registerButton" (click)="moveToSecondStep()">Next</div>
+        </div>
+    </div>
+    <div class="second-step" [ngClass]="{'hidden': firstStep !== false}">
+        <div class="steps-label">
+            <div class="1">1</div>
+            <div class="2">2</div>
+        </div>
+        <div class="steps1">
+            <div class="circle-unfilled">
+            </div>
+            <div class="line"></div>
+            <div class="circle-unfilled">
+                <div class="circle-filled"></div>
+            </div>
+        </div>
+        <div class="vehicleInfoForm">
+            <div class="vehicleInfoHeader">
+                Vehicle information
+            </div>
+            <div class="firstDivider"></div>
+            <div class="formWrapper">
+                <div class="formContentLeft">
+                    <label class="labels">Model</label>
+                    <input class="inputs" type="text" value="Ford Focus">
+                    <label class="labels" id="licensePlate">License plate</label>
+                    <input class="inputs" type="text" value="NS-523-SV">
+                    <label class="labels">Number of seats</label>
+                    <input class="inputs" type="text" value="5">
+                </div>
+                <div class="secondDivider"></div>
+                <div class="formContentRight">
+                    <label class="labels">Type</label>
+                    <mat-form-field>
+                        <mat-label>Select an option</mat-label>
+                        <mat-select value="standard">
+                            <mat-option>None</mat-option>
+                            <mat-option value="standard">Standard</mat-option>
+                            <mat-option value="luxury">Luxury</mat-option>
+                            <mat-option value="van">Van</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <label class="labels">Baby transport available</label>
+                    <mat-radio-group aria-label="Select an option" class="radio" value="1">
+                        <mat-radio-button value="1">Yes</mat-radio-button>
+                        <mat-radio-button value="2">No</mat-radio-button>
+                    </mat-radio-group>
+                    <label class="labels">Pet friendly</label>
+                    <mat-radio-group aria-label="Select an option" class="radio" value="2">
+                        <mat-radio-button value="1">Yes</mat-radio-button>
+                        <mat-radio-button value="2">No</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                
+            </div>
+            <div class="formButtons">
+                <button class="saveChanges">Register</button>
+                <button class="revertChanges" type="button" (click)="backToFirstStep()">Back</button>
+            </div>
+        </div>
+    </div>
+</form>

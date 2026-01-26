@@ -1,0 +1,18 @@
+<div class="ride-page">
+  <app-map></app-map>
+
+  <div class="ride-overlay" *ngIf="rideToShow">
+    <app-ride-card-map
+      [ride]="rideToShow"
+      (openRideDetails)="openRideDetails($event)"
+    ></app-ride-card-map>
+    
+    <button class="back-btn" (click)="goBack()">BACK TO HISTORY</button>
+  </div>
+</div>
+
+<app-ride-details-admin
+  *ngIf="showRideDetails"
+  [passengers]="rideToShow.passengers"
+  (close)="closeRideDetails()"
+></app-ride-details-admin>

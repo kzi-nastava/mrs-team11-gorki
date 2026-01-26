@@ -8,19 +8,39 @@
     <div class="leftItems">
         <div class="logo">021Ride</div>
         @if(isRegistrationOpen && !isLoggedIn){
-            <div class="home"><a (click)="closeRegistration()" routerLink="/">Home</a></div>
+            <div class="home"><a (click)="closeRegistration()" routerLink="HomePage">Home</a></div>
         }
         @if(isLoggedIn){
-            <div class="home"><a routerLink="/">Home</a></div>
+            <div class="home"><a routerLink="HomePage">Home</a></div>
             <div class="profile" [matMenuTriggerFor]="menu">Profile▾</div>
             <mat-menu #menu="matMenu" id="profileMenu">
                 <button mat-menu-item id="menuItem"><a routerLink="personal-info">Personal information</a></button>
                 <button mat-menu-item id="menuItem"><a routerLink="change-password">Change Password</a></button>
-                @if(role == "driver"){
+                @if(role == "driver"){ 
                     <button mat-menu-item id="menuItem"><a routerLink="vehicle-information">Vehicle information</a></button>
-                    <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history</a></button>
+                    <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history (Driver)</a></button>
+                }
+                @if(role == "admin"){
+                    <button mat-menu-item id="menuItem"><a routerLink="panic-notifications">Panic notifications</a></button>
+                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>                    
+                    <button mat-menu-item id="menuItem"><a routerLink="rides-list-admin">Ride history (Admin)</a></button>
+                }
+                @if(role=="user"){
+                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
+                    <button mat-menu-item id="menuItem"><a routerLink="rides-list-user">Ride history (User)</a></button>
                 }
             </mat-menu>
+            @if(role == "user"){
+                <div class="currentRide"><a routerLink="ride-in-progress">Track ride</a></div>
+            }
+            @if(role=="driver"){
+                <div class="profile" [matMenuTriggerFor]="menu">Rides▾</div>
+                <mat-menu #menu="matMenu" id="rideMenu">
+                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
+                    <button mat-menu-item id="menuItem"><a routerLink="end-of-ride">End ride</a></button>
+                </mat-menu>
+                <div class="currentRide"><a routerLink="ride-in-progress-driver">Track ride</a></div>
+            }
         }
     </div>
     <div class="rightItems">
@@ -34,7 +54,7 @@
                 </mat-button-toggle-group>
                 <div class="divider"></div>
             }   
-            <button class="logout" (click)="logout()"><a routerLink="/">Logout</a></button>
+            <button class="logout" (click)="logout()"><a routerLink="HomePage">Logout</a></button>
         } @else if (isRegistrationOpen) {
             <p class="hasAcc">Already have an account?</p>
             <button class="login" (click)="openLogin()">Login</button>
