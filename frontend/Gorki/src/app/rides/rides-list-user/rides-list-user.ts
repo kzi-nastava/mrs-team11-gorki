@@ -5,11 +5,12 @@ import { DateFilter } from '../filters/date-filter/date-filter';
 import { SortFilter } from '../filters/sort-filter/sort-filter';
 import { Ride,Passenger, UserHistoryRide } from '../models/ride';
 import { RideCardUser } from '../ride-card-user/ride-card-user';
+import { RatingPanel } from "../rating-panel/rating-panel";
 
 @Component({
   selector: 'app-rides-list-user',
   standalone: true,
-  imports: [CommonModule, RideCardUser, DateFilter, SortFilter],
+  imports: [CommonModule, RideCardUser, DateFilter, SortFilter, RideDetails, RatingPanel],
   templateUrl: './rides-list-user.html',
   styleUrl: './rides-list-user.css',
 })
@@ -37,13 +38,13 @@ export class RidesListUser {
   rides:UserHistoryRide[] = [
     {
     id: 1,
-    rating: 4.5,
+    rating: 0,
     startTime: '17:05',
     endTime: '17:20',
     startLocation: 'Miše Dimitrijevića 5, Grbavica',
     destination: 'Jerneja Kopitara 32, Telep',
     price: 15,
-    date: new Date(2025, 11, 16),
+    date: new Date(2026, 1, 25),
     canceled: false,
     panic: false,
     canceledBy : 'None',
@@ -191,4 +192,32 @@ export class RidesListUser {
       return true;
     });
   }
+
+    selectedRideForRating: UserHistoryRide | null = null;
+    showRating = false;
+    openRatingPanel(ride: UserHistoryRide) {
+      this.selectedRideForRating = ride;
+      this.showRating = true;
+    } 
+
+    handleRating(event: {
+      driverRating: number;
+      vehicleRating: number;
+      comment: string;
+    }) {
+      if (!this.selectedRideForRating) return;
+
+      // primer: prosek ili samo driver rating
+      const now = Date.now();
+      const threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
+
+      if (this.selectedRideForRating.date.getTime() > now - threeDaysInMs) {
+        // ovde kasnije ide backend call
+        // this.rideService.rateRide(...)
+          this.selectedRideForRating.rating =
+          (event.driverRating + event.vehicleRating) / 2;
+          this.showRating = false;
+          this.selectedRideForRating = null;
+      }
+    }
 }

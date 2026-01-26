@@ -12,11 +12,24 @@
 
   <div class="ride-list" #carousel>
     <app-ride-card-user
-    *ngFor="let ride of rides"
-    [ride]="ride"
-    (goToMap)="openMap(ride)"
-  ></app-ride-card-user>
+      *ngFor="let ride of rides"
+      [ride]="ride"
+      (goToMap)="openMap(ride)"
+      (rateRide)="openRatingPanel($event)"
+    ></app-ride-card-user>
   </div>
 
   <button class="nav right" (click)="scrollRight()">›</button>
 </div>
+
+<app-ride-details
+  *ngIf="selectedRide"
+  [passengers]="selectedRide.passengers"
+  (close)="closeRideDetails()"
+></app-ride-details>
+
+<app-rating-panel
+  *ngIf="showRating"
+  (submit)="handleRating($event)"
+  (close)="showRating = false">
+</app-rating-panel>

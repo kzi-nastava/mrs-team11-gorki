@@ -63,7 +63,6 @@ export class MapService {
   showCarAnimation(){
       if (!this.mapComponent || !this.lastRoutePoints) return;
       this.mapComponent.animateDriver(this.lastRoutePoints);
-      console.log("sta je sa mnom?");
   }
 
   clearRoute() {
