@@ -16,12 +16,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
 @RestController
 @RequestMapping("/api/passengers")
 public class PassengerController {
+	
+    private final RideService rideService;
+
+    public PassengerController(RideService rideService) {
+        this.rideService = rideService;
+    }
 	
 	@GetMapping(value = "/{id}/favourite-routes", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<GetRouteDTO>> getFavouriteRoutes(@PathVariable("id") Long id) {
@@ -82,4 +90,10 @@ public class PassengerController {
 	public ResponseEntity<?> deleteFavouriteRoute(@PathVariable("id") Long id, @PathVariable("routeId") Long routeId) {
 	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping("/{id}/ride/active")
+    public ResponseEntity<DriverRideHistoryDTO> getActiveRide(@PathVariable Long id) {
+        return ResponseEntity.ok(rideService.getActiveRideForPassenger(id));
+    }
+	
 }

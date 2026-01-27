@@ -25,7 +25,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.PriceConfig;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
-
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.InconsistencyReportService;
 
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
@@ -46,6 +46,12 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 @RestController
 @RequestMapping("/api/rides")
 public class RideController {
+	
+	private final InconsistencyReportService inconsistencyReportService;
+	public RideController(InconsistencyReportService inconsistencyReportService)
+	{
+		this.inconsistencyReportService=inconsistencyReportService;
+	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreatedRideDTO> createRide(@RequestBody CreateRideDTO requestRide){
@@ -292,18 +298,15 @@ public class RideController {
     }
 	
 	@PostMapping(
-		    value = "/{id}/inconsistencies",
-		    consumes = MediaType.APPLICATION_JSON_VALUE,
-		    produces = MediaType.APPLICATION_JSON_VALUE
-		)
-		public ResponseEntity<CreatedInconsistencyReportDTO> reportInconsistency(
-		        @PathVariable Long id,
-		        @RequestBody CreateInconsistencyReportDTO dto) {
+	        value = "/{rideId}/inconsistencies",
+	        consumes = MediaType.APPLICATION_JSON_VALUE,
+	        produces = MediaType.APPLICATION_JSON_VALUE
+	)
+	public ResponseEntity<CreatedInconsistencyReportDTO> reportInconsistency(
+	        @PathVariable Long rideId,
+	        @RequestBody CreateInconsistencyReportDTO dto) {
 
-		    CreatedInconsistencyReportDTO response = new CreatedInconsistencyReportDTO();
-		    response.setInconsistencyReportId(1L);
-		    response.setDescription(dto.getDescription());
-
-		    return new ResponseEntity<>(response, HttpStatus.CREATED);
-		}
+	    CreatedInconsistencyReportDTO response = inconsistencyReportService.createReport(rideId, dto);
+	    return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
 }

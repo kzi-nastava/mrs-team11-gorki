@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class IncosistencyReport {
+public class InconsistencyReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -26,9 +26,9 @@ public class IncosistencyReport {
 	@JoinColumn(name = "ride_id")
 	private Ride ride;
 	
-	public IncosistencyReport() {
+	public InconsistencyReport() {
 	}
-	public IncosistencyReport(Long id, String description, LocalDateTime timeStamp, Passenger passenger, Ride ride) {
+	public InconsistencyReport(Long id, String description, LocalDateTime timeStamp, Passenger passenger, Ride ride) {
 		this.id = id;
 		this.description = description;
 		this.timeStamp = timeStamp;
