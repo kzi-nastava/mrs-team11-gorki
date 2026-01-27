@@ -1,11 +1,22 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 
+@Entity
 public class Driver extends User {
 	
-	private Vehicle vehicle;
-	private DriverStatus status;
+	@OneToOne
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+
+    @Enumerated(EnumType.STRING)
+    private DriverStatus status;
+    
 	private double activityLast24h;
 	
 	public Driver() {

@@ -2,11 +2,27 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 
 import java.util.List;
 
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Chat {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private List<Message>messages;
-	private Passenger passenger;
-	private Admin admin;
+    
+    @ElementCollection
+    private List<Message> messages;
+
+    @ManyToOne
+    private Passenger passenger;
+
+    @ManyToOne
+    private Admin admin;
 	
 	public Chat() {
 	}
