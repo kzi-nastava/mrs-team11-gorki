@@ -22,6 +22,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdateVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,6 +42,11 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 @RequestMapping("/api/drivers")
 public class DriverController {
 	
+	//RideService
+    private final RideService rideService;
+    public DriverController(RideService rideService) {
+        this.rideService = rideService;
+    }
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreatedDriverDTO> createDriver(@RequestBody CreateDriverDTO requestDriver){
 		CreatedDriverDTO responseDriver = new CreatedDriverDTO();
@@ -107,39 +114,8 @@ public class DriverController {
 	        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	        LocalDate to) {
 
-	    Collection<DriverRideHistoryDTO> rides = new ArrayList<>();
-
-	    // ---- PUTNICI ZA PRVU VOZNJU ----
-	    List<PassengerInRideDTO> passengers1 = new ArrayList<>();
-	    PassengerInRideDTO p1 = new PassengerInRideDTO();
-	    p1.setEmail("petar.petrovic@gmail.com");
-	    p1.setFirstName("Petar");
-	    p1.setLastName("Petrovic");
-	    p1.setPhoneNumber("+38164859612");
-	    PassengerInRideDTO p2 = new PassengerInRideDTO();
-	    p2.setEmail("ana.anic@gmail.com");
-	    p2.setFirstName("Ana");
-	    p2.setLastName("Anic");
-	    p2.setPhoneNumber("+38160456728");
-	    passengers1.add(p1);
-	    passengers1.add(p2);
-	    List<Location> locations = new ArrayList<>();
-	    locations.add(new Location(45.2671, 19.8335, "Trg slobode 1, Novi Sad"));
-	    locations.add(new Location(45.2567, 19.8452, "Bulevar oslobođenja 45, Novi Sad"));
-	    
-	    // ---- PRVA VOZNJA ----
-	    DriverRideHistoryDTO ride1 = new DriverRideHistoryDTO();
-	    ride1.setRideId(1L);
-	    ride1.setStartingTime(LocalDateTime.of(2025, 1, 10, 14, 30));
-	    ride1.setEndingTime(LocalDateTime.of(2025, 1, 10, 15, 0));
-	    ride1.setRoute(new Route(1L,locations,3.7,LocalDateTime.of(2025, 1, 10, 14, 55)));
-	    ride1.setCanceled(false);
-	    ride1.setCanceledBy(null);
-	    ride1.setPrice(850.00);
-	    ride1.setPanicActivated(false);
-	    ride1.setPassengers(passengers1);
-
-	    rides.add(ride1);
-	    return new ResponseEntity<>(rides, HttpStatus.OK);
+		 return ResponseEntity.ok(
+		            rideService.getDriverRideHistory(driverId, from, to)
+		    );
 	}
 }

@@ -10,7 +10,7 @@ public class DriverRideHistoryDTO {
 	private Long rideId;
     private LocalDateTime startingTime;
     private LocalDateTime endingTime;
-    private Route route;
+    private GetRouteDTO route;
     private boolean canceled;
     private String canceledBy; 
     private double price;
@@ -38,10 +38,10 @@ public class DriverRideHistoryDTO {
 	public void setEndingTime(LocalDateTime endingTime) {
 		this.endingTime = endingTime;
 	}
-	public Route getRoute() {
+	public GetRouteDTO getRoute() {
 		return route;
 	}
-	public void setRoute(Route route) {
+	public void setRoute(GetRouteDTO route) {
 		this.route = route;
 	}
 	public boolean isCanceled() {

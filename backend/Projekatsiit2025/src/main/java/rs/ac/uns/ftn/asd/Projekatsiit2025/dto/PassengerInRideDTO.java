@@ -10,6 +10,13 @@ public class PassengerInRideDTO {
 	 	private String firstName;
 	 	private String lastName;
 	 	private String phoneNumber;
+		public PassengerInRideDTO(String email, String firstName, String lastName, String phoneNumber) {
+			super();
+			this.email = email;
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.phoneNumber = phoneNumber;
+		}
 		public PassengerInRideDTO() {
 			super();
 		}
