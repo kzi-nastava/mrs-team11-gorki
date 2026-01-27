@@ -31,6 +31,5 @@ public class Projekatsiit2025Application {
 		System.out.println("==========================");
 		System.out.println("    STARTED SUCESSFULLY   ");
 		System.out.println("==========================\n");
-		
 	}
 }
