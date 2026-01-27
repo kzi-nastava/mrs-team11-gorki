@@ -34,7 +34,14 @@ public class Ride {
 	private Boolean panicActivated;
 	private String cancellationReason;
 	private String cancelledBy;
+	private Boolean paid;
 	
+	public Boolean getPaid() {
+		return paid;
+	}
+	public void setPaid(Boolean paid) {
+		this.paid = paid;
+	}
 	@ManyToOne
 	@JoinColumn(name = "driver_id")
 	private Driver driver;
