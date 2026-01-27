@@ -11,14 +11,14 @@ public class GetVehicleDTO {
 	private int seats;
 	private Boolean babyTransport;
 	private Boolean petFriendly;
-  private Location currentLocation;
+    private LocationDTO currentLocation;
 	
 	public GetVehicleDTO() {
 		super();
 	}
 	
 	public GetVehicleDTO(Long id, String model, VehicleType type, String plateNumber, int seats, Boolean babyTransport,
-			Boolean petFriendly, Location currentLocation) {
+			Boolean petFriendly, LocationDTO currentLocation) {
 		super();
 		this.id = id;
 		this.model = model;
@@ -72,10 +72,10 @@ public class GetVehicleDTO {
 	public void setPetFriendly(Boolean petFriendly) {
 		this.petFriendly = petFriendly;
 	}
-  public Location getCurrentLocation() {
+  public LocationDTO getCurrentLocation() {
     return currentLocation;
   }
-  public void setCurrentLocation(Location currentLocation) {
+  public void setCurrentLocation(LocationDTO currentLocation) {
     this.currentLocation = currentLocation;
   }
 }
