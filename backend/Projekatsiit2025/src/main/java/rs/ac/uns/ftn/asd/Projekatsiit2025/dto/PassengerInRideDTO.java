@@ -1,9 +1,5 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto;
 
-import java.util.List;
-
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Passenger;
-
 public class PassengerInRideDTO {
 	
 	 	private String email;
