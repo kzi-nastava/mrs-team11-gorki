@@ -78,7 +78,7 @@ public class RideService {
         	    route.getId(),
         	    route.getLocations().stream()
         	         .map((rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location loc) -> 
-        	             new LocationDTO(loc.getLatitude(), loc.getLongitude(),"Neka adresa"))
+        	             new LocationDTO(loc.getLatitude(), loc.getLongitude(),loc.getAddress()))
         	         .toList(),
         	    route.getDistance(),
         	    route.getEstimatedTime()
