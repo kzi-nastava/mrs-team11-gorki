@@ -15,6 +15,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishedRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.PassengerInRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Ride;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
@@ -139,5 +140,31 @@ public class RideService {
 
         return response;
     }
+
+    @Transactional
+    public RideCancelRequestDTO cancelRide(
+            Long rideId,
+            String cancellationReason,
+            String cancelledBy) {
+
+        Ride ride = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RuntimeException("Ride not found"));
+
+        ride.setStatus(RideStatus.CANCELED);
+        ride.setCancellationReason(cancellationReason);
+        ride.setCancelledBy(cancelledBy);
+
+        rideRepository.save(ride);
+
+        RideCancelRequestDTO dto = new RideCancelRequestDTO();
+        dto.setRideId(ride.getId());          // ✅ OVDE
+        dto.setRideStatus(RideStatus.CANCELED);
+        dto.setCancellationReason(cancellationReason);
+        dto.setCancelledBy(cancelledBy);
+
+        return dto;
+    }
+
+
 
 }

@@ -28,4 +28,5 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 
     // sledeca zakazana voznja
     Ride findFirstByDriver_IdAndStatusOrderByScheduledTimeAsc(Long driverId, RideStatus status);
+
 }

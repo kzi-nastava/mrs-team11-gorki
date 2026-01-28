@@ -27,8 +27,15 @@ export class Login {
     this.isResetSent = true;
   }
 
-  login(){
-
+  login(email: string, password: string) {
+    if(!email) {
+      alert("Please enter your email address to login.");
+      return;
+    }
+    if(!password) {
+      alert("Please enter your password to login.");
+      return;
+    }
     //kada napises back, ovde izmene za login sa JWT
     this.loggedIn.emit();
     this.close.emit();
