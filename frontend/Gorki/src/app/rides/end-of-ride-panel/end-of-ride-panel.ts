@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { DriverScheduledRide } from '../models/ride';
-
+import { FinishRideDto } from '../../model/ui/finish-ride-dto'; 
+import { EndRideService } from '../../service/end-ride-service';
 @Component({
   selector: 'app-end-of-ride-panel',
   imports: [FormsModule,CommonModule],
@@ -12,30 +13,46 @@ import { DriverScheduledRide } from '../models/ride';
 })
 export class EndOfRidePanel {
 
-isModalOpen = false;
+  isModalOpen = false;
 
-  constructor (private router:Router){};
-  // privremeni "mock" niz
-  // []  -> nema nove voznje
-  // [{}] -> postoji nova voznja
-  newRides: DriverScheduledRide[] = [
-    {
-      id: 1,
-      rating: 0,
-      startTime: '17:05',
-      startLocation: 'Miše Dimitrijevića 5, Grbavica',
-      destination: 'Jerneja Kopitara 32, Telep',
-      price: 15,
-      date: new Date(2026, 0, 16),
-      canceled: false,
-      cancelationReason: 'None',
-      panic: false,
-      passengers: [
-        { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' },
-        { email: 'ana@example.com', firstName: 'Ana', lastName: 'Anić', phoneNumber: '0612345678' }
-        ]
-    }
-  ];
+  constructor(
+    private router: Router,
+    private rideService: EndRideService
+  ) {}
+
+  newRides: DriverScheduledRide[] = [];
+  loadNextRide(driverId: number) {
+    this.rideService.getNextScheduledRide(driverId).subscribe({
+      next: ride => {
+        this.newRides = [ride]; // ubaci u modal
+        this.openModal();
+      },
+      error: err => console.error(err)
+    });
+  }
+
+  endRide() {
+    const driverId = 1;
+    const rideId = 6; 
+    const payload: FinishRideDto = {
+      rideId: rideId,
+      paid: true
+    };
+
+    this.rideService.finishRide(driverId, payload).subscribe({
+      next: (res) => {
+        console.log('Ride finished', res);
+
+        if (res.hasNextScheduledRide) {
+          this.loadNextRide(driverId);
+        } else {
+          this.newRides = [];
+          this.openModal();
+        }
+      },
+      error: err => console.error(err)
+    });
+  } 
 
   showMoreInfo(){
 
@@ -46,10 +63,6 @@ isModalOpen = false;
 
   closeModal() {
     this.isModalOpen = false;
-  }
-
-  endRide() {
-    this.openModal();
   }
 
   startRide() {

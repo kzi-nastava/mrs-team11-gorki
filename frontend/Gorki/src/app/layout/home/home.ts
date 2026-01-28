@@ -21,7 +21,7 @@ import { RideStart } from '../../ride-start/ride-start';
   styleUrls: ['./home.css']
 })
 export class Home implements OnInit {
-  role: string = "user";
+  role: string = "unuser";
   constructor(public auth: AuthService,private mapService: MapService) {}
 
   ngOnInit(){

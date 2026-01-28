@@ -1,8 +1,8 @@
 :host {
   position: absolute;  /* ovo pozicionira celu komponentu apsolutno unutar roditelja */
-  top: 120px;          /* koliko odozgo da stoji */
+  top: 75px;          /* koliko odozgo da stoji */
   left: 24px;    
-  height: 100%;      /* koliko sa leve strane */
+  height: 795px;      /* koliko sa leve strane */
   z-index: 1000;       /* iznad mape */
   display: block;
 }
