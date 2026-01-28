@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 
 @Entity
@@ -34,12 +34,19 @@ public class Ride {
 	private Boolean panicActivated;
 	private String cancellationReason;
 	private String cancelledBy;
+	private Boolean paid;
 	
-	@ManyToOne
+	public Boolean getPaid() {
+		return paid;
+	}
+	public void setPaid(Boolean paid) {
+		this.paid = paid;
+	}
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "driver_id")
 	private Driver driver;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "route_id")
 	private Route route;
 	

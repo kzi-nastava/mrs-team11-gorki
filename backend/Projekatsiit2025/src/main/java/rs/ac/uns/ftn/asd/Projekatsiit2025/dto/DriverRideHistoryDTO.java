@@ -3,8 +3,6 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
-
 public class DriverRideHistoryDTO {
 	
 	private Long rideId;
