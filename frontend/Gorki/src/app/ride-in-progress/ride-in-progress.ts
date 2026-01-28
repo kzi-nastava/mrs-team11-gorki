@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MapComponent } from "../map/map";
 import { TrackRide } from '../rides/track-ride/track-ride';
 import { MapService } from '../map/map-service';
+import { RideInProgressService } from '../service/passenger-ride-in-progress';
 
 @Component({
   selector: 'app-ride-in-progress',
@@ -12,21 +13,41 @@ import { MapService } from '../map/map-service';
 })
 export class RideInProgress implements OnInit {
 
-  constructor(private mapService: MapService) {}
+  pickupAddress: string = '';
+  dropoffAddress: string = '';
+
+  constructor(
+    private mapService: MapService,
+    private rideService: RideInProgressService
+  ) {}
 
   async ngOnInit() {
     this.mapService.clearAll();
 
-    const pickupAddress = 'Futoška 13a, Novi Sad';
-    const dropoffAddress = 'Hadži Ruvimova 45, Novi Sad';
+    // Dohvati voznju u toku za putnika (primer id = 2)
+    this.rideService.getActiveRideAddresses(2).subscribe({
+      next: async ({ pickup, dropoff }) => {
+        this.pickupAddress = pickup;
+        this.dropoffAddress = dropoff;
 
-    const pickupCoords = await this.geocode(pickupAddress);
-    const dropoffCoords = await this.geocode(dropoffAddress);
+        const pickupTextEl = document.getElementById('PickupText');
+        const dropoffTextEl = document.getElementById('DropoffText');
 
-    await this.mapService.showSnappedRoute(pickupCoords, dropoffCoords);
+        if (pickupTextEl) pickupTextEl.textContent = pickup;
+        if (dropoffTextEl) dropoffTextEl.textContent = dropoff;
+        
 
-    // 🔥 NEMA ARGUMENATA
-    this.mapService.showCarAnimation()
+        const pickupCoords = await this.geocode(pickup);
+        const dropoffCoords = await this.geocode(dropoff);
+
+        await this.mapService.showSnappedRoute(pickupCoords, dropoffCoords);
+
+        this.mapService.showCarAnimation();
+      },
+      error: err => {
+        console.error('Ne mogu da dohvatim aktivnu voznju', err);
+      }
+    });
   }
 
   async geocode(address: string): Promise<[number, number]> {

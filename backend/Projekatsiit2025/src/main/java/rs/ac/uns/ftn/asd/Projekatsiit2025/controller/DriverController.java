@@ -27,6 +27,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishedRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.PassengerInRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 
 @RestController
 @RequestMapping("/api/drivers")
@@ -41,6 +45,7 @@ public class DriverController {
         this.driverService = driverService;
         this.vehicleService = vehicleService;
     }
+    
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreatedDriverDTO> createDriver(@RequestBody CreateDriverDTO requestDriver){
 		CreatedDriverDTO responseDriver = driverService.createDriver(requestDriver);
@@ -83,4 +88,15 @@ public class DriverController {
 		            rideService.getDriverRideHistory(driverId, from, to)
 		    );
 	}
+
+	@PutMapping("/{driverId}/rides/finish")
+    public ResponseEntity<FinishedRideDTO> finishRide(
+            @PathVariable Long driverId,
+            @RequestBody FinishRideDTO dto) {
+
+        FinishedRideDTO response = rideService.finishRide(driverId, dto);
+        return ResponseEntity.ok(response);
+    }
+	
+
 }

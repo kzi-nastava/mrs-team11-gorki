@@ -6,25 +6,25 @@
                     <label class="fieldName" for="firstName">First name</label>
                 </div>
                 <div class="formElement">
-                    <input class="inputField" id="firstName" name="firstName">
+                    <input class="inputField" id="firstName" name="firstNameInput" #firstNameInput required="true">
                 </div>
                 <div class="formElement">
                     <label class="fieldName" for="lastName">Last name</label>
                 </div>
                 <div class="formElement">
-                    <input class="inputField" id="lastName" name="lastNameInput">
+                    <input class="inputField" id="lastName" name="lastNameInput" #lastNameInput required="true">
                 </div>
                 <div class="formElement">
                     <label class="fieldName" for="homeAddress">Home address</label>
                 </div>
                 <div class="formElement">
-                    <input class="inputField" id="homeAddress" name="homeAddressInput">
+                    <input class="inputField" id="homeAddress" name="homeAddressInput" #homeAddressInput required="true">
                 </div>
                 <div class="formElement">
                     <label class="fieldName" for="phoneNumber">Phone number</label>
                 </div>
                 <div class="formElement">
-                    <input class="inputField" id="phoneNumber" name="phoneNumberInput">
+                    <input class="inputField" id="phoneNumber" name="phoneNumberInput" #phoneNumberInput required="true" type="tel">
                 </div>
             </div>
             <div class="verticalDivider"></div>
@@ -42,23 +42,23 @@
                     <label class="fieldName" for="email">E-mail</label>
                 </div>
                 <div class="formElement">
-                    <input class="inputField" id="email" name="emailInput" #emailInput>
+                    <input class="inputField" id="email" name="emailInput" #emailInput required="true" type="email">
                 </div>
                 <div class="formElement">
                     <label class="fieldName" for="password">Password</label>
                 </div>
                 <div class="formElement">
-                    <input class="inputField" id="password" name="passwordInput">
+                    <input class="inputField" id="password" name="passwordInput" #passwordInput required="true" type="password">
                 </div>
                 <div class="formElement">
                     <label class="fieldName" for="confirmPassword">Confirm password</label>
                 </div>
                 <div class="formElement">
-                    <input class="inputField" id="confirmPassword" name="confirmPasswordInput">
+                    <input class="inputField" id="confirmPassword" name="confirmPasswordInput" #confirmPasswordInput required="true" type="password">
                 </div>
             </div>
         </div>
-        <div class="registerButton" (click)="register(emailInput.value)">Register</div>
+        <div class="registerButton" (click)="register(emailInput.value, firstNameInput.value, lastNameInput.value, homeAddressInput.value, phoneNumberInput.value, passwordInput.value, confirmPasswordInput.value)">Register</div>
     </div>
     @if (isConfirmationSent) {
         <div class="registerConfirmationText">
