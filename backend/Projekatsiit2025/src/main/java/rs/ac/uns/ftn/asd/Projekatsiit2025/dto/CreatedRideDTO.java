@@ -11,10 +11,6 @@ public class CreatedRideDTO {
 	private RideStatus status;
 	private double price;
 	private LocalDateTime scheduledTime;
-	private LocalDateTime startingTime;
-	private LocalDateTime endingTime;
-	private Boolean panicActivated;
-	private String cancellationReason;
 	private GetDriverDTO driver;
 	private CreatedRouteDTO route;
 	private PriceConfig priceConfig;
@@ -24,7 +20,6 @@ public class CreatedRideDTO {
 		super();
 	}
 	public CreatedRideDTO(Long id, RideStatus status, double price, LocalDateTime scheduledTime,
-			LocalDateTime startingTime, LocalDateTime endingTime, Boolean panicActivated, String cancellationReason,
 			GetDriverDTO driver, CreatedRouteDTO route, PriceConfig priceConfig, List<GetPassengerDTO> linkedPassengers,
 			GetPassengerDTO creator) {
 		super();
@@ -32,10 +27,6 @@ public class CreatedRideDTO {
 		this.status = status;
 		this.price = price;
 		this.scheduledTime = scheduledTime;
-		this.startingTime = startingTime;
-		this.endingTime = endingTime;
-		this.panicActivated = panicActivated;
-		this.cancellationReason = cancellationReason;
 		this.driver = driver;
 		this.route = route;
 		this.priceConfig = priceConfig;
@@ -65,30 +56,6 @@ public class CreatedRideDTO {
 	}
 	public void setScheduledTime(LocalDateTime scheduledTime) {
 		this.scheduledTime = scheduledTime;
-	}
-	public LocalDateTime getStartingTime() {
-		return startingTime;
-	}
-	public void setStartingTime(LocalDateTime startingTime) {
-		this.startingTime = startingTime;
-	}
-	public LocalDateTime getEndingTime() {
-		return endingTime;
-	}
-	public void setEndingTime(LocalDateTime endingTime) {
-		this.endingTime = endingTime;
-	}
-	public Boolean getPanicActivated() {
-		return panicActivated;
-	}
-	public void setPanicActivated(Boolean panicActivated) {
-		this.panicActivated = panicActivated;
-	}
-	public String getCancellationReason() {
-		return cancellationReason;
-	}
-	public void setCancellationReason(String cancellationReason) {
-		this.cancellationReason = cancellationReason;
 	}
 	public GetDriverDTO getDriver() {
 		return driver;

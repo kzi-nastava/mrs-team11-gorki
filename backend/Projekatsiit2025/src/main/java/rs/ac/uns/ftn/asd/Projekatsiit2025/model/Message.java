@@ -3,7 +3,7 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
+
 @Embeddable
 public class Message {
 	private String sender;
