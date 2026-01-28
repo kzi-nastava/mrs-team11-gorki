@@ -6,6 +6,7 @@ import { SortFilter } from '../filters/sort-filter/sort-filter';
 import { Ride,Passenger, UserHistoryRide } from '../models/ride';
 import { RideCardUser } from '../ride-card-user/ride-card-user';
 import { RatingPanel } from "../rating-panel/rating-panel";
+import { RatingService } from '../../service/rating-service';
 
 @Component({
   selector: 'app-rides-list-user',
@@ -19,7 +20,7 @@ export class RidesListUser {
   @ViewChild('carousel', { static: true })
   carousel!: ElementRef<HTMLDivElement>;
   
-  constructor(private router: Router) {}
+  constructor(private router: Router, private ratingService: RatingService) {}
 
   scrollLeft() {
     this.carousel.nativeElement.scrollBy({
@@ -200,26 +201,33 @@ export class RidesListUser {
       this.showRating = true;
     } 
 
-    handleRating(event: {
-      driverRating: number;
-      vehicleRating: number;
-      comment: string;
-    }) {
-      if (!this.selectedRideForRating) return;
+  handleRating(event: {
+    driverRating: number;
+    vehicleRating: number;
+    comment: string;
+  }) {
+    if (!this.selectedRideForRating) return;
 
-      // primer: prosek ili samo driver rating
-      const now = Date.now();
-      const threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
+    const rideId = this.selectedRideForRating.id;
 
-      if (this.selectedRideForRating.date.getTime() > now - threeDaysInMs) {
-        // ovde kasnije ide backend call
-        // this.rideService.rateRide(...)
-          this.selectedRideForRating.rating =
+    this.ratingService.rateRide(rideId, {
+      driverRating: event.driverRating,
+      vehicleRating: event.vehicleRating,
+      comment: event.comment
+    }).subscribe({
+      next: (res) => {
+        this.selectedRideForRating!.rating =
           (event.driverRating + event.vehicleRating) / 2;
-          this.showRating = false;
-          this.selectedRideForRating = null;
+
+        this.showRating = false;
+        this.selectedRideForRating = null;
+      },
+      error: (err) => {
+        console.error("Greska pri ocenjivanju", err);
+        alert("Rating nije uspeo");
       }
-    }
+    });
+  }
 
 
 }

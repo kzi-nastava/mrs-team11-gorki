@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,7 +11,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 @Entity
 public class Driver extends User {
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 

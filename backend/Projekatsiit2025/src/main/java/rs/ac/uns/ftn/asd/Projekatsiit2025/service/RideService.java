@@ -16,6 +16,8 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetPassengerDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishedRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
@@ -23,6 +25,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.PassengerInRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Passenger;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Ride;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
@@ -59,10 +62,14 @@ public class RideService {
                 ? to.atTime(23, 59, 59)
                 : LocalDate.of(2100, 1, 1).atStartOfDay();  // SAFE MAX
 
-        List<Ride> rides = rideRepository
-                .findByDriverIdAndStartingTimeBetween(driverId, fromDateTime, toDateTime);
+        List<Ride> rides = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
+                driverId,
+                RideStatus.FINISHED,
+                fromDateTime,
+                toDateTime
+        );
 
-        return rides.stream().map(this::mapToDTO).toList();
+        return rides.stream().map(this::mapDriverHistoryToDTO).toList();
     }
     
     @Transactional
@@ -110,7 +117,7 @@ public class RideService {
     	return mapToGetRideDTO(ride);
     }
 
-    private DriverRideHistoryDTO mapToDTO(Ride ride) {
+    private DriverRideHistoryDTO mapDriverHistoryToDTO(Ride ride) {
         DriverRideHistoryDTO dto = new DriverRideHistoryDTO();
         dto.setRideId(ride.getId());
         dto.setStartingTime(ride.getStartingTime());
@@ -305,4 +312,83 @@ public class RideService {
         double hours = distanceKm / averageSpeedKmh;
         return Math.round(hours * 60);
     }
+    @Transactional(readOnly = true)
+    public DriverRideHistoryDTO getActiveRideForPassenger(Long passengerId) {
+
+        Ride ride = rideRepository
+                .findByCreator_IdAndStatus(passengerId, RideStatus.STARTED);
+
+        if (ride == null) {
+            throw new RuntimeException("Passenger nema aktivnu vožnju");
+        }
+
+        return mapDriverHistoryToDTO(ride);
+    }
+
+    @Transactional
+    public FinishedRideDTO finishRide(Long driverId, FinishRideDTO dto) {
+        // 1️ Dohvati voznju po rideId i driverId
+        Ride ride = rideRepository.findByIdAndDriver_Id(dto.getRideId(), driverId);
+        if (ride == null) {
+            throw new RuntimeException("Voznja ne postoji ili nije dodeljena ovom vozacu");
+        }
+
+        // 2️ Zavrsavanje voznje
+        ride.setStatus(RideStatus.FINISHED);
+        ride.setEndingTime(LocalDateTime.now());
+
+        // 3️ Placanje
+        if (Boolean.TRUE.equals(dto.getPaid())) {
+            ride.setPaid(true); 
+        }
+
+        Driver driver = ride.getDriver();
+
+        // 4️ Proveri sledecu zakazanu voznju
+        Ride nextRide = rideRepository
+                .findFirstByDriver_IdAndStatusOrderByScheduledTimeAsc(driverId, RideStatus.ACCEPTED);
+
+        FinishedRideDTO response = new FinishedRideDTO();
+        response.setRideId(ride.getId());
+        response.setRideStatus(ride.getStatus());
+
+        if (nextRide != null) {
+            driver.setStatus(DriverStatus.BUSY);
+            response.setDriverStatus(driver.getStatus());
+            response.setHasNextScheduledRide(true);
+        } else {
+            driver.setStatus(DriverStatus.ACTIVE);
+            response.setDriverStatus(driver.getStatus());
+            response.setHasNextScheduledRide(false);
+        }
+
+        return response;
+    }
+
+    @Transactional
+    public RideCancelRequestDTO cancelRide(
+            Long rideId,
+            String cancellationReason,
+            String cancelledBy) {
+
+        Ride ride = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RuntimeException("Ride not found"));
+
+        ride.setStatus(RideStatus.CANCELED);
+        ride.setCancellationReason(cancellationReason);
+        ride.setCancelledBy(cancelledBy);
+
+        rideRepository.save(ride);
+
+        RideCancelRequestDTO dto = new RideCancelRequestDTO();
+        dto.setRideId(ride.getId());          // ✅ OVDE
+        dto.setRideStatus(RideStatus.CANCELED);
+        dto.setCancellationReason(cancellationReason);
+        dto.setCancelledBy(cancelledBy);
+
+        return dto;
+    }
+
+
+
 }

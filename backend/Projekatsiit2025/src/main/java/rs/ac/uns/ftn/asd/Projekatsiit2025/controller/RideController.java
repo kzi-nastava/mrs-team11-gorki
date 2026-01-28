@@ -17,8 +17,11 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.InconsistencyReportService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
+import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideEstimateRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideStopResponseDTO;
@@ -37,9 +40,11 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 @RequestMapping("/api/rides")
 public class RideController {
 	private final RideService rideService;
+	private final InconsistencyReportService inconsistencyReportService;
 	
-	public RideController(RideService rideService) {
-		this.rideService = rideService;
+	public RideController(InconsistencyReportService inconsistencyReportService,RideService rideService) {
+	    this.inconsistencyReportService = inconsistencyReportService;
+	    this.rideService = rideService;
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,9 +86,12 @@ public class RideController {
             @PathVariable Long id,
             @RequestBody RideCancelRequestDTO request) {
 
-        RideCancelRequestDTO response = new RideCancelRequestDTO();
-        response.setCancellationReason(request.getCancellationReason());
-        response.setCancelledBy(request.getCancelledBy());
+        // Poziv servisa da otkaže vožnju
+        RideCancelRequestDTO response = rideService.cancelRide(
+                id,
+                request.getCancellationReason(),
+                request.getCancelledBy()
+        );
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -150,18 +158,15 @@ public class RideController {
     }
 	
 	@PostMapping(
-		    value = "/{id}/inconsistencies",
-		    consumes = MediaType.APPLICATION_JSON_VALUE,
-		    produces = MediaType.APPLICATION_JSON_VALUE
-		)
-		public ResponseEntity<CreatedInconsistencyReportDTO> reportInconsistency(
-		        @PathVariable Long id,
-		        @RequestBody CreateInconsistencyReportDTO dto) {
+	        value = "/{rideId}/inconsistencies",
+	        consumes = MediaType.APPLICATION_JSON_VALUE,
+	        produces = MediaType.APPLICATION_JSON_VALUE
+	)
+	public ResponseEntity<CreatedInconsistencyReportDTO> reportInconsistency(
+	        @PathVariable Long rideId,
+	        @RequestBody CreateInconsistencyReportDTO dto) {
 
-		    CreatedInconsistencyReportDTO response = new CreatedInconsistencyReportDTO();
-		    response.setInconsistencyReportId(1L);
-		    response.setDescription(dto.getDescription());
-
-		    return new ResponseEntity<>(response, HttpStatus.CREATED);
-		}
+	    CreatedInconsistencyReportDTO response = inconsistencyReportService.createReport(rideId, dto);
+	    return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
 }

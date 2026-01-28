@@ -29,5 +29,20 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
         Long driverId,
         List<RideStatus> statuses
     );
+	List<Ride> findByDriverIdAndStatusAndStartingTimeBetween(
+	        Long driverId,
+	        RideStatus status,
+	        LocalDateTime from,
+	        LocalDateTime to
+	);
+    
+    Ride findByCreator_IdAndStatus(Long passengerId, RideStatus status);
+    
+    //END OF A RIDE
+    // pronadji voznju koja pripada tom driveru
+    Ride findByIdAndDriver_Id(Long rideId, Long driverId);
+
+    // sledeca zakazana voznja
+    Ride findFirstByDriver_IdAndStatusOrderByScheduledTimeAsc(Long driverId, RideStatus status);
 
 }

@@ -11,17 +11,17 @@
           <label class="email">Email:</label>
         </div>
         <div class="formElement">
-          <input class="emailInput" id="email" name="email" #emailInput>
+          <input class="emailInput" id="email" name="email" #emailInput required="true" type="email">
         </div>
         <div class="formElement">
           <label class="password">Password:</label> 
           <a class="forgotPassword" (click)="forgotPassword(emailInput.value)">Forgot password?</a>
         </div>
         <div class="formElement">
-          <input class="passwordInput" name="password">
+          <input class="passwordInput" name="password" #passwordInput required="true" type="password" >
         </div>
         <div class="formElement">
-          <button class="loginButton" type="button" (click)="login()">Login</button>
+          <button class="loginButton" type="button" (click)="login(emailInput.value, passwordInput.value)">Login</button>
         </div>
     </div>
     @if (isResetSent) {
@@ -29,5 +29,6 @@
       <p>Reset link sent to <b>{{ resetEmail }}</b></p>
       <button class="resetButton" (click)="goToReset()">Open reset link</button>
     </div>
+    
 }
 </form>
