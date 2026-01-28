@@ -26,6 +26,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.PriceConfig;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.InconsistencyReportService;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
@@ -46,11 +47,12 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 @RestController
 @RequestMapping("/api/rides")
 public class RideController {
-	
+	private final RideService rideService;
 	private final InconsistencyReportService inconsistencyReportService;
-	public RideController(InconsistencyReportService inconsistencyReportService)
-	{
-		this.inconsistencyReportService=inconsistencyReportService;
+	
+	public RideController(InconsistencyReportService inconsistencyReportService,RideService rideService) {
+	    this.inconsistencyReportService = inconsistencyReportService;
+	    this.rideService = rideService;
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -229,9 +231,12 @@ public class RideController {
             @PathVariable Long id,
             @RequestBody RideCancelRequestDTO request) {
 
-        RideCancelRequestDTO response = new RideCancelRequestDTO();
-        response.setCancellationReason(request.getCancellationReason());
-        response.setCancelledBy(request.getCancelledBy());
+        // Poziv servisa da otkaže vožnju
+        RideCancelRequestDTO response = rideService.cancelRide(
+                id,
+                request.getCancellationReason(),
+                request.getCancelledBy()
+        );
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
