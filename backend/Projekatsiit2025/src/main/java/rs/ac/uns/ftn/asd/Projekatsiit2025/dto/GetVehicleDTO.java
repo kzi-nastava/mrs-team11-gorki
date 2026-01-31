@@ -1,7 +1,6 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 
 public class GetVehicleDTO {
 	private Long id;

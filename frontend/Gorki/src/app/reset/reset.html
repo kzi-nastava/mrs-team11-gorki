@@ -7,18 +7,18 @@
           <div class="divider"></div>
         </div>
         <div class="formElement">
-          <label class="newPassword">New password:</label>
+          <label class="newPassword" >New password:</label>
         </div>
         <div class="formElement">
-          <input class="newPasswordInput">
+          <input class="newPasswordInput" required #newPasswordInput [required]="true">
         </div>
         <div class="formElement">
           <label class="confirmNewPassword">Confirm new password:</label> 
         </div>
         <div class="formElement">
-          <input class="confirmNewPasswordInput">
+          <input class="confirmNewPasswordInput" required #confirmNewPasswordInput [required]="true">
         </div>
         <div class="formElement">
-          <button class="resetButton" routerLink="/">Reset</button>
+          <button class="resetButton" (click)="resetPassword(newPasswordInput.value, confirmNewPasswordInput.value)">Reset</button>
         </div>
     </div>

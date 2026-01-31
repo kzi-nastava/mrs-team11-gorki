@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { Registration } from './layout/registration/registration';
-import { Reset } from './layout/reset/reset';
+import { Registration } from './registration/registration';
+import { Reset } from './reset/reset';
 import { PersonalInfo } from './profile/personal-info/personal-info';
 import { ChangePassword } from './profile/change-password/change-password';
 import { VehicleInformation } from './profile/vehicle-information/vehicle-information';
@@ -23,7 +23,7 @@ import { TrackRideDriver } from './rides/track-ride-driver/track-ride-driver';
 import { RideInProgressDriver } from './ride-in-progress-driver/ride-in-progress-driver';
 import { RideListMap } from './rides/ride-list-map/ride-list-map';
 import { AuthGuard } from './infrastructure/auth.guard';
-import { Login } from './layout/login/login';
+import { Login } from './login/login';
 
 export const routes: Routes = [
     {

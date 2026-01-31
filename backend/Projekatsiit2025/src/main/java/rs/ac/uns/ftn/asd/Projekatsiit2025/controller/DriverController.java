@@ -29,8 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishedRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.PassengerInRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 
 @RestController
 @RequestMapping("/api/drivers")

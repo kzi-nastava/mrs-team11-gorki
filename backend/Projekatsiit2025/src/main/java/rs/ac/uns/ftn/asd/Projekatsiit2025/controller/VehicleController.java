@@ -1,9 +1,7 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetVehicleDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.VehicleService;
 
 @RestController

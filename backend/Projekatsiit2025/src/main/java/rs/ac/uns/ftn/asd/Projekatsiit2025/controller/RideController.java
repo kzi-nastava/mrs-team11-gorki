@@ -17,11 +17,9 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.InconsistencyReportService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
-import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideEstimateRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideStopResponseDTO;

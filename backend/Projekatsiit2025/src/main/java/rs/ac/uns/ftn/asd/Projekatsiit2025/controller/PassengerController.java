@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.PassengerService;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
 @RestController
