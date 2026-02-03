@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,6 +74,7 @@ public class DriverController {
 		return new ResponseEntity<GetDriverDTO>(driver, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
 	@GetMapping("/{driverId}/rides/history")
 	public ResponseEntity<Collection<DriverRideHistoryDTO>> getDriverRideHistory(
 	        @PathVariable Long driverId,

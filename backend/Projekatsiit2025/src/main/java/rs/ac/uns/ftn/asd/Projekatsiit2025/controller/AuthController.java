@@ -1,25 +1,76 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverStatusRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LoginRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LoginResponseDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RegisterRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.JwtTokenUtil;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
+    @Autowired private AuthenticationManager authenticationManager;
+    @Autowired private JwtTokenUtil jwtTokenUtil;
+    @Autowired private UserRepository userRepository; 
+   
+    public AuthController(UserRepository userRepository) {
+	    this.userRepository=userRepository;
+    }
+	
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
 
+    	
+    	// 1) autentikacija (uporedi sifru preko UserDetailsService + PasswordEncoder)
+        UsernamePasswordAuthenticationToken authReq =
+            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
 
+        Authentication auth = authenticationManager.authenticate(authReq);
+
+        // 2) “prijavi” korisnika u SecurityContext 
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        // 3) JWT
+        String token = jwtTokenUtil.generateToken(request.getEmail());
+
+        // 4) popuni response iz baze (role, id, flags...)
+        User user = userRepository.findByEmail(request.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found after"));
+
+        LoginResponseDTO response = new LoginResponseDTO();
+        response.setId(user.getId());
+        response.setRole(user.getRole());
+        response.setActive(user.getActive());
+        response.setBlocked(user.getBlocked());
+        response.setToken(token);
+        response.setMessage("Login successful");
+
+
+        if (user.getBlocked()) {
+	    	return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
+		}
+		if (!user.getActive()) {
+			return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
+		}
+    	
+		 return new ResponseEntity<>(response, HttpStatus.OK);
+    	
+    	/*
         LoginResponseDTO response = new LoginResponseDTO();
         response.setId(1L);
         response.setRole(UserRole.DRIVER);
@@ -27,7 +78,7 @@ public class AuthController {
         response.setBlocked(false);
         response.setMessage("Login successful");
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);*/
     }
 
     @PatchMapping(value = "/status", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
