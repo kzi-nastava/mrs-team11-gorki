@@ -2,32 +2,52 @@ import { Component, OnInit } from '@angular/core';
 import { MapComponent } from "../map/map";
 import { MapService } from '../map/map-service';
 import { TrackRideDriver } from '../rides/track-ride-driver/track-ride-driver';
+import { RideInProgressService } from '../service/passenger-ride-in-progress';
+import { ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-ride-in-progress-driver',
   standalone: true,
-  imports: [MapComponent, TrackRideDriver],
+  imports: [MapComponent, TrackRideDriver, CommonModule],
   templateUrl: './ride-in-progress-driver.html',
   styleUrls: ['./ride-in-progress-driver.css'],
 })
 export class RideInProgressDriver implements OnInit {
 
-  constructor(private mapService: MapService) {}
+  pickupAddress: string = '';
+  dropoffAddress: string = '';
+
+  constructor(
+      private mapService: MapService,
+      private rideService: RideInProgressService,
+      private cdr: ChangeDetectorRef
+    ) {}
 
   async ngOnInit() {
     this.mapService.clearAll();
-    //this.mapService.clearVehicles();
 
-    const pickupAddress = 'Futoška 13a, Novi Sad';
-    const dropoffAddress = 'Hadži Ruvimova 45, Novi Sad';
+    this.rideService.getActiveRideAddresses(2).subscribe({
+      next: async ({ pickup, dropoff }) => {
+        this.pickupAddress = pickup;
+        this.dropoffAddress = dropoff;
 
-    const pickupCoords = await this.geocode(pickupAddress);
-    const dropoffCoords = await this.geocode(dropoffAddress);
+        this.pickupAddress = pickup;
+        this.dropoffAddress = dropoff;
 
-    await this.mapService.showSnappedRoute(pickupCoords, dropoffCoords);
+        this.cdr.detectChanges();
 
-    // 🔥 NEMA ARGUMENATA
-    this.mapService.showCarAnimation()
+        const pickupCoords = await this.geocode(pickup);
+        const dropoffCoords = await this.geocode(dropoff);
+
+        await this.mapService.showSnappedRoute(pickupCoords, dropoffCoords);
+
+        this.mapService.showCarAnimation();
+      },
+      error: err => {
+        console.error('Ne mogu da dohvatim aktivnu voznju', err);
+      }
+    });
   }
 
   async geocode(address: string): Promise<[number, number]> {
