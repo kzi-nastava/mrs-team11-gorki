@@ -1,5 +1,9 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +19,26 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
-public class UserService {
-
-	 private static final String DEFAULT_IMAGE = "default-avatar.png";
-
-	private final UserRepository userRepository;
+public class UserService implements UserDetailsService {
+	
+	@Autowired private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private static final String DEFAULT_IMAGE = "default-avatar.png";
+  
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+      User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+
+      // BITNO:
+      // - password MORA biti vec enkodovan u bazi (BCrypt)
+      // - role u Spring-u obično ide kao ROLE_...
+      return org.springframework.security.core.userdetails.User
+          .withUsername(user.getEmail())
+          .password(user.getPassword())
+          .roles(user.getRole().toString()) // npr ADMIN -> dobija se ROLE_ADMIN
+          .build();
+	}
 	
 	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;

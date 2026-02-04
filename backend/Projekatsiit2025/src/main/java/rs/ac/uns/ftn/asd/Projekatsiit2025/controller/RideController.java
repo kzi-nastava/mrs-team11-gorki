@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -52,17 +53,21 @@ public class RideController {
 	    this.rideService = rideService;
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreatedRideDTO> createRide(@RequestBody CreateRideDTO requestRide){
 		CreatedRideDTO responseRide = rideService.createRide(requestRide);
 		return new ResponseEntity<CreatedRideDTO>(responseRide, HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
 	@PutMapping(value = "/{id}/start", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetRideDTO> startRide(@PathVariable("id") Long id){
 		GetRideDTO ride = rideService.startRide(id);
 		return new ResponseEntity<GetRideDTO>(ride, HttpStatus.OK);
 	}
+	
+	
     @PostMapping(value = "/estimate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideHistoryResponseDTO> estimateRide(@RequestBody RideEstimateRequestDTO request) {
 
@@ -86,18 +91,18 @@ public class RideController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping(
-    value = "/{id}/cancel",
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideCancelResponseDTO> cancelRide(
+  	@PreAuthorize("hasAnyAuthority('ROLE_PASSENGER', 'ROLE_DRIVER')")
+    @PostMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideCancelRequestDTO> cancelRide(
             @PathVariable Long id,
             @RequestBody RideCancelRequestDTO request) {
 
         RideCancelResponseDTO response = rideService.cancelRide(id, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
+  
+    //Ovo treba PutMapping, i promena na frontu
+   	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
     @PostMapping(
     value = "/{id}/stop",
     consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -112,57 +117,7 @@ public class RideController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}/history", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RideHistoryResponseDTO>> getRideHistory(@PathVariable Long id) {
-
-        List<Location> locations = List.of(
-                new Location(45.2671, 19.8335, "Start Address"),
-                new Location(45.2550, 19.8450, "End Address")
-        );
-        Route route = new Route(1L,locations, 5.0, LocalDateTime.now().plusMinutes(15));
-
-        RideHistoryResponseDTO ride = new RideHistoryResponseDTO();
-        ride.setRoute(route);
-        ride.setStartingAddress("Starting Address");
-        ride.setEndingAddress("Ending Address");
-        ride.setStartingTime(LocalDateTime.now().minusHours(1));
-        ride.setEndingTime(LocalDateTime.now());
-        ride.setPrice(500.0);
-        ride.setStatus(RideStatus.FINISHED);
-        ride.setCancelledBy(null);
-        ride.setPanicActivated(false);
-
-        return new ResponseEntity<>(List.of(ride), HttpStatus.OK);
-    }
-	@PostMapping(
-	        value = "/{id}/finish",
-	        consumes = MediaType.APPLICATION_JSON_VALUE,
-	        produces = MediaType.APPLICATION_JSON_VALUE
-	    )
-	    public ResponseEntity<FinishedRideDTO> finishRide(
-	            @PathVariable Long id,
-	            @RequestBody FinishRideDTO dto) {
-
-	        FinishedRideDTO response = new FinishedRideDTO();
-	        response.setRideId(id);
-	        response.setRideStatus(RideStatus.FINISHED);
-	        response.setDriverStatus(DriverStatus.ACTIVE);
-	        response.setHasNextScheduledRide(false);
-
-	        return new ResponseEntity<>(response, HttpStatus.CREATED);
-	    }
-	
-	@GetMapping(value = "/{id}/tracking", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GetRideTrackingDTO> getRideTracking(@PathVariable Long id) {
-
-        GetRideTrackingDTO ride = new GetRideTrackingDTO();
-        ride.setRideId(id);
-        ride.setCurrentLocation(new Location(45.9788,18.2354,"Maksima Gorkog 27"));
-        ride.setEstimatedTimeToDestination(6.5);
-
-        return new ResponseEntity<>(ride, HttpStatus.OK);
-    }
-	
+	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
 	@PostMapping(
 	        value = "/{rideId}/inconsistencies",
 	        consumes = MediaType.APPLICATION_JSON_VALUE,
