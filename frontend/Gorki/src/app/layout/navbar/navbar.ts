@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import {MatMenuModule} from '@angular/material/menu';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { Login } from '../login/login';
+import { Login } from '../../login/login';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../infrastructure/auth.service';
+
+type Role = 'admin' | 'driver' | 'user' | 'unuser';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +15,6 @@ import { AuthService } from '../../infrastructure/auth.service';
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'], 
 })
-
 export class Navbar { 
   isRegistrationOpen: boolean = false;
   isLoginOpen: boolean = false;

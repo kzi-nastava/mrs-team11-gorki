@@ -227,7 +227,7 @@ VALUES(
  null,
  null,
  'STARTED'
-)
+);
 
 INSERT INTO ride (
 	id,

@@ -1,7 +1,9 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRouteDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UserRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.PassengerService;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
 @RestController
@@ -56,5 +59,21 @@ public class PassengerController {
     public ResponseEntity<DriverRideHistoryDTO> getActiveRide(@PathVariable Long id) {
         return ResponseEntity.ok(rideService.getActiveRideForPassenger(id));
     }
+
+	@GetMapping("/{id}/rides/history")
+	public ResponseEntity<Collection<UserRideHistoryDTO>> getUserRideHistory(
+	        @PathVariable Long id,
+	        @RequestParam(required = false)
+	        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	        LocalDate from,
+
+	        @RequestParam(required = false)
+	        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	        LocalDate to) {
+
+		 return ResponseEntity.ok(
+		            rideService.getUserRideHistory(id, from, to)
+		    );
+	}
 	
 }

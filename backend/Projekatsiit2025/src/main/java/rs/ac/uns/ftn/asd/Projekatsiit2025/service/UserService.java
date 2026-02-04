@@ -4,39 +4,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RegisterRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdateUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserService implements UserDetailsService {
 	
-	@Autowired
-	private final UserRepository userRepository;
-	
-	@Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		User user = userRepository.findByEmail(email)
-		        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+	@Autowired private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
+	private static final String DEFAULT_IMAGE = "default-avatar.png";
+  
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+      User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
-		    // BITNO:
-		    // - password MORA biti vec enkodovan u bazi (BCrypt)
-		    // - role u Spring-u obično ide kao ROLE_...
-		    return org.springframework.security.core.userdetails.User
-		        .withUsername(user.getEmail())
-		        .password(user.getPassword())
-		        .roles(user.getRole().toString()) // npr ADMIN -> dobija se ROLE_ADMIN
-		        .build();
+      // BITNO:
+      // - password MORA biti vec enkodovan u bazi (BCrypt)
+      // - role u Spring-u obično ide kao ROLE_...
+      return org.springframework.security.core.userdetails.User
+          .withUsername(user.getEmail())
+          .password(user.getPassword())
+          .roles(user.getRole().toString()) // npr ADMIN -> dobija se ROLE_ADMIN
+          .build();
 	}
 	
-	
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	public GetUserDTO getById(Long id) {
@@ -59,7 +65,7 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public UpdatedUserDTO updatePassword(Long id, UpdateUserDTO dto) {
 		User user = userRepository.findById(id).get();
-		user.setPassword(dto.getPassword());
+		user.setPassword(passwordEncoder.encode(dto.getPassword()));
 		userRepository.save(user);
 		return mapToUpdatedUserDTO(user);
 	}
@@ -89,4 +95,32 @@ public class UserService implements UserDetailsService {
 	    dto.setProfileImage(user.getProfileImage());
 	    return dto;
 	}
+
+	public void register(RegisterRequestDTO dto) {
+        if (dto.getEmail() == null || dto.getEmail().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
+        if (userRepository.existsByEmail(dto.getEmail())) throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is required");
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match");
+        if (dto.getFirstName() == null || dto.getFirstName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "First name is required");
+        if (dto.getLastName() == null || dto.getLastName().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Last name is required");
+        if (dto.getAddress() == null || dto.getAddress().isBlank()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Address is required");
+        if (dto.getPhoneNumber() == 0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number is required");
+
+        User user = new User();
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setAddress(dto.getAddress());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        String img = (dto.getProfileImage() == null || dto.getProfileImage().isBlank())
+                ? DEFAULT_IMAGE
+                : dto.getProfileImage();
+        user.setProfileImage(img);
+        user.setRole(UserRole.PASSENGER);
+        user.setActive(true);
+        user.setBlocked(false);
+        userRepository.save(user);
+
+    }
 }

@@ -7,6 +7,7 @@ import { Ride,Passenger, UserHistoryRide } from '../models/ride';
 import { RideCardUser } from '../ride-card-user/ride-card-user';
 import { RatingPanel } from "../rating-panel/rating-panel";
 import { RatingService } from '../../service/rating-service';
+import { PassengerHistoryService } from '../../service/passenger-history-service';
 
 @Component({
   selector: 'app-rides-list-user',
@@ -16,27 +17,19 @@ import { RatingService } from '../../service/rating-service';
   styleUrl: './rides-list-user.css',
 })
 export class RidesListUser {
-  selectedRide: UserHistoryRide | null = null;
+
   @ViewChild('carousel', { static: true })
   carousel!: ElementRef<HTMLDivElement>;
   
-  constructor(private router: Router, private ratingService: RatingService) {}
+  constructor(
+    private passengerHistoryService: PassengerHistoryService,
+    private router: Router, 
+    private ratingService: RatingService) {}
 
-  scrollLeft() {
-    this.carousel.nativeElement.scrollBy({
-      left: -300,
-      behavior: 'smooth',
-    });
-  }
-
-  scrollRight() {
-    this.carousel.nativeElement.scrollBy({
-      left: 300,
-      behavior: 'smooth',
-    });
-  }
-
-  rides:UserHistoryRide[] = [
+  filteredRides:UserHistoryRide[]=[];
+  allRides:UserHistoryRide[]=[];
+  selectedRide: UserHistoryRide | null = null;
+  rides:UserHistoryRide[] = [  /* // Uncomment this block when database is ready ...
     {
     id: 1,
     rating: 0,
@@ -128,16 +121,40 @@ export class RidesListUser {
       { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' },
       { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
     ]
-  }
+  }  */ // ... End of comment block
   ];
 
-  filteredRides:UserHistoryRide[]=[];
-  allRides:UserHistoryRide[]=[];
   ngOnInit() {
-    this.filteredRides = [...this.rides];
-    this.allRides=[...this.rides];
+    this.loadRides();
   }
 
+  loadRides() {
+    const userId = 2;
+    this.passengerHistoryService.getUserRides(userId).subscribe({
+      next: (rides) => {
+        this.rides = [...rides];
+        this.allRides = [...rides];
+      },
+      error: (err) => {
+        console.error('Ne mogu da dohvatim voznje', err);
+      },
+    });
+  }
+
+  scrollLeft() {
+    this.carousel.nativeElement.scrollBy({
+      left: -300,
+      behavior: 'smooth',
+    });
+  }
+
+  scrollRight() {
+    this.carousel.nativeElement.scrollBy({
+      left: 300,
+      behavior: 'smooth',
+    });
+  }
+  
   openMap(ride: UserHistoryRide) {
   this.router.navigate(['/ride-list-map', ride.id], { state: { ride } });
   }
@@ -167,11 +184,11 @@ export class RidesListUser {
   }
 
   filterByDate(event: { from: Date | null; to: Date | null }) {
-    this.rides=[...this.allRides];
+    this.filteredRides=[...this.allRides];
     const { from, to } = event;
    
     if (!from && !to) {
-      this.filteredRides = [...this.rides];
+      this.filteredRides = [...this.filteredRides];
       return;
     }
 

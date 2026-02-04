@@ -4,6 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+
 
 
 @SpringBootApplication(scanBasePackages = "rs.ac.uns.ftn.asd.Projekatsiit2025")
@@ -33,4 +37,9 @@ public class Projekatsiit2025Application {
 		System.out.println("==========================\n");
 		
 	}
+
+	@Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

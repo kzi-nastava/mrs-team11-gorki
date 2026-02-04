@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../infrastructure/auth.service';
-import { LoginRequest } from '../../infrastructure/model/login.model';
-import { AuthResponse } from '../../infrastructure/model/auth-response.model';
+import { AuthService } from '../infrastructure/auth.service';
+import { LoginRequest } from '../infrastructure/model/login.model';
+import { AuthResponse } from '../infrastructure/model/auth-response.model';
 
 @Component({
   selector: 'app-login',
@@ -68,10 +68,12 @@ export class Login {
   }
 
   goToReset(){
+    this.close.emit();
     this.router.navigate(['/reset']);
   }
 
   closeLogin() { 
     this.close.emit();
   }
+  
 }

@@ -14,8 +14,10 @@ export class CancellationReasonForm {
   @Output() close = new EventEmitter<void>();
 
   onSubmit() {
+    const r = this.reason.trim();
+    if (!r) return;
     this.submit.emit(this.reason);
-    this.close.emit();
+    //this.close.emit();
   }
 
   onClose() {

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MapService } from '../../map/map-service';
 import { InconsistencyService } from '../../service/inconsistency-report-service';
+import { PanicService } from '../../service/panic-service';
 
 @Component({
   selector: 'app-track-ride',
@@ -12,16 +13,15 @@ import { InconsistencyService } from '../../service/inconsistency-report-service
 })
 export class TrackRide {
 
-  currentRideId: number = 6;
+  currentRideId: number = 2;
   showReportModal = false;
   noteText = '';
 
   constructor(
     private mapService: MapService,
-    private inconsistencyService: InconsistencyService
+    private inconsistencyService: InconsistencyService,
+    private panicService: PanicService,
   ) {}
-
-
 
   reportInconsistency() {
     this.showReportModal = true;
@@ -53,7 +53,15 @@ export class TrackRide {
   }
 
   panic() {
-    this.mapService.setDriverToPanic();
+    this.panicService.triggerPanic(this.currentRideId).subscribe({
+      next: () => {
+        this.mapService.setDriverToPanic();
+        alert('PANIC recorded!');
+      },
+      error: (err) => {
+        alert(err?.error?.message ?? err?.error ?? 'PANIC failed');
+      }
+    });
   }
 
 }
