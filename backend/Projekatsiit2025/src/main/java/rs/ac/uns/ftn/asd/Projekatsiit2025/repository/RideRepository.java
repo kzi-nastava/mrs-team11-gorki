@@ -45,4 +45,18 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
     // sledeca zakazana voznja
     Ride findFirstByDriver_IdAndStatusOrderByScheduledTimeAsc(Long driverId, RideStatus status);
 
+    List<Ride> findByCreator_IdAndStatusAndStartingTimeBetween(
+	        Long creatorId,
+	        RideStatus status,
+	        LocalDateTime from,
+	        LocalDateTime to
+	);
+
+    // admin pregled svih voznji u odredjenom periodu
+    List<Ride> findAllByStatusAndStartingTimeBetween(
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+
 }
