@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {JwtHelperService} from '@auth0/angular-jwt';
 import { AuthResponse } from './model/auth-response.model';
-import { Login } from './model/login.model';
+import { LoginRequest } from './model/login.model';
 
 export interface RegisterRequestDTO {
   email: string;
@@ -34,27 +34,33 @@ export class AuthService {
     skip: 'true',
   });
 
-  user$ = new BehaviorSubject("");
+  private user$ = new BehaviorSubject("");
   userState = this.user$.asObservable();
 
   constructor(private http: HttpClient) {
-    this.user$.next(this.getRole());
+    this.setUser();
   }
 
-  login(auth: Login): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>('http://localhost:8080' + '/login', auth, {
+  login(auth: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>('http://localhost:8080/api/auth/login', auth, {
       headers: this.headers,
     });
   }
 
-  getRole(): any {
-    if (this.isLoggedIn()) {
-      const accessToken: any = localStorage.getItem('user');
-      const helper = new JwtHelperService();
+  private getDecodedToken(): any | null {
+    const token = localStorage.getItem('user');
+    if (!token) return null;
 
-      return helper.decodeToken(accessToken).role[0].authority;
-    }
-    return null;
+    const helper = new JwtHelperService();
+    return helper.decodeToken(token);
+  }
+
+  getRole(): string {
+    return this.getDecodedToken()?.role ?? "";
+  }
+
+  getId(): number{
+    return this.getDecodedToken()?.id ?? -1;
   }
 
   isLoggedIn(): boolean {
