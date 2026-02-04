@@ -32,6 +32,8 @@ public class JwtTokenUtil {
 
         return Jwts.builder()
                 .subject(user.getEmail())
+                .claim("id", user.getId())
+                .claim("role", user.getRole().toString())
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(getSigningKey())   // algoritam se inferuje iz kljusa (HS256 za HMAC key)
