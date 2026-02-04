@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 @RequestMapping("/api/admin")
 public class AdminController {
 
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/users/{id}/rides", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RideHistoryResponseDTO>> getRideHistory(
             @PathVariable Long id,

@@ -37,17 +37,4 @@ public class Projekatsiit2025Application {
 		System.out.println("==========================\n");
 		
 	}
-	
-	@Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")      // Dozvoljava sve endpoint-e
-                        .allowedOrigins("http://localhost:4200") // Dozvoljava Angular origin
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedHeaders("*");
-            }
-        };
-    }
 }

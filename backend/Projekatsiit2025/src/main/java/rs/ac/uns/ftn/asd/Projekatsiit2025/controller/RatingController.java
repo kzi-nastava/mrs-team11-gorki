@@ -4,6 +4,7 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class RatingController {
 		this.ratingService=ratingService;
 	}
 	
-	
+	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
 	@PostMapping(
 	        value = "/{id}/rating",
 	        consumes = MediaType.APPLICATION_JSON_VALUE,

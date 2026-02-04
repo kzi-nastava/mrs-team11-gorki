@@ -15,13 +15,14 @@ public class LoginResponseDTO {
 		super();
 	}
 	
-	public LoginResponseDTO(Long id, UserRole role, boolean active, boolean blocked, String message) {
+	public LoginResponseDTO(Long id, UserRole role, boolean active, boolean blocked, String message, String token) {
 		super();
 		this.id = id;
 		this.role = role;
 		this.active = active;
 		this.blocked = blocked;
 		this.message = message;
+		this.token = token;
 	}
 	
 	public Long getId() {
