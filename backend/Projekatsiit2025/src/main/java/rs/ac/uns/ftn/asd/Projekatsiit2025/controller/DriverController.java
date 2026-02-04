@@ -30,14 +30,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishedRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.PassengerInRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 
 @RestController
 @RequestMapping("/api/drivers")
 public class DriverController {
 	
-	//RideService
 	private final DriverService driverService;
     private final RideService rideService;
     private final VehicleService vehicleService;
@@ -104,6 +101,10 @@ public class DriverController {
         FinishedRideDTO response = rideService.finishRide(driverId, dto);
         return ResponseEntity.ok(response);
     }
-	
+
+	@GetMapping("/{id}/ride/active")
+    public ResponseEntity<DriverRideHistoryDTO> getActiveRide(@PathVariable Long id) {
+        return ResponseEntity.ok(rideService.getActiveRideForDriver(id));
+    }
 
 }

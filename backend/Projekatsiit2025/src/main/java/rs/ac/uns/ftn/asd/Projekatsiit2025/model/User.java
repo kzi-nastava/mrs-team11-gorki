@@ -28,7 +28,6 @@ public class User {
 	private String profileImage;
 	private Boolean active=false;
 	private Boolean blocked=false;
-	
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 	

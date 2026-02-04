@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import {MatMenuModule} from '@angular/material/menu';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Login } from '../login/login';
+import { Login } from '../../login/login';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
+type Role = 'admin' | 'driver' | 'user' | 'unuser';
 
 @Component({
   selector: 'app-navbar',
@@ -12,12 +14,14 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   styleUrls: ['./navbar.css'], 
 })
 
+
+
 export class Navbar { 
   isLoggedIn: boolean = false;
   isRegistrationOpen: boolean = false;
   isLoginOpen: boolean = false;
   isActive: boolean = true;
-  role: string = "unuser";
+  role: Role = "unuser";
 
   setRegistrationOpen(value: boolean){
     this.isRegistrationOpen = value;
@@ -40,11 +44,18 @@ export class Navbar {
 
   closeLogin() { 
     this.isLoginOpen = false;
+    const el = document.getElementById('estimation');
+
+    if (el) {
+      el.style.filter = 'blur(0px)';
+      el.style.pointerEvents = 'auto';
+      el.style.userSelect = 'auto';
+    }
   }
 
-  onLoggedIn() {
+  onLoggedIn(role: Role) {
     this.isLoggedIn = true;
-    this.role = "user";
+    this.role = role;
     this.setActive(true);
   }
 

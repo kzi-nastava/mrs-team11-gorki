@@ -21,17 +21,20 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.JwtTokenUtil;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-	
-	@Autowired private UserRepository userRepository; 
+
+	  @Autowired private UserRepository userRepository; 
     @Autowired private AuthenticationManager authenticationManager;
     @Autowired private JwtTokenUtil jwtTokenUtil;
-    
-    public AuthController(UserRepository userRepository) {
+    @Autowired private final UserService userService;
+  
+    public AuthController(UserRepository userRepository, UserService userService) {
     	this.userRepository=userRepository;
+      this.userService=userService;
     }
 	
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -100,20 +103,10 @@ public class AuthController {
         return new ResponseEntity<>("Password reset link sent to " + email, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RegisterRequestDTO> register(@RequestBody RegisterRequestDTO request) {
-
-        RegisterRequestDTO response = new RegisterRequestDTO();
-        response.setEmail(request.getEmail());
-        response.setFirstName(request.getFirstName());
-        response.setLastName(request.getLastName());
-        response.setAddress(request.getAddress());
-        response.setPhoneNumber(request.getPhoneNumber());
-        response.setProfileImage(request.getProfileImage());
-        response.setPassword(null);
-        response.setConfirmPassword(null);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> register(@RequestBody RegisterRequestDTO dto) {
+        userService.register(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     
 	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")

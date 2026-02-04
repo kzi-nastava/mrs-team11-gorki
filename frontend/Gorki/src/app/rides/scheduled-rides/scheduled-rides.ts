@@ -4,6 +4,9 @@ import { RideDetails } from "../ride-details/ride-details";
 import { Passenger, ScheduledRide } from '../models/ride';
 import { RideCardScheduled } from "../ride-card-scheduled/ride-card-scheduled";
 import { CancellationReasonForm } from "../cancellation-reason-form/cancellation-reason-form";
+import { CancelRideService } from '../../service/cancel-ride-service';
+import { AuthService } from '../../infrastructure/auth.service';
+import { ScheduledService } from '../../service/scheduled-service';
 
 @Component({
   selector: 'app-scheduled-rides',
@@ -14,26 +17,21 @@ import { CancellationReasonForm } from "../cancellation-reason-form/cancellation
 })
 
 export class ScheduledRides {
-  selectedRideDetails: ScheduledRide | null = null;
-  selectedRideCancellation: ScheduledRide | null = null;
+
+  constructor(
+    private cancelRideService: CancelRideService,
+    private auth: AuthService,
+    private scheduledService: ScheduledService
+  ) {}
+
   @ViewChild('carousel', { static: true })
   carousel!: ElementRef<HTMLDivElement>;
 
-  scrollLeft() {
-    this.carousel.nativeElement.scrollBy({
-      left: -300,
-      behavior: 'smooth',
-    });
-  }
-
-  scrollRight() {
-    this.carousel.nativeElement.scrollBy({
-      left: 300,
-      behavior: 'smooth',
-    });
-  }
-
-  rides:ScheduledRide[] = [
+  selectedRideDetails: ScheduledRide | null = null;
+  selectedRideCancellation: ScheduledRide | null = null;
+  allRides:ScheduledRide[]=[];
+  filteredRides:ScheduledRide[]=[];
+  rides:ScheduledRide[] = [ /* //Comment this block when database is ready ...
     {
     id: 1,
     rating: 0,
@@ -55,7 +53,7 @@ export class ScheduledRides {
     rating: 0,
     startTime: '14:00',
     endTime: '14:10',
-    startLocation: 'Miše Dimitrijevića 5, Grbavica',
+    startLocation: 'Miše   Dimitrijevića 5, Grbavica',
     destination: 'Bul. Mihaila Pupina 68, Centar',
     price: 10,
     date: new Date(2026, 1, 25),
@@ -114,16 +112,40 @@ export class ScheduledRides {
     ],
     canceled:false,
     cancelationReason:"None"
-  }
+  }  // ... End of comment block */
   ];
 
-  filteredRides:ScheduledRide[]=[];
-  allRides:ScheduledRide[]=[];
   ngOnInit() {
-    this.filteredRides = [...this.rides];
-    this.allRides=[...this.rides];
+    this.loadRides();
   }
 
+  loadRides() {
+    const userId = 3; // this.auth.getCurrentUserId();
+    this.scheduledService.getScheduledRides(userId).subscribe({
+      next: (rides) => {
+        this.rides = [...rides];
+        this.allRides = [...rides];
+      },
+      error: (err) => {
+        console.error('Ne mogu da dohvatim voznje', err);
+      },
+    });
+  }
+
+  scrollLeft() {
+    this.carousel.nativeElement.scrollBy({
+      left: -300,
+      behavior: 'smooth',
+    });
+  }
+
+  scrollRight() {
+    this.carousel.nativeElement.scrollBy({
+      left: 300,
+      behavior: 'smooth',
+    });
+  }
+  
   openRideDetails(ride: ScheduledRide) {
     this.selectedRideDetails = ride;
   }
@@ -140,16 +162,38 @@ export class ScheduledRides {
     this.selectedRideCancellation = null;
   }
 
-    confirmCancellation(reason: string) {
-      if (!this.selectedRideCancellation) return;
+  confirmCancellation(reason: string) {
+    if (!this.selectedRideCancellation) return;
 
-      if(!this.selectedRideCancellation.canceled && 
-        this.selectedRideCancellation.date.getTime() - Date.now() > 1000*60*10){
-          this.selectedRideCancellation.canceled = true;
-          this.selectedRideCancellation.cancelationReason = reason || 'No reason provided';
+    const rideId = this.selectedRideCancellation.id;
 
-          this.selectedRideCancellation = null;
-    }
+    const actorId = 2;
+    const cancelledBy: 'PASSENGER' | 'DRIVER' = 'PASSENGER';
+
+    this.cancelRideService.cancelRide(rideId, {
+      cancellationReason: reason.trim(),
+      cancelledBy,
+      actorId
+    }).subscribe({
+      next: (res) => {
+        this.rides = this.rides.map(r =>
+          r.id === res.rideId
+            ? { ...r, canceled: true, cancelationReason: res.cancellationReason }
+            : r
+        );
+
+        this.filteredRides = this.filteredRides.map(r =>
+          r.id === res.rideId
+            ? { ...r, canceled: true, cancelationReason: res.cancellationReason }
+            : r
+        );
+
+        this.selectedRideCancellation = null;
+      },
+      error: (err) => {
+        alert(err?.error?.message ?? err?.error ?? 'Cancel failed');
+      }
+    });
   }
 
   sortRides(event: {criteria: string, order: 'asc' | 'desc'}) {

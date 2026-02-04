@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,10 +23,14 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.PassengerInRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Passenger;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelResponseDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideStopResponseDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ScheduledRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UserRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Ride;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
@@ -366,29 +371,384 @@ public class RideService {
     }
 
     @Transactional
-    public RideCancelRequestDTO cancelRide(
-            Long rideId,
-            String cancellationReason,
-            String cancelledBy) {
+    public RideCancelResponseDTO cancelRide(Long rideId, RideCancelRequestDTO request) {
+
+        if (request.getCancellationReason() == null || request.getCancellationReason().isBlank()) {
+            throw new RuntimeException("Cancellation reason is required");
+        }
+        if (request.getCancelledBy() == null || request.getCancelledBy().isBlank()) {
+            throw new RuntimeException("cancelledBy is required (DRIVER/PASSENGER)");
+        }
+        if (request.getActorId() == null) {
+            throw new RuntimeException("actorId is required");
+        }
 
         Ride ride = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RuntimeException("Ride not found"));
 
-        ride.setStatus(RideStatus.CANCELED);
-        ride.setCancellationReason(cancellationReason);
-        ride.setCancelledBy(cancelledBy);
+        if (ride.getStatus() != RideStatus.ACCEPTED && ride.getStatus() != RideStatus.REQUESTED){
+            throw new RuntimeException("Ride cannot be cancelled now");
+        }
+
+        String by = request.getCancelledBy().trim().toUpperCase();
+
+        if ("DRIVER".equals(by)) {
+
+            if (ride.getStatus() != RideStatus.ACCEPTED) {
+                throw new RuntimeException("Driver can cancel only ACCEPTED rides");
+            }
+            if (ride.getDriver() == null || !ride.getDriver().getId().equals(request.getActorId())) {
+                throw new RuntimeException("This driver is not assigned to this ride");
+            }
+
+            ride.setStatus(RideStatus.CANCELED);
+            ride.setCancellationReason(request.getCancellationReason().trim());
+            ride.setCancelledBy("DRIVER");
+
+            ride.getDriver().setStatus(DriverStatus.ACTIVE);
+
+            rideRepository.save(ride);
+        }
+
+        else if ("PASSENGER".equals(by)) {
+
+            if (ride.getCreator() == null || !ride.getCreator().getId().equals(request.getActorId())) {
+            //    throw new RuntimeException("Only the ride creator can cancel the ride");
+            }
+            if (ride.getScheduledTime() == null) {
+                throw new RuntimeException("Ride has no scheduled time");
+            }
+
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime deadline = ride.getScheduledTime().minusMinutes(10);
+
+            if (now.isAfter(deadline)) {
+            //    throw new RuntimeException("Too late to cancel (10 minutes before start rule)");
+            }
+
+            ride.setStatus(RideStatus.CANCELED);
+            ride.setCancellationReason(request.getCancellationReason().trim());
+            ride.setCancelledBy("PASSENGER");
+
+            if (ride.getDriver() != null) {
+                ride.getDriver().setStatus(DriverStatus.ACTIVE);
+            }
+
+            rideRepository.save(ride);
+        }
+
+        else {
+            throw new RuntimeException("cancelledBy must be DRIVER or PASSENGER");
+        }
+
+        RideCancelResponseDTO response = new RideCancelResponseDTO();
+        response.setRideId(ride.getId());
+        response.setRideStatus(ride.getStatus());
+        response.setCancellationReason(ride.getCancellationReason());
+        response.setCancelledBy(ride.getCancelledBy());
+        return response;
+    }
+
+    @Transactional
+    public void activatePanic(Long rideId) {
+        Ride ride = rideRepository.findById(rideId)
+                .orElseThrow(() -> new RuntimeException("Ride not found"));
+
+        if (ride.getStatus() == RideStatus.FINISHED || ride.getStatus() == RideStatus.CANCELED) {
+        //    throw new RuntimeException("Ride not active");
+        }
+
+        ride.setPanicActivated(true);
+        rideRepository.save(ride);
+    }
+
+    @Transactional
+    public RideStopResponseDTO stopRide(Long rideId, Location stopLocation) {
+
+        Ride ride = rideRepository.findById(rideId)
+            .orElseThrow(() -> new RuntimeException("Ride not found"));
+
+        if (ride.getStatus() != RideStatus.STARTED) {
+            throw new RuntimeException("Ride is not STARTED");
+        }
+
+        LocalDateTime start = ride.getStartingTime();
+        LocalDateTime plannedEnd = ride.getEndingTime();
+        LocalDateTime end = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+
+
+        if (start == null || plannedEnd == null) {
+            throw new RuntimeException("Ride missing start/planned end time");
+        }
+
+        long plannedMinutes = java.time.Duration.between(start, plannedEnd).toMinutes();
+        long actualMinutes = java.time.Duration.between(start, end).toMinutes();
+
+        if (plannedMinutes <= 0) plannedMinutes = 1;
+        if (actualMinutes < 0) actualMinutes = 0;
+
+        double ratio = (double) actualMinutes / (double) plannedMinutes;
+        ratio = Math.max(0.0, Math.min(1.0, ratio));
+
+        Double price = ride.getPrice();
+        double originalPrice = price != null ? price : 0.0;
+        double newPrice = originalPrice * ratio;
+        
+        newPrice = Math.min(newPrice, originalPrice*0.9);
+
+        newPrice = Math.max(newPrice, 100.0);
+
+        newPrice = Math.round(newPrice);
+
+        ride.setPrice(newPrice);
+
+        ride.setEndingTime(end);
+        ride.setPrice(newPrice);
+        ride.setStatus(RideStatus.FINISHED);
+
+        Route route = ride.getRoute();
+        if (route != null && route.getLocations() != null && !route.getLocations().isEmpty()) {
+            route.getLocations().set(route.getLocations().size() - 1, stopLocation);
+        }
+
+        if (ride.getDriver() != null) {
+            ride.getDriver().setStatus(DriverStatus.ACTIVE);
+        }
 
         rideRepository.save(ride);
 
-        RideCancelRequestDTO dto = new RideCancelRequestDTO();
-        dto.setRideId(ride.getId());          // ✅ OVDE
-        dto.setRideStatus(RideStatus.CANCELED);
-        dto.setCancellationReason(cancellationReason);
-        dto.setCancelledBy(cancelledBy);
-
+        RideStopResponseDTO dto = new RideStopResponseDTO();
+        dto.setStopAddress(stopLocation);
+        dto.setEndingTime(end);
+        dto.setPrice(newPrice);
         return dto;
     }
 
+    @Transactional(readOnly = true)
+    public Collection<UserRideHistoryDTO> getUserRideHistory(
+            Long creatorId,
+            LocalDate from,
+            LocalDate to) {
 
+        LocalDateTime fromDateTime = (from != null)
+                ? from.atStartOfDay()
+                : LocalDate.of(2000, 1, 1).atStartOfDay();  // SAFE MIN
+
+        LocalDateTime toDateTime = (to != null)
+                ? to.atTime(23, 59, 59)
+                : LocalDate.of(2100, 1, 1).atStartOfDay();  // SAFE MAX
+
+        List<Ride> rides = rideRepository.findByCreator_IdAndStatusAndStartingTimeBetween(
+                creatorId,
+                RideStatus.FINISHED,
+                fromDateTime,
+                toDateTime
+        );
+
+        return rides.stream().map(this::mapUserRideHistoryToDTO).toList();
+    }
+
+    private UserRideHistoryDTO mapUserRideHistoryToDTO(Ride ride) {
+        UserRideHistoryDTO dto = new UserRideHistoryDTO();
+        dto.setRideId(ride.getId());
+        dto.setStartingTime(ride.getStartingTime());
+        dto.setEndingTime(ride.getEndingTime());
+        dto.setPrice(ride.getPrice());
+        dto.setPanicActivated(ride.getPanicActivated());
+        dto.setCanceled(ride.getStatus() == RideStatus.CANCELED);
+        dto.setCanceledBy(ride.getCancelledBy());
+        dto.setPassengers(ride.getLinkedPassengers()
+                .stream()
+                .map(p -> new PassengerInRideDTO(
+                        p.getEmail(),
+                        p.getFirstName(),
+                        p.getLastName(),
+                        String.valueOf(p.getPhoneNumber())
+                ))
+                .toList()
+        );
+        Route route = ride.getRoute();
+        GetRouteDTO routeDTO = new GetRouteDTO(
+        	    route.getId(),
+        	    route.getLocations().stream()
+        	         .map(loc -> 
+        	             new LocationDTO(loc.getLatitude(), loc.getLongitude(), loc.getAddress()))
+        	         .toList(),
+        	    route.getDistance(),
+        	    route.getEstimatedTime()
+		);
+        dto.setRoute(routeDTO);
+        return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<UserRideHistoryDTO> getAdminRideHistory(
+            Long userId,
+            LocalDate from,
+            LocalDate to) {
+
+        LocalDateTime fromDateTime = (from != null)
+                ? from.atStartOfDay()
+                : LocalDate.of(2000, 1, 1).atStartOfDay();  // SAFE MIN
+
+        LocalDateTime toDateTime = (to != null)
+                ? to.atTime(23, 59, 59)
+                : LocalDate.of(2100, 1, 1).atStartOfDay();  // SAFE MAX
+
+        List<Ride> acceptedRides = rideRepository.findByCreator_IdAndStatusAndStartingTimeBetween(
+                userId,
+                RideStatus.FINISHED,
+                fromDateTime,
+                toDateTime
+        );
+        
+        List<Ride> rides = new ArrayList<>(acceptedRides);
+
+        if(rides.isEmpty()){
+            List<Ride> acceptedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
+                userId,
+                RideStatus.FINISHED,
+                fromDateTime,
+                toDateTime
+            );
+
+            rides = new ArrayList<>(acceptedRidesDriver);
+        }
+
+        return rides.stream().map(this::mapAdminRideHistoryToDTO).toList();
+    }
+
+    private UserRideHistoryDTO mapAdminRideHistoryToDTO(Ride ride) {
+        UserRideHistoryDTO dto = new UserRideHistoryDTO();
+        dto.setRideId(ride.getId());
+        dto.setStartingTime(ride.getStartingTime());
+        dto.setEndingTime(ride.getEndingTime());
+        dto.setPrice(ride.getPrice());
+        dto.setPanicActivated(ride.getPanicActivated());
+        dto.setCanceled(ride.getStatus() == RideStatus.CANCELED);
+        dto.setCanceledBy(ride.getCancelledBy());
+        dto.setPassengers(ride.getLinkedPassengers()
+                .stream()
+                .map(p -> new PassengerInRideDTO(
+                        p.getEmail(),
+                        p.getFirstName(),
+                        p.getLastName(),
+                        String.valueOf(p.getPhoneNumber())
+                ))
+                .toList()
+        );
+        Route route = ride.getRoute();
+        GetRouteDTO routeDTO = new GetRouteDTO(
+        	    route.getId(),
+        	    route.getLocations().stream()
+        	         .map(loc -> 
+        	             new LocationDTO(loc.getLatitude(), loc.getLongitude(), loc.getAddress()))
+        	         .toList(),
+        	    route.getDistance(),
+        	    route.getEstimatedTime()
+		);
+        dto.setRoute(routeDTO);
+        return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<ScheduledRideDTO> getScheduledRide(
+            Long userId,
+            LocalDate from,
+            LocalDate to) {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        LocalDateTime fromDateTime = (from == null)
+                ? now
+                : (from.isEqual(now.toLocalDate()) ? now : from.atStartOfDay());  // SAFE MIN
+
+        LocalDateTime toDateTime = (to != null)
+                ? to.atTime(23, 59, 59)
+                : LocalDate.of(2100, 1, 1).atStartOfDay();  // SAFE MAX
+
+        List<Ride> acceptedRides = rideRepository.findByCreator_IdAndStatusAndStartingTimeBetween(
+                userId,
+                RideStatus.ACCEPTED,
+                fromDateTime,
+                toDateTime
+        );
+        
+        List<Ride> requestedRides = rideRepository.findByCreator_IdAndStatusAndStartingTimeBetween(
+                userId,
+                RideStatus.REQUESTED,
+                fromDateTime,
+                toDateTime
+        );
+        
+        List<Ride> rides = new ArrayList<>(acceptedRides);
+        rides.addAll(requestedRides);
+
+
+        if(rides.isEmpty()){
+            List<Ride> acceptedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
+                userId,
+                RideStatus.ACCEPTED,
+                fromDateTime,
+                toDateTime
+            );
+        
+            List<Ride> requestedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
+                userId,
+                RideStatus.REQUESTED,
+                fromDateTime,
+                toDateTime
+            );
+
+            rides = new ArrayList<>(acceptedRidesDriver);
+            rides.addAll(requestedRidesDriver);
+        }
+
+        return rides.stream().map(this::mapScheduledRideToDTO).toList();
+    }
+
+    private ScheduledRideDTO mapScheduledRideToDTO(Ride ride) {
+        ScheduledRideDTO dto = new ScheduledRideDTO();
+        dto.setRideId(ride.getId());
+        dto.setStartingTime(ride.getStartingTime());
+        dto.setPrice(ride.getPrice());
+        dto.setCanceled(ride.getStatus() == RideStatus.CANCELED);
+        dto.setCanceledBy(ride.getCancelledBy());
+        dto.setPassengers(ride.getLinkedPassengers()
+                .stream()
+                .map(p -> new PassengerInRideDTO(
+                        p.getEmail(),
+                        p.getFirstName(),
+                        p.getLastName(),
+                        String.valueOf(p.getPhoneNumber())
+                ))
+                .toList()
+        );
+        Route route = ride.getRoute();
+        GetRouteDTO routeDTO = new GetRouteDTO(
+        	    route.getId(),
+        	    route.getLocations().stream()
+        	         .map(loc -> 
+        	             new LocationDTO(loc.getLatitude(), loc.getLongitude(), loc.getAddress()))
+        	         .toList(),
+        	    route.getDistance(),
+        	    route.getEstimatedTime()
+		);
+        dto.setRoute(routeDTO);
+        return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public DriverRideHistoryDTO getActiveRideForDriver(Long driverId) {
+
+        Ride ride = rideRepository
+                .findByCreator_IdAndStatus(driverId, RideStatus.STARTED);
+
+        if (ride == null) {
+            throw new RuntimeException("Driver nema aktivnu vožnju");
+        }
+
+        return mapDriverHistoryToDTO(ride);
+    }
 
 }

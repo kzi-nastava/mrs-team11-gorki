@@ -6,6 +6,7 @@ import { SortFilter } from '../filters/sort-filter/sort-filter';
 import { Ride,Passenger, UserHistoryRide } from '../models/ride';
 import { RideCardUser } from '../ride-card-user/ride-card-user';
 import { PersonFilter } from "../filters/person-filter/person-filter";
+import { AdminHistoryService } from '../../service/admin-history-service';
 
 @Component({
   selector: 'app-rides-list-admin',
@@ -15,27 +16,19 @@ import { PersonFilter } from "../filters/person-filter/person-filter";
   styleUrl: './rides-list-admin.css',
 })
 export class RidesListAdmin {
-  selectedRide: UserHistoryRide | null = null;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router, 
+    private adminHistoryService: AdminHistoryService
+  ) {}
+
   @ViewChild('carousel', { static: true })
   carousel!: ElementRef<HTMLDivElement>;
-
-  scrollLeft() {
-    this.carousel.nativeElement.scrollBy({  
-      left: -300,
-      behavior: 'smooth',
-    });
-  }
-
-  scrollRight() {
-    this.carousel.nativeElement.scrollBy({
-      left: 300,
-      behavior: 'smooth',
-    });
-  }
-
-  rides:UserHistoryRide[] = [
+  
+  allRides:UserHistoryRide[]=[];
+  filteredRides:UserHistoryRide[]=[];
+  selectedRide: UserHistoryRide | null = null;
+  rides:UserHistoryRide[] = [  /* //Uncomment this block when database is ready ...
     {
     id: 1,
     rating: 4.5,
@@ -126,15 +119,39 @@ export class RidesListAdmin {
     passengers: [
       { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' },
       { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
-    ]
-  }
-  ];
+    ] 
+  }  */ // ... End of comment block
+  ]; 
 
-  filteredRides:UserHistoryRide[]=[];
-  allRides:UserHistoryRide[]=[];
   ngOnInit() {
-    this.filteredRides = [...this.rides];
-    this.allRides=[...this.rides];
+    this.loadRides();
+  }
+
+  loadRides() {
+    const userId = 2;
+    this.adminHistoryService.getAdminRides(userId).subscribe({
+      next: (rides) => {
+        this.rides = [...rides];
+        this.allRides = [...rides];
+      },
+      error: (err) => {
+        console.error('Ne mogu da dohvatim voznje', err);
+      },
+    });
+  }
+
+  scrollLeft() {
+    this.carousel.nativeElement.scrollBy({  
+      left: -300,
+      behavior: 'smooth',
+    });
+  }
+
+  scrollRight() {
+    this.carousel.nativeElement.scrollBy({
+      left: 300,
+      behavior: 'smooth',
+    });
   }
 
   openMap(ride: UserHistoryRide) {
@@ -186,7 +203,7 @@ export class RidesListAdmin {
     const { person } = event;
 
     if (!person) {
-      this.filteredRides = [...this.allRides];
+      this.filteredRides = [...this.allRides]; //clear
       return;
     }
 

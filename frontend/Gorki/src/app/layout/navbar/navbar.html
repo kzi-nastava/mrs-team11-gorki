@@ -1,7 +1,7 @@
 @if(isLoginOpen) { 
     <app-login 
         (close)="closeLogin()" 
-        (loggedIn)="onLoggedIn()">
+        (loggedIn)="onLoggedIn($event)">
     </app-login>
 }
 <header>
@@ -14,34 +14,34 @@
             <div class="home"><a routerLink="HomePage">Home</a></div>
             <div class="profile" [matMenuTriggerFor]="menu">Profile▾</div>
             <mat-menu #menu="matMenu" id="profileMenu">
-                <button mat-menu-item id="menuItem"><a routerLink="personal-info">Personal information</a></button>
-                <button mat-menu-item id="menuItem"><a routerLink="change-password">Change Password</a></button>
+                <button mat-menu-item [routerLink]="['/personal-info']">Personal information</button>
+                <button mat-menu-item [routerLink]="['/change-password']">Change Password</button>
                 @if(role == "driver"){ 
-                    <button mat-menu-item id="menuItem"><a routerLink="vehicle-information">Vehicle information</a></button>
-                    <button mat-menu-item id="menuItem"><a routerLink="driver-registration">Driver registration</a></button>
-                    <button mat-menu-item id="menuItem"><a routerLink="driver-pass-activation">Driver password activation</a></button>
-                    <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history (Driver)</a></button>
+                    <button mat-menu-item [routerLink]="['/vehicle-information']">Vehicle information</button>
+                    <button mat-menu-item [routerLink]="['/driver-registration']">Driver registration</button>
+                    <button mat-menu-item [routerLink]="['/driver-pass-activation']">Driver password activation</button>
+                    <button mat-menu-item [routerLink]="['/rides-list']">Ride history (Driver)</button>
                 }
                 @if(role == "admin"){
-                    <button mat-menu-item id="menuItem"><a routerLink="panic-notifications">Panic notifications</a></button>
-                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>                    
-                    <button mat-menu-item id="menuItem"><a routerLink="rides-list-admin">Ride history (Admin)</a></button>
+                    <button mat-menu-item [routerLink]="['/panic-notifications']">Panic notifications</button>
+                    <button mat-menu-item [routerLink]="['/scheduled-rides']">Scheduled rides</button>                    
+                    <button mat-menu-item [routerLink]="['/rides-list-admin']">Ride history (Admin)</button>
                 }
                 @if(role=="user"){
-                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
-                    <button mat-menu-item id="menuItem"><a routerLink="rides-list-user">Ride history (User)</a></button>
+                    <button mat-menu-item [routerLink]="['/scheduled-rides']">Scheduled rides</button>
+                    <button mat-menu-item [routerLink]="['/rides-list-user']">Ride history (User)</button>
                 }
             </mat-menu>
             @if(role == "user"){
-                <div class="currentRide"><a routerLink="ride-in-progress">Track ride</a></div>
+                <div class="currentRide"><a routerLink="/ride-in-progress">Track ride</a></div>
             }
             @if(role=="driver"){
                 <div class="profile" [matMenuTriggerFor]="menu">Rides▾</div>
                 <mat-menu #menu="matMenu" id="rideMenu">
-                    <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
-                    <button mat-menu-item id="menuItem"><a routerLink="end-of-ride">End ride</a></button>
+                    <button mat-menu-item [routerLink]="['/scheduled-rides']">Scheduled rides</button>
+                    <button mat-menu-item [routerLink]="['/end-of-ride']">End ride</button>
                 </mat-menu>
-                <div class="currentRide"><a routerLink="ride-in-progress-driver">Track ride</a></div>
+                <div class="currentRide"><a routerLink="/ride-in-progress-driver">Track ride</a></div>
             }
         }
     </div>
@@ -56,7 +56,7 @@
                 </mat-button-toggle-group>
                 <div class="divider"></div>
             }   
-            <button class="logout" (click)="logout()"><a routerLink="HomePage">Logout</a></button>
+            <button class="logout" (click)="logout()"><a routerLink="/HomePage">Logout</a></button>
         } @else if (isRegistrationOpen) {
             <p class="hasAcc">Already have an account?</p>
             <button class="login" (click)="openLogin()">Login</button>

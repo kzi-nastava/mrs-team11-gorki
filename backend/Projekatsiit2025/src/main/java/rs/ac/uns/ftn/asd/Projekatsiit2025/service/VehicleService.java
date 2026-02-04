@@ -8,7 +8,6 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdateVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedVehicleDTO;
 import java.util.List;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Vehicle;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.VehicleRepository;
