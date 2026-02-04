@@ -52,11 +52,4 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 	        LocalDateTime to
 	);
 
-    // admin pregled svih voznji u odredjenom periodu
-    List<Ride> findAllByStatusAndStartingTimeBetween(
-            RideStatus status,
-            LocalDateTime from,
-            LocalDateTime to
-    );
-
 }

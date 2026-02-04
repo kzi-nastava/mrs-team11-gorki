@@ -120,7 +120,7 @@ export class ScheduledRides {
   }
 
   loadRides() {
-    const userId = 1;
+    const userId = 3; // this.auth.getCurrentUserId();
     this.scheduledService.getScheduledRides(userId).subscribe({
       next: (rides) => {
         this.rides = [...rides];

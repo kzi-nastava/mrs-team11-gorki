@@ -583,6 +583,7 @@ public class RideService {
 
     @Transactional(readOnly = true)
     public Collection<UserRideHistoryDTO> getAdminRideHistory(
+            Long userId,
             LocalDate from,
             LocalDate to) {
 
@@ -594,11 +595,25 @@ public class RideService {
                 ? to.atTime(23, 59, 59)
                 : LocalDate.of(2100, 1, 1).atStartOfDay();  // SAFE MAX
 
-        List<Ride> rides = rideRepository.findAllByStatusAndStartingTimeBetween(
+        List<Ride> acceptedRides = rideRepository.findByCreator_IdAndStatusAndStartingTimeBetween(
+                userId,
                 RideStatus.FINISHED,
                 fromDateTime,
                 toDateTime
         );
+        
+        List<Ride> rides = new ArrayList<>(acceptedRides);
+
+        if(rides.isEmpty()){
+            List<Ride> acceptedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
+                userId,
+                RideStatus.FINISHED,
+                fromDateTime,
+                toDateTime
+            );
+
+            rides = new ArrayList<>(acceptedRidesDriver);
+        }
 
         return rides.stream().map(this::mapAdminRideHistoryToDTO).toList();
     }
@@ -669,22 +684,25 @@ public class RideService {
         List<Ride> rides = new ArrayList<>(acceptedRides);
         rides.addAll(requestedRides);
 
-        List<Ride> acceptedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
+
+        if(rides.isEmpty()){
+            List<Ride> acceptedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
                 userId,
                 RideStatus.ACCEPTED,
                 fromDateTime,
                 toDateTime
-        );
+            );
         
-        List<Ride> requestedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
+            List<Ride> requestedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
                 userId,
                 RideStatus.REQUESTED,
                 fromDateTime,
                 toDateTime
-        );
+            );
 
-        rides = new ArrayList<>(acceptedRidesDriver);
-        rides.addAll(requestedRidesDriver);
+            rides = new ArrayList<>(acceptedRidesDriver);
+            rides.addAll(requestedRidesDriver);
+        }
 
         return rides.stream().map(this::mapScheduledRideToDTO).toList();
     }

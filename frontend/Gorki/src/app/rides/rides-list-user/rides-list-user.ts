@@ -129,7 +129,7 @@ export class RidesListUser {
   }
 
   loadRides() {
-    const userId = 1;
+    const userId = 2;
     this.passengerHistoryService.getUserRides(userId).subscribe({
       next: (rides) => {
         this.rides = [...rides];

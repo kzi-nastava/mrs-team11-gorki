@@ -28,7 +28,7 @@ export class RidesListAdmin {
   allRides:UserHistoryRide[]=[];
   filteredRides:UserHistoryRide[]=[];
   selectedRide: UserHistoryRide | null = null;
-  rides:UserHistoryRide[] = [  //Uncomment this block when database is ready ...
+  rides:UserHistoryRide[] = [  /* //Uncomment this block when database is ready ...
     {
     id: 1,
     rating: 4.5,
@@ -120,7 +120,7 @@ export class RidesListAdmin {
       { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' },
       { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
     ] 
-  }  // ... End of comment block
+  }  */ // ... End of comment block
   ]; 
 
   ngOnInit() {
@@ -128,8 +128,8 @@ export class RidesListAdmin {
   }
 
   loadRides() {
-    const driverId = 1;
-    this.adminHistoryService.getAdminRides(driverId).subscribe({
+    const userId = 2;
+    this.adminHistoryService.getAdminRides(userId).subscribe({
       next: (rides) => {
         this.rides = [...rides];
         this.allRides = [...rides];
@@ -203,7 +203,7 @@ export class RidesListAdmin {
     const { person } = event;
 
     if (!person) {
-      this.filteredRides = [...this.allRides];
+      this.filteredRides = [...this.allRides]; //clear
       return;
     }
 

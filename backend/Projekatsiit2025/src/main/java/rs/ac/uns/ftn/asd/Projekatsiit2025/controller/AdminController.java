@@ -64,8 +64,9 @@ public class AdminController {
         return new ResponseEntity<List<RideHistoryResponseDTO>>(rideHistory, HttpStatus.OK);
     }
 
-    @GetMapping("/rides/history")
+    @GetMapping("/{userId}/rides/history")
     public ResponseEntity<Collection<UserRideHistoryDTO>> getAdminRideHistory(
+            @PathVariable Long userId,
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate from,
@@ -75,7 +76,7 @@ public class AdminController {
             LocalDate to) {
 
          return ResponseEntity.ok(
-                    rideService.getAdminRideHistory(from, to)
+                    rideService.getAdminRideHistory(userId, from, to)
             );
     }
 }

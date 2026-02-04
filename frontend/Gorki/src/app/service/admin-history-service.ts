@@ -9,8 +9,8 @@ export class AdminHistoryService {
 
   constructor(private http: HttpClient) {}
 
-  getAdminRides(adminId: number, from?: string, to?: string): Observable<UserHistoryRide[]> { //zbog pretrage? testirati
-    let url = `${environment.apiHost}/admins/${adminId}/rides/history`;
+  getAdminRides(adminId: number, from?: string, to?: string): Observable<UserHistoryRide[]> {
+    let url = `${environment.apiHost}/admin/${adminId}/rides/history`;
 
     const params: any = {};
     if (from) params.from = from;
