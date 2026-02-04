@@ -1,9 +1,12 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideHistoryResponseDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UserRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
+    
+    private final RideService rideService;
+
+    public AdminController(RideService rideService) {
+        this.rideService = rideService;
+    }
 
     @GetMapping(value = "/users/{id}/rides", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RideHistoryResponseDTO>> getRideHistory(
@@ -51,5 +62,20 @@ public class AdminController {
         rideHistory.add(ride);
 
         return new ResponseEntity<List<RideHistoryResponseDTO>>(rideHistory, HttpStatus.OK);
+    }
+
+    @GetMapping("/rides/history")
+    public ResponseEntity<Collection<UserRideHistoryDTO>> getAdminRideHistory(
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate from,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate to) {
+
+         return ResponseEntity.ok(
+                    rideService.getAdminRideHistory(from, to)
+            );
     }
 }
