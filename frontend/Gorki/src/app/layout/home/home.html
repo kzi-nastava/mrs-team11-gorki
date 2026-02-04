@@ -1,8 +1,8 @@
 <div class="map-wrapper" id="homePage">
   <app-map></app-map>
-  @if (role == "user") {
+  @if (role == "PASSENGER") {
     <app-ride-ordering></app-ride-ordering>
-  } @else if (role == "driver") {
+  } @else if (role == "DRIVER") {
     <app-ride-start></app-ride-start>
   } @else {
     <app-ride-estimate-unuser id="estimation"

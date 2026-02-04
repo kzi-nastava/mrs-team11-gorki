@@ -8,18 +8,21 @@ public class LoginResponseDTO {
     private boolean active;
     private boolean blocked;
     private String message;
+    private String token;
+    
     
 	public LoginResponseDTO() {
 		super();
 	}
 	
-	public LoginResponseDTO(Long id, UserRole role, boolean active, boolean blocked, String message) {
+	public LoginResponseDTO(Long id, UserRole role, boolean active, boolean blocked, String message, String token) {
 		super();
 		this.id = id;
 		this.role = role;
 		this.active = active;
 		this.blocked = blocked;
 		this.message = message;
+		this.token = token;
 	}
 	
 	public Long getId() {
@@ -60,6 +63,14 @@ public class LoginResponseDTO {
 	
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }

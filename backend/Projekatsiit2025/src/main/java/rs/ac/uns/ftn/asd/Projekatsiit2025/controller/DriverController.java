@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,12 +44,14 @@ public class DriverController {
         this.vehicleService = vehicleService;
     }
     
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreatedDriverDTO> createDriver(@RequestBody CreateDriverDTO requestDriver){
 		CreatedDriverDTO responseDriver = driverService.createDriver(requestDriver);
 		return new ResponseEntity<CreatedDriverDTO>(responseDriver, HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
 	@GetMapping(value = "/{id}/vehicle/{vehicleId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetVehicleDTO> getVehicle(@PathVariable("vehicleId") Long vehicleID){
 		GetVehicleDTO vehicle = vehicleService.getById(vehicleID);
@@ -58,18 +61,21 @@ public class DriverController {
 		return new ResponseEntity<GetVehicleDTO>(vehicle, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
 	@PutMapping(value = "/{id}/vehicle/{vehicleId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UpdatedVehicleDTO> updateVehicle(@PathVariable("vehicleId") Long vehicleID, @RequestBody UpdateVehicleDTO requestVehicle){
 		UpdatedVehicleDTO responseVehicle = vehicleService.updateVehicle(vehicleID, requestVehicle);
 		return new ResponseEntity<UpdatedVehicleDTO>(responseVehicle, HttpStatus.OK); 
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
 	@GetMapping(value = "/{id}/activity", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetDriverDTO> getDriverActivity(@PathVariable("id") Long id){
 		GetDriverDTO driver = driverService.getActivity(id);
 		return new ResponseEntity<GetDriverDTO>(driver, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
 	@GetMapping("/{driverId}/rides/history")
 	public ResponseEntity<Collection<DriverRideHistoryDTO>> getDriverRideHistory(
 	        @PathVariable Long driverId,
@@ -86,6 +92,7 @@ public class DriverController {
 		    );
 	}
 
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
 	@PutMapping("/{driverId}/rides/finish")
     public ResponseEntity<FinishedRideDTO> finishRide(
             @PathVariable Long driverId,

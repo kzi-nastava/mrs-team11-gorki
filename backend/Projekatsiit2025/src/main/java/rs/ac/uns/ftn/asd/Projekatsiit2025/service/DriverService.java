@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,25 +10,31 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.EmailAlreadyExistsException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Vehicle;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.DriverRepository;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
 
 @Service
 public class DriverService {
 	private final DriverRepository driverRepository;
+	private final UserRepository userRepository;
 	
-	public DriverService(DriverRepository driverRepository) {
+	public DriverService(DriverRepository driverRepository, UserRepository userRepository) {
 		this.driverRepository = driverRepository;
+		this.userRepository = userRepository;
 	}
 	
 	@Transactional
 	public CreatedDriverDTO createDriver(CreateDriverDTO dto) {
+		if(userRepository.findByEmail(dto.getUser().getEmail()).isPresent()) {
+			throw new EmailAlreadyExistsException("Email already exists.");
+		}
 		Driver driver = new Driver();
 		driver.setEmail(dto.getUser().getEmail());
-        driver.setPassword(dto.getUser().getPassword());
         driver.setFirstName(dto.getUser().getFirstName());
         driver.setLastName(dto.getUser().getLastName());
         driver.setPhoneNumber(dto.getUser().getPhoneNumber());

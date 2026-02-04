@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../infrastructure/auth.service';
-
-type Role = 'admin' | 'driver' | 'user' | 'unuser';
+import { LoginRequest } from '../infrastructure/model/login.model';
+import { AuthResponse } from '../infrastructure/model/auth-response.model';
 
 @Component({
   selector: 'app-login',
@@ -13,13 +13,13 @@ type Role = 'admin' | 'driver' | 'user' | 'unuser';
 export class Login {
 
   @Output() close = new EventEmitter<void>();
-  @Output() loggedIn = new EventEmitter<Role>();
+  @Output() loggedIn = new EventEmitter<void>();
 
   isResetSent: boolean = false;
   resetEmail: string = '';
-  role: Role = 'unuser';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService:AuthService
+  ) {}
 
   forgotPassword(email: string) {
     if(!email) {
@@ -39,27 +39,32 @@ export class Login {
       alert("Please enter your password to login.");
       return;
     }
-    if(email === 'admin@gmail.com' && password === 'admin') {
-      this.role='admin';
-    } else if (email === 'driver@gmail.com' && password === 'driver') {
-      this.role='driver';
-    } else {
-      this.role='user';
-    } 
-
     //kada napises back, ovde izmene za login sa JWT
-
-    this.loggedIn.emit(this.role);
-    this.close.emit();
-    this.router.navigateByUrl('/');
-
-    const el = document.getElementById('estimation');
-
-    if (el) {
-      el.style.filter = 'blur(0px)';
-      el.style.pointerEvents = 'auto';
-      el.style.userSelect = 'auto';
+    const login: LoginRequest = {
+      email: email,
+      password: password
     }
+    this.authService.login(login).subscribe({
+      next: (response: AuthResponse) =>{
+        localStorage.setItem('user', response.token);
+        this.authService.setUser();
+
+        this.loggedIn.emit();
+        this.close.emit();
+        this.router.navigateByUrl('/');
+        const el = document.getElementById('estimation');
+
+        if (el) {
+          el.style.filter = 'blur(0px)';
+          el.style.pointerEvents = 'none';
+          el.style.userSelect = 'none';
+        }
+      },
+      error: (err) => {
+        alert("Login failed. Check credentials.");
+        console.error(err);
+      }
+    });
   }
 
   goToReset(){
