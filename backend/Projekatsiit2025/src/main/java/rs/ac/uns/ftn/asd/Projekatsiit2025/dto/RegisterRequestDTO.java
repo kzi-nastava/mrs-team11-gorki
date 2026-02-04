@@ -7,7 +7,7 @@ public class RegisterRequestDTO {
     private String firstName;
     private String lastName;
     private String address;
-    private String phoneNumber;
+    private int phoneNumber;
     private String profileImage;
     
 	public RegisterRequestDTO() {
@@ -15,7 +15,7 @@ public class RegisterRequestDTO {
 	}
 	
 	public RegisterRequestDTO(String email, String password, String confirmPassword, String firstName, String lastName,
-			String address, String phoneNumber, String profileImage) {
+			String address, int phoneNumber, String profileImage) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -75,11 +75,11 @@ public class RegisterRequestDTO {
 		this.address = address;
 	}
 	
-	public String getPhoneNumber() {
+	public int getPhoneNumber() {
 		return phoneNumber;
 	}
 	
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
