@@ -1,44 +1,80 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService, RegisterRequestDTO } from '../infrastructure/auth.service';
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.html',
   styleUrls: ['./registration.css'],
 })
-
 export class Registration {
-
-  isConfirmationSent: boolean = false;
-  registeredEmail: string = '';
+  isConfirmationSent = false;
+  registeredEmail = '';
   imagePreview: string | ArrayBuffer | null = null;
 
-  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
+  ) {}
 
-  register(email: string, firstName: string, lastName: string, homeAddress: string, phoneNumber: string, password: string, confirmPassword: string) {
-    if(!email){
-      alert("Please enter a valid email address.");
+  confirmEmail() { this.router.navigateByUrl('/'); }
+  
+  register(
+    email: string,
+    firstName: string,
+    lastName: string,
+    address: string,
+    phoneNumber: string,
+    password: string,
+    confirmPassword: string
+  ) {
+    if (!email) {
+      alert('Please enter a valid email address.');
       return;
     }
-    if(!firstName || !lastName || !homeAddress || !phoneNumber || !password || !confirmPassword) {
-      alert("Please fill in all required fields.");
+
+    if (!firstName || !lastName || !address || !phoneNumber || !password || !confirmPassword) {
+      alert('Please fill in all required fields.');
       return;
     }
-    this.registeredEmail = email;
-    this.isConfirmationSent = true;
-    
-  }
 
-  confirmEmail() {
-    this.router.navigateByUrl('/');
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    const dto: RegisterRequestDTO = {
+      email: email.trim(),
+      password,
+      confirmPassword,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      address: address.trim(),
+      phoneNumber: Number(phoneNumber),
+      profileImage: (typeof this.imagePreview === 'string' && this.imagePreview.trim())
+        ? this.imagePreview.trim()
+        : null
+    };
+
+    this.authService.register(dto).subscribe({
+      next: () => {
+        this.registeredEmail = dto.email;
+        this.isConfirmationSent = true;
+
+        alert('Registration successful!');
+        this.router.navigateByUrl('/');
+      },
+      error: (err) => {
+        const msg = err?.error?.message ?? err?.error ?? 'Registration failed';
+        alert(msg);
+      }
+    });
   }
 
   onImageSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-
-    if (!input.files || input.files.length === 0) {
-      return;
-    }
+    if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
 
@@ -47,7 +83,6 @@ export class Registration {
       this.imagePreview = reader.result;
       this.cdr.detectChanges();
     };
-
     reader.readAsDataURL(file);
   }
 }

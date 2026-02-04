@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,7 @@ public class User {
 	private String profileImage;
 	private Boolean active=false;
 	private Boolean blocked=false;
+	@Enumerated(EnumType.STRING)
 	private UserRole role;
 	
 	public User() {
