@@ -16,26 +16,26 @@
             <mat-menu #menu="matMenu" id="profileMenu">
                 <button mat-menu-item id="menuItem"><a routerLink="personal-info">Personal information</a></button>
                 <button mat-menu-item id="menuItem"><a routerLink="change-password">Change Password</a></button>
-                @if(role == "driver"){ 
+                @if(role == "DRIVER"){ 
                     <button mat-menu-item id="menuItem"><a routerLink="vehicle-information">Vehicle information</a></button>
                     <button mat-menu-item id="menuItem"><a routerLink="driver-registration">Driver registration</a></button>
                     <button mat-menu-item id="menuItem"><a routerLink="driver-pass-activation">Driver password activation</a></button>
                     <button mat-menu-item id="menuItem"><a routerLink="rides-list">Ride history (Driver)</a></button>
                 }
-                @if(role == "admin"){
+                @if(role == "ADMIN"){
                     <button mat-menu-item id="menuItem"><a routerLink="panic-notifications">Panic notifications</a></button>
                     <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>                    
                     <button mat-menu-item id="menuItem"><a routerLink="rides-list-admin">Ride history (Admin)</a></button>
                 }
-                @if(role=="user"){
+                @if(role=="PASSENGER"){
                     <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
                     <button mat-menu-item id="menuItem"><a routerLink="rides-list-user">Ride history (User)</a></button>
                 }
             </mat-menu>
-            @if(role == "user"){
+            @if(role == "PASSENGER"){
                 <div class="currentRide"><a routerLink="ride-in-progress">Track ride</a></div>
             }
-            @if(role=="driver"){
+            @if(role=="DRIVER"){
                 <div class="profile" [matMenuTriggerFor]="menu">Rides▾</div>
                 <mat-menu #menu="matMenu" id="rideMenu">
                     <button mat-menu-item id="menuItem"><a routerLink="scheduled-rides">Scheduled rides</a></button>
@@ -47,7 +47,7 @@
     </div>
     <div class="rightItems">
         @if(isLoggedIn){
-            @if(role == "driver"){
+            @if(role == "DRIVER"){
                 <mat-button-toggle-group class="activityLabelGroup" id="activeLabelGroup">
                     <mat-button-toggle style="background-color: green;" class="activityLabelButton" id="activeLabel" [value]="true" 
                         (click)="setActive(true)" [checked]="isActive">Active</mat-button-toggle>

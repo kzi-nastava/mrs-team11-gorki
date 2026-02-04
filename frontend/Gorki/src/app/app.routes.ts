@@ -36,9 +36,6 @@ export const routes: Routes = [
         component: Home
     },
     { 
-        path: '', redirectTo: 'home', pathMatch: 'full' 
-    },
-    { 
         path: 'register', 
         component: Registration 
     },
@@ -48,23 +45,33 @@ export const routes: Routes = [
     },
     {
         path: 'personal-info',
-        component: PersonalInfo
+        component: PersonalInfo,
+        canActivate: [AuthGuard],
+        data: { role: ['PASSENGER', 'DRIVER', 'ADMIN']}
     },
     {
         path: 'change-password',
-        component: ChangePassword
+        component: ChangePassword,
+        canActivate: [AuthGuard],
+        data: { role: ['PASSENGER', 'DRIVER', 'ADMIN']}
     },
     {
         path: 'vehicle-information',
-        component: VehicleInformation
+        component: VehicleInformation,
+        canActivate: [AuthGuard],
+        data: { role: ['DRIVER']}
     },
     {
         path:'rides-list',
-        component:RidesList
+        component:RidesList,
+        canActivate: [AuthGuard],
+        data: { role: ['DRIVER']}
     },
     {
         path:'driver-registration',
-        component:DriverRegistration
+        component:DriverRegistration,
+        canActivate: [AuthGuard],
+        data: { role: ['ADMIN']}
     },
     {
         path:'driver-pass-activation',
@@ -72,23 +79,33 @@ export const routes: Routes = [
     },
     {
         path:'favourite-routes-list',
-        component:FavouriteRoutes
+        component:FavouriteRoutes,
+        canActivate: [AuthGuard],
+        data: { role: ['PASSENGER']}
     },
     {
         path:'scheduled-rides',
-        component:ScheduledRides
+        component:ScheduledRides,
+        canActivate: [AuthGuard],
+        data: { role: ['PASSENGER', 'DRIVER']}
     },
     {
         path:'panic-notifications',
-        component:PanicNotifications
+        component:PanicNotifications,
+        canActivate: [AuthGuard],
+        data: { role: ['ADMIN']}
     },
     {
         path:'rides-list-user',
-        component:RidesListUser
+        component:RidesListUser,
+        canActivate: [AuthGuard],
+        data: { role: ['PASSENGER']}
     },
     {
         path:'rides-list-admin',
-        component:RidesListAdmin
+        component:RidesListAdmin,
+        canActivate: [AuthGuard],
+        data: { role: ['ADMIN']}
     },
     {   
         path:'map',
@@ -96,27 +113,39 @@ export const routes: Routes = [
     },
     {
         path:'ride-in-progress',
-        component:RideInProgress
+        component:RideInProgress,
+        canActivate: [AuthGuard],
+        data: { role: ['PASSENGER']}
     },
     {
         path:'track-ride',
-        component:TrackRide
+        component:TrackRide,
+        canActivate: [AuthGuard],
+        data: { role: ['PASSENGER']}
     },
     {
         path:'driver-sceduled-rides',
-        component:DriverScheduledRidesList
+        component:DriverScheduledRidesList,
+        canActivate: [AuthGuard],
+        data: { role: ['DRIVER']}
     },
     {
         path:'end-of-ride',
-        component:EndOfRide
+        component:EndOfRide,
+        canActivate: [AuthGuard],
+        data: { role: ['DRIVER']}
     },
     {
         path:'ride-in-progress-driver',
-        component:RideInProgressDriver
+        component:RideInProgressDriver,
+        canActivate: [AuthGuard],
+        data: { role: ['DRIVER']}
     },
     {
         path:'ride-list-map/:id',
-        component:RideListMap
+        component:RideListMap,
+        canActivate: [AuthGuard],
+        data: { role: ['ADMIN']}
     }
 ];
 

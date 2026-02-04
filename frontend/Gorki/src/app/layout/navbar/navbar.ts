@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import {MatMenuModule} from '@angular/material/menu';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Login } from '../login/login';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../infrastructure/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,11 +15,30 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 })
 
 export class Navbar { 
-  isLoggedIn: boolean = false;
   isRegistrationOpen: boolean = false;
   isLoginOpen: boolean = false;
   isActive: boolean = true;
-  role: string = "unuser";
+
+  isLoggedIn: boolean = false;
+  role: string = "";
+  
+  private sub?: Subscription;
+
+  constructor(private authService:AuthService, private router: Router){}
+
+  ngOnInit(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.role = this.authService.getRole();
+
+    this.sub = this.authService.userState.subscribe(() => {
+      this.isLoggedIn = this.authService.isLoggedIn();
+      this.role = this.authService.getRole();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
 
   setRegistrationOpen(value: boolean){
     this.isRegistrationOpen = value;
@@ -40,19 +61,27 @@ export class Navbar {
 
   closeLogin() { 
     this.isLoginOpen = false;
+    const el = document.getElementById('estimation');
+    if (el) {
+      el.style.filter = 'blur(0px)';
+      el.style.pointerEvents = 'auto';
+      el.style.userSelect = 'auto';
+    }
   }
 
   onLoggedIn() {
-    this.isLoggedIn = true;
-    this.role = "user";
+    this.closeLogin()
     this.setActive(true);
   }
 
   logout(){
+    localStorage.removeItem('user');
+    this.authService.setUser();
     this.isLoggedIn = false;
     this.isRegistrationOpen = false;
     this.setActive(false);
-    this.role = "unuser";
+    this.role = "";
+    this.router.navigate(["/HomePage"])
   }
 
   openRegistration(){
