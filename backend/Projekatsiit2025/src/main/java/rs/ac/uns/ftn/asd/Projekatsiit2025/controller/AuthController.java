@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverStatusRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LoginRequestDTO;
@@ -24,20 +25,27 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.JwtTokenUtil;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
+	
+	@Autowired private UserRepository userRepository; 
     @Autowired private AuthenticationManager authenticationManager;
     @Autowired private JwtTokenUtil jwtTokenUtil;
+    
+    public AuthController(UserRepository userRepository) {
+    	this.userRepository=userRepository;
+    }
 	
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
 
-    	
     	// 1) autentikacija (uporedi sifru preko UserDetailsService + PasswordEncoder)
         UsernamePasswordAuthenticationToken authReq =
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
 
         Authentication auth = authenticationManager.authenticate(authReq);
-        User user = (User) auth.getPrincipal();
+        
+        User user = userRepository.findByEmail(request.getEmail())
+        	    .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
+
         
         if(!user.getActive() || user.getBlocked()) {
         	LoginResponseDTO response = new LoginResponseDTO();
