@@ -62,7 +62,7 @@ export class Registration {
         this.registeredEmail = dto.email;
         this.isConfirmationSent = true;
 
-        alert('Registration successful!');
+        alert('Registration successful! / Check your email for confirmation.');
         this.router.navigateByUrl('/');
       },
       error: (err) => {
