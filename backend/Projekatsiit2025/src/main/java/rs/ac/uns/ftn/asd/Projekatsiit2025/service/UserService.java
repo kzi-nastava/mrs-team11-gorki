@@ -16,13 +16,13 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UserService implements UserDetailsService {
 	
 	@Autowired private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
 	private static final String DEFAULT_IMAGE = "default-avatar.png";
   
   @Override
@@ -40,9 +40,8 @@ public class UserService implements UserDetailsService {
           .build();
 	}
 	
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
 	}
 	
 	public GetUserDTO getById(Long id) {
@@ -65,7 +64,7 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public UpdatedUserDTO updatePassword(Long id, UpdateUserDTO dto) {
 		User user = userRepository.findById(id).get();
-		user.setPassword(passwordEncoder.encode(dto.getPassword()));
+		user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
 		userRepository.save(user);
 		return mapToUpdatedUserDTO(user);
 	}
@@ -108,7 +107,7 @@ public class UserService implements UserDetailsService {
 
         User user = new User();
         user.setEmail(dto.getEmail());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setAddress(dto.getAddress());

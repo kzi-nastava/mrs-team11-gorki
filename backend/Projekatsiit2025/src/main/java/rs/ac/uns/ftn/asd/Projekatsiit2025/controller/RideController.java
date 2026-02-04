@@ -93,7 +93,7 @@ public class RideController {
 
   	@PreAuthorize("hasAnyAuthority('ROLE_PASSENGER', 'ROLE_DRIVER')")
     @PostMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideCancelRequestDTO> cancelRide(
+    public ResponseEntity<RideCancelResponseDTO> cancelRide(
             @PathVariable Long id,
             @RequestBody RideCancelRequestDTO request) {
 
