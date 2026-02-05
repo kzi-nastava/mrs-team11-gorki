@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, RegisterRequestDTO } from '../infrastructure/auth.service';
+import { RegisterService } from '../service/register-service';
+import { RegisterRequestDTO } from '../model/ui/register-request-dto';
 
 @Component({
   selector: 'app-registration',
@@ -15,7 +16,7 @@ export class Registration {
   constructor(
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
+    private registerService: RegisterService
   ) {}
 
   confirmEmail() { this.router.navigateByUrl('/'); }
@@ -57,7 +58,7 @@ export class Registration {
         : null
     };
 
-    this.authService.register(dto).subscribe({
+    this.registerService.register(dto).subscribe({
       next: () => {
         this.registeredEmail = dto.email;
         this.isConfirmationSent = true;
