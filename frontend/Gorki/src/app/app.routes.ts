@@ -145,7 +145,7 @@ export const routes: Routes = [
         path:'ride-list-map/:id',
         component:RideListMap,
         canActivate: [AuthGuard],
-        data: { role: ['ADMIN']}
+        data: { role: ['ADMIN','PASSENGER']}
     }
 ];
 

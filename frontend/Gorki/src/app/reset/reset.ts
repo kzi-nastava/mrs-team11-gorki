@@ -23,6 +23,7 @@ export class Reset {
       alert("Passwords do not match. Please try again.");
       return;
     }
+    
     this.router.navigate(['/']);
   }
 }
