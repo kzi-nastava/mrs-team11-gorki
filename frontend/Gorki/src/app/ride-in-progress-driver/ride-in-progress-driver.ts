@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MapComponent } from "../map/map";
 import { MapService } from '../map/map-service';
 import { TrackRideDriver } from '../rides/track-ride-driver/track-ride-driver';
-import { RideInProgressService } from '../service/passenger-ride-in-progress';
+import { DriverRideInProgress } from '../service/driver-ride-in-progress';
 import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -20,14 +20,14 @@ export class RideInProgressDriver implements OnInit {
 
   constructor(
       private mapService: MapService,
-      private rideService: RideInProgressService,
+      private rideService: DriverRideInProgress,
       private cdr: ChangeDetectorRef
     ) {}
 
   async ngOnInit() {
     this.mapService.clearAll();
 
-    this.rideService.getActiveRideAddresses(2).subscribe({
+    this.rideService.getActiveRideAddresses(1).subscribe({
       next: async ({ pickup, dropoff }) => {
         this.pickupAddress = pickup;
         this.dropoffAddress = dropoff;

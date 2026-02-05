@@ -13,7 +13,7 @@ public class Projekatsiit2025Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Projekatsiit2025Application.class, args);
 	
-		/*
+		 /*
 		 * Ako u application.properties stoji:
 		 * 1. spring.jpa.hibernate.ddl-auto=create --> svkai put kada se
 		 * aplikacija pokrene, tabele se automatski brisu i ponovo prave

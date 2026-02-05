@@ -1,6 +1,5 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

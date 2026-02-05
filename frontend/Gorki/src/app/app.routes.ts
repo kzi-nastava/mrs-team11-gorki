@@ -87,7 +87,7 @@ export const routes: Routes = [
         path:'scheduled-rides',
         component:ScheduledRides,
         canActivate: [AuthGuard],
-        data: { role: ['PASSENGER', 'DRIVER']}
+        data: { role: ['PASSENGER', 'DRIVER','ADMIN']}
     },
     {
         path:'panic-notifications',

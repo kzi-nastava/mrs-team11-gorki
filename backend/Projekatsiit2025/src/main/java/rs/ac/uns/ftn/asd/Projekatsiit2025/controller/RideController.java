@@ -36,11 +36,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import org.springframework.web.bind.annotation.GetMapping;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateInconsistencyReportDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedInconsistencyReportDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishedRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRideTrackingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 
 @RestController
 @RequestMapping("/api/rides")

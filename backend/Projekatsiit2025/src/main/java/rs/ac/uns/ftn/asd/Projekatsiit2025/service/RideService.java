@@ -742,7 +742,7 @@ public class RideService {
     public DriverRideHistoryDTO getActiveRideForDriver(Long driverId) {
 
         Ride ride = rideRepository
-                .findByCreator_IdAndStatus(driverId, RideStatus.STARTED);
+                .findByDriver_IdAndStatus(driverId, RideStatus.STARTED);
 
         if (ride == null) {
             throw new RuntimeException("Driver nema aktivnu vožnju");

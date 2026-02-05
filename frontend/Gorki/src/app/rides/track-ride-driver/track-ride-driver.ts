@@ -17,7 +17,7 @@ export class TrackRideDriver {
 
   showReportModal = false;
   noteText = '';
-  currentRideId: number = 2;
+  currentRideId: number = 6;
 
   @Input() pickupAddress = '';
   @Input() dropoffAddress = '';

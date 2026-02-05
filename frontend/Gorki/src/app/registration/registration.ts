@@ -19,7 +19,7 @@ export class Registration {
     private registerService: RegisterService
   ) {}
 
-  confirmEmail() { this.router.navigateByUrl('/'); }
+  confirmEmail() { this.router.navigateByUrl('/');}
   
   register(
     email: string,

@@ -38,6 +38,8 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
     
     Ride findByCreator_IdAndStatus(Long passengerId, RideStatus status);
     
+    Ride findByDriver_IdAndStatus(Long driverId,RideStatus status);
+    
     //END OF A RIDE
     // pronadji voznju koja pripada tom driveru
     Ride findByIdAndDriver_Id(Long rideId, Long driverId);

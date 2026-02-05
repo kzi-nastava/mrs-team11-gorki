@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../env/environment';
 
 export interface RideStopRequestDTO {
   latitude: number;
@@ -19,6 +20,6 @@ export class StopRideService {
   constructor(private http: HttpClient) {}
 
   stopRide(rideId: number, dto: RideStopRequestDTO): Observable<RideStopResponseDTO> {
-    return this.http.post<RideStopResponseDTO>(`/api/rides/${rideId}/stop`, dto);
+    return this.http.post<RideStopResponseDTO>(`${environment.apiHost}/rides/${rideId}/stop`, dto);
   }
 }

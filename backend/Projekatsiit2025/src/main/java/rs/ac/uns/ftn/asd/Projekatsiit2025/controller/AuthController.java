@@ -18,7 +18,6 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LoginResponseDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RegisterRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.JwtTokenUtil;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.UserService;
