@@ -1,10 +1,10 @@
 <div class="modal-background"></div>
 <div class="confirmation-modal">
-    <div class="ride-cost-header">The ride will cost $10.00</div>
+    <div class="ride-cost-header">The ride will cost {{price}} dinars</div>
     <div class="separator2"></div>
     <div class="continue-question">Are you sure you want to proceed?</div>
     <div class="cost-buttons">
-        <button class="yes" (click)="confirmOrder()">Yes</button>
-        <button class="no" (click)="closeModal()">No</button>
+        <button class="yes" (click)="confirm.emit()">Yes</button>
+        <button class="no" (click)="close.emit()">No</button>
     </div>
 </div>

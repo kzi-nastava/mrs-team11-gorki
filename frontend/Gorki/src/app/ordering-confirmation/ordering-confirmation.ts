@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-ordering-confirmation',
@@ -7,13 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './ordering-confirmation.css',
 })
 export class OrderingConfirmation {
-  isModalOpen: boolean = false;
-
-  closeModal() {
-    this.isModalOpen = false;
-  }
-
-  confirmOrder() {
-    window.location.reload();
-  }
+  @Output() close = new EventEmitter<void>();
+  @Output() confirm = new EventEmitter<void>();
+  @Input() price!: number;
 }

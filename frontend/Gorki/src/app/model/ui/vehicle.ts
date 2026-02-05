@@ -1,6 +1,6 @@
 export interface Vehicle{
 	model:string;
-	type:'Standard' | 'Luxury' | 'Van' | '';
+	type:'STANDARD' | 'LUXURY' | 'VAN';
 	plateNumber:string;
 	seats:number;
 	babyTransport:boolean;

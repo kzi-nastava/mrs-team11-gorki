@@ -1,45 +1,44 @@
 <div class="ride-ordering-form">
-    <form class="main-form" [ngClass]="{'hidden': activeForm !== 'main'}">
+    <form class="main-form" [formGroup]="mainForm" [ngClass]="{'hidden': activeForm !== 'main'}">
         <div class="question-title">Where would you like to go?</div>
         <div class="favourite-routes-p">You can <a routerLink="/favourite-routes-list">click here</a> to choose your favorite route or fill the route fields down below</div>
-        <input class="starting-point" placeholder="Enter your starting point address"/>
+        <input class="starting-point" formControlName="startAddress" placeholder="Enter your starting point address"/>
         <div class="stopping-points">
             <label class="stopping-points-label">Stopping points (optional):</label>
             <button class="add" type="button" (click)="openStoppingForm()">Add</button>
         </div>
-        <input class="ending-point" placeholder="Enter your ending point address">
+        <input class="ending-point" formControlName="endAddress" placeholder="Enter your ending point address">
         <div class="link-other-passengers">
             <label class="link-other-passengers-label">Link other passengers:</label>
             <button class="link" type="button" (click)="openPassengersForm()">Link</button>
         </div>
-        <input class="scheduled-time" placeholder="Enter scheduled time (optional)">
+        <input class="scheduled-time" formControlName="scheduledTime" type="datetime-local" placeholder="Enter scheduled time (optional)">
         <mat-form-field>
             <mat-label>Select an option</mat-label>
-            <mat-select placeholder="Choose preferred vehicle type">
-                <mat-option>None</mat-option>
-                <mat-option value="standard">Standard</mat-option>
-                <mat-option value="luxury">Luxury</mat-option>
-                <mat-option value="van">Van</mat-option>
+            <mat-select formControlName="vehicleType" placeholder="Choose preferred vehicle type">
+                <mat-option value="STANDARD">Standard</mat-option>
+                <mat-option value="LUXURY">Luxury</mat-option>
+                <mat-option value="VAN">Van</mat-option>
             </mat-select>
         </mat-form-field>
         <div class="questions">
             <div class="baby-transport">
                 <label class="baby-transport-label">Baby transport?</label>
-                <mat-radio-group aria-label="Select an option" class="radio">
-                    <mat-radio-button value="1">Yes</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                <mat-radio-group formControlName="babyTransport" aria-label="Select an option" class="radio">
+                    <mat-radio-button [value]="true">Yes</mat-radio-button>
+                    <mat-radio-button [value]="false">No</mat-radio-button>
                 </mat-radio-group>
             </div>
             <div class="separator"></div>
             <div class="pet-friendly">
                 <label class="pet-friendly-label">Pet friendly?</label>
-                <mat-radio-group aria-label="Select an option" class="radio">
-                    <mat-radio-button value="1">Yes</mat-radio-button>
-                    <mat-radio-button value="2">No</mat-radio-button>
+                <mat-radio-group formControlName="petTransport" aria-label="Select an option" class="radio">
+                    <mat-radio-button [value]="true">Yes</mat-radio-button>
+                    <mat-radio-button [value]="false">No</mat-radio-button>
                 </mat-radio-group>
             </div>
         </div>
-        <button class="order" type="button" (click)="openModal()">Order</button>
+        <button class="order" type="button" (click)="order()">Order</button>
     </form>
     <form class="stopping-points-form" [ngClass]="{'hidden': activeForm !== 'stopping'}">
         <div class="stopping-points-header">Enter your stopping points</div>
@@ -81,5 +80,5 @@
     </form>
 </div>
 @if(isModalOpen){
-        <app-ordering-confirmation></app-ordering-confirmation>
+        <app-ordering-confirmation (close)="isModalOpen=false" (confirm)="onConfirm()" [price]="createdPrice"></app-ordering-confirmation>
 }
