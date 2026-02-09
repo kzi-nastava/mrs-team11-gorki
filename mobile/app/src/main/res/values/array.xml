@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_array">
+        <item>None</item>
+        <item>Starting time (newest)</item>
+        <item>Starting time (oldest)</item>
+        <item>Ending time (newest)</item>
+        <item>Ending time (oldest)</item>
+        <item>Price (ascending)</item>
+        <item>Price (descending)</item>
+        <item>Cancelled (first)</item>
+        <item>Panic activated (first)</item>
+    </string-array>
+</resources>
