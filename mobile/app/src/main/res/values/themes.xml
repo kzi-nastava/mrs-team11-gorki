@@ -101,6 +101,7 @@
         <item name="android:padding">16dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/container_bg</item>
+        <item name="android:layout_marginLeft">10dp</item>
     </style>
     <style name="cardLabel">
         <item name="android:textSize">18sp</item>
@@ -118,5 +119,21 @@
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center_vertical</item>
         <item name="backgroundTint">@color/purple</item>
+    </style>
+    <style name="dateFilters">
+        <item name="android:fontFamily">Sofia Sans Condensed</item>
+        <item name="android:textColor">@color/purple</item>
+    </style>
+    <style name="PassengerTitle">
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PassengerCell">
+        <item name="android:textColor">@color/purple</item>
+    </style>
+
+    <style name="bcGround">
+        <item name="android:background">@drawable/gradient_background</item>
     </style>
 </resources>
