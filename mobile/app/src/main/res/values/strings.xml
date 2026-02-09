@@ -98,4 +98,11 @@
     <string name="reset_text">Reset link sent to %1$s</string>
     <string name="open_reset_link">Open reset link</string>
 
+    <string name="button_title">Ucitaj istoriju</string>
+    <string name="res">Rezultat  </string>
+    <string name="btnLog">Login</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+
+
 </resources>

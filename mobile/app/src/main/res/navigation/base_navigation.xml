@@ -17,8 +17,8 @@
         android:id="@+id/homeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.HomeFragment"
         app:popUpTo="@id/unuserHomeFragment"
-        app:popUpToInclusive="true"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home"/>
+    <!--app:popUpToInclusive="true"-->
     <fragment
         android:id="@+id/profileInfoFragment"
         android:name="ftn.mrs_team11_gorki.fragments.ProfileInfoFragment"
@@ -34,4 +34,9 @@
         android:name="ftn.mrs_team11_gorki.fragments.VehicleInfoFragment"
         app:popUpTo="@id/homeFragment"
         tools:layout="@layout/fragment_vehicle_info"/>
+    <fragment
+        android:id="@+id/nav_driver_ride_history"
+        android:name="ftn.mrs_team11_gorki.fragments.HistoryFragment"
+        app:popUpTo="@id/homeFragment"
+        tools:layout="@layout/fragment_history"/>
 </navigation>
