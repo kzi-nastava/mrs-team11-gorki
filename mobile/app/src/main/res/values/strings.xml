@@ -1,13 +1,29 @@
 <resources>
     <string name="app_name">mrs-team11-Gorki-Projekat</string>
     <string name="logo">021Ride</string>
-    <string name="dontHaveAcc">Don\'t have an account?</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
-    <string name="cardQuestion">Where would you like to go?</string>
-    <string name="cardButtonText">Estimate your ride</string>
+    <string name="question">Where would you like to go?</string>
+    <string name="startingAddressHint">Starting Point (e.g. Jerneja Kopitara 32)</string>
+    <string name="destinationAddressHint">Destination (e.g. Kopernikova 24)</string>
+    <string name="estimate">Estimate</string>
+    <string name="open_drawer">Open navigation drawer</string>
+    <string name="close_drawer">Close navigation drawer</string>
+    <string name="options">Options</string>
+    <string name="rideCardTitle">Ride No. </string>
+    <string name="startingTime">• Starting time - </string>
+    <string name="endingTime">• Ending time - </string>
+    <string name="startingPoint">• Starting point - </string>
+    <string name="destination">• Destination - </string>
+    <string name="price">• Price - </string>
+    <string name="cancelled">• Cancelled</string>
+    <string name="panicActivated">• PANIC activated</string>
+    <string name="moreInfo">MORE INFO</string>
+    <string name="four">4</string>
+
+
     <string name="navbarMenuText">Menu</string>
-    <string name="personalInfoText">Personal information</string>
+    <string name="personalInfoText">Personal info</string>
     <string name="firstName">First Name</string>
     <string name="lastName">Last Name</string>
     <string name="phone">Phone number</string>
@@ -74,7 +90,7 @@
     <string name="confirmation_email_sent">(24h) Confirmation email sent to %1$s</string>
 
     <!-- Login labels -->
-     <string name="enter_credentials">Enter your credentials</string>
+    <string name="enter_credentials">Enter your credentials</string>
     <string name="email_label">Email:</string>
     <string name="password_label">Password:</string>
     <string name="forgot_password">Forgot password?</string>

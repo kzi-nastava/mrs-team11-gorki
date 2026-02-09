@@ -25,7 +25,7 @@ export class RideInProgress implements OnInit {
     this.mapService.clearAll();
 
     // Dohvati voznju u toku za putnika (primer id = 2)
-    this.rideService.getActiveRideAddresses(2).subscribe({
+    this.rideService.getActiveRideAddresses(4).subscribe({
       next: async ({ pickup, dropoff }) => {
         this.pickupAddress = pickup;
         this.dropoffAddress = dropoff;
