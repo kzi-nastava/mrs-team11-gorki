@@ -1,0 +1,48 @@
+<div class="ride-card">
+  <h1>Ride No. {{ scheduledRide.id }}</h1>
+
+  <div class="rating">
+    ☆☆☆☆☆ <span>{{ scheduledRide.rating }}</span>
+  </div>
+
+  <hr />
+
+  <ul>
+    <li><strong>Date</strong> - {{ scheduledRide.date | date:'dd.MM.yyyy' }}</li>
+    <li><strong>Starting time</strong> - {{ scheduledRide.startTime }}</li>
+    <li>
+      <strong>Starting point</strong> -
+      {{ scheduledRide.startLocation }}
+    </li>
+    <li>
+      <strong>Destination</strong> -
+      {{ scheduledRide.destination }}
+    </li>
+  </ul>
+
+  <hr />
+
+  <ul>
+    <li><strong>$ Price</strong> - {{ scheduledRide.price }}$</li>
+
+    <li class="status">
+      <strong>Canceled</strong>
+      <span class="icon" [class.active]="scheduledRide.canceled"></span>
+    </li>
+
+    <li><strong>Cancelation reason - </strong>{{scheduledRide.cancelationReason}}</li>
+
+    <li class="status">
+      <strong>PANIC activated</strong>
+      <span class="icon" [class.active]="scheduledRide.panic"></span>
+    </li>
+  </ul>
+
+  <button class="more-info" (click)="openDetails()">
+    MORE INFO
+  </button>
+  
+  <button class="more-info" (click)="cancelRide()">
+    CANCEL
+  </button>
+</div>

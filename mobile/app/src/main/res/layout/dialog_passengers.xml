@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Passengers"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:paddingBottom="12dp"
+        style="@style/PassengerTitle"
+        android:fontFamily="SofiaSansCondensed"/>
+
+    <!-- Header row -->
+    <TableLayout
+        android:id="@+id/tablePassengers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:shrinkColumns="*"
+        android:divider="@android:color/darker_gray"
+        android:showDividers="middle">
+
+        <TableRow
+            android:padding="8dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="E-mail"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:fontFamily="SofiaSansCondensed"
+                style="@style/PassengerCell"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:text="First name"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:fontFamily="SofiaSansCondensed"
+                style="@style/PassengerCell"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:text="Last name"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:fontFamily="SofiaSansCondensed"
+                style="@style/PassengerCell"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:text="Phone"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:padding="6dp"
+                android:fontFamily="SofiaSansCondensed"
+                style="@style/PassengerCell"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Close"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/purple"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

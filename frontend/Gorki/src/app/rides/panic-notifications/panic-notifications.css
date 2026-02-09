@@ -1,0 +1,55 @@
+.divider{
+    background-color: #ffffff;
+    color:#ffffff;
+}
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ride-list {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  /*white-space: nowrap;*/
+  background: transparent;
+  padding: 20px;
+  max-width: 100%;
+}
+
+/* sakrij scrollbar */
+.ride-list::-webkit-scrollbar {
+  display: none;
+  background: transparent;
+}
+
+/* kartice se NE SMEJU skupljati */
+app-ride-card {
+  flex: 0 0 auto;
+}
+
+/* strelice */
+.nav {
+  background: #3c2f8f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 26px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav.left {
+  margin-right: 12px;
+}
+
+.nav.right {
+  margin-left: 12px;
+}

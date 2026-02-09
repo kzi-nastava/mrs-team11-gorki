@@ -3,27 +3,24 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Passenger;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
-
 public class CreateRideDTO {
 	private LocalDateTime scheduledTime;
-	private Route route;
-	private List<Passenger> linkedPassengers;
-	private Passenger creator;
+	private CreateRouteDTO route;
+	private List<String> linkedPassengersEmails;
+	private Long creatorId;
 	private Boolean babyTransport;
     private Boolean petFriendly;
     private String vehicleType;
 	public CreateRideDTO() {
 		super();
 	}
-	public CreateRideDTO(LocalDateTime scheduledTime, Route route, List<Passenger> linkedPassengers, Passenger creator,
+	public CreateRideDTO(LocalDateTime scheduledTime, CreateRouteDTO route, List<String> linkedPassengersEmails, Long creatorId,
 			Boolean babyTransport, Boolean petFriendly, String vehicleType) {
 		super();
 		this.scheduledTime = scheduledTime;
 		this.route = route;
-		this.linkedPassengers = linkedPassengers;
-		this.creator = creator;
+		this.linkedPassengersEmails = linkedPassengersEmails;
+		this.creatorId = creatorId;
 		this.babyTransport = babyTransport;
 		this.petFriendly = petFriendly;
 		this.vehicleType = vehicleType;
@@ -34,23 +31,23 @@ public class CreateRideDTO {
 	public void setScheduledTime(LocalDateTime scheduledTime) {
 		this.scheduledTime = scheduledTime;
 	}
-	public Route getRoute() {
+	public CreateRouteDTO getRoute() {
 		return route;
 	}
-	public void setRoute(Route route) {
+	public void setRoute(CreateRouteDTO route) {
 		this.route = route;
 	}
-	public List<Passenger> getLinkedPassengers() {
-		return linkedPassengers;
+	public List<String> getLinkedPassengersEmails() {
+		return linkedPassengersEmails;
 	}
-	public void setLinkedPassengers(List<Passenger> linkedPassengers) {
-		this.linkedPassengers = linkedPassengers;
+	public void setLinkedPassengers(List<String> linkedPassengersEmails) {
+		this.linkedPassengersEmails = linkedPassengersEmails;
 	}
-	public Passenger getCreator() {
-		return creator;
+	public Long getCreatorId() {
+		return creatorId;
 	}
-	public void setCreator(Passenger creator) {
-		this.creator = creator;
+	public void setCreator(Long creatorId) {
+		this.creatorId = creatorId;
 	}
 	public Boolean getBabyTransport() {
 		return babyTransport;

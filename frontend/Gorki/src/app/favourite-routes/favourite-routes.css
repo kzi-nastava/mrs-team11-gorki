@@ -1,0 +1,75 @@
+.divider{
+    background-color: #ffffff;
+    color:#ffffff;
+}
+.carousel-wrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ride-list {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  /*white-space: nowrap;*/
+  background: transparent;
+  padding: 20px;
+  max-width: 100%;
+}
+
+/* sakrij scrollbar */
+.ride-list::-webkit-scrollbar {
+  display: none;
+  background: transparent;
+}
+
+/* kartice se NE SMEJU skupljati */
+app-favourite-route-card {
+  flex: 0 0 auto;
+}
+
+/* strelice */
+.nav {
+  background: #3c2f8f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 26px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav.left {
+  margin-right: 12px;
+}
+
+.nav.right {
+  margin-left: 12px;
+}
+
+.no-favourite-routes{
+    width: 500px;
+    height: 200px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 25px;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 32px;
+    font-weight: bold;
+    color: #362D88;
+    align-content: center;
+    text-align: center;
+}

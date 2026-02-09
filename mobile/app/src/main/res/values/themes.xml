@@ -1,28 +1,139 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Mrsteam11GorkiProjekat" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme.Mrsteam11GorkiProjekat" parent="Theme.Material3.DayNight.NoActionBar" >
+        <item name="colorControlNormal">@color/white</item>
     </style>
-    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <style name="MyRadioButtonStyle" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="buttonTint">@color/purple</item>
+        <item name="android:textColor">@color/purple</item>
+    </style>
+    <style name="formStyle">
+        <item name="android:padding">16dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/container_bg</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="formStyleInScroll">
+        <item name="android:padding">16dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="formTitle">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="formTitleDivider">
+        item name
+    </style>
+    <style name="formLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:paddingHorizontal">16dp</item>
+    </style>
+    <style name="formInput">
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/input_bg</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/lightPurple</item>
+        <item name="android:textColorHint">@color/lightPurple</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="formDropdownLayout"
+        parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:textColor">@color/lightPurple</item>
+        <item name="android:textColorHint">@color/lightPurple</item>
+        <item name="android:textStyle">bold</item>
+        <item name="boxStrokeColor">@color/purple</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="endIconTint">@color/purple</item>
+        <item name="boxBackgroundColor">@color/lightGrey</item>
+        <item name="boxCornerRadiusTopStart">24dp</item>
+        <item name="boxCornerRadiusTopEnd">24dp</item>
+        <item name="boxCornerRadiusBottomStart">24dp</item>
+        <item name="boxCornerRadiusBottomEnd">24dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+    <style name="formButton" parent="Widget.Material3.Button">
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/button_bg_purple</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:radius">24dp</item>
+        <item name="android:layout_marginVertical">8dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="backgroundTint">@color/purple</item>
+    </style>
+    <style name="forgotPasswordStyle">
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:paddingHorizontal">16dp</item>
     </style>
-    <style name="navLabelColor">
+    <style name="revertChangesButton" parent="Widget.Material3.Button">
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/button_border</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:radius">24dp</item>
+        <item name="android:layout_marginVertical">8dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="backgroundTint">@null</item>
+    </style>
+    <style name="formRadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="buttonTint">@color/purple</item>
+    </style>
+    <style name="toolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textStyle">bold|italic</item>
-        <item name="android:textSize">11sp</item>
     </style>
-    <style name="buttonBold">
+    <style name="cardStyle">
+        <item name="android:padding">16dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/container_bg</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+    <style name="cardLabel">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:paddingHorizontal">16dp</item>
+    </style>
+    <style name="cardButton">
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/button_bg_purple</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:radius">24dp</item>
+        <item name="android:layout_marginVertical">20dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="backgroundTint">@color/purple</item>
+    </style>
+    <style name="dateFilters">
+        <item name="android:fontFamily">Sofia Sans Condensed</item>
+        <item name="android:textColor">@color/purple</item>
+    </style>
+    <style name="PassengerTitle">
+        <item name="android:textColor">@color/purple</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="labelBold">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">15sp</item>
+
+    <style name="PassengerCell">
+        <item name="android:textColor">@color/purple</item>
     </style>
-    <style name="datePickerText">
-        <item name="android:textSize">15sp</item>
+
+    <style name="bcGround">
+        <item name="android:background">@drawable/gradient_background</item>
     </style>
-    <style name="CardText">
-    </style>
-    <style name="Theme.Mrsteam11GorkiProjekat" parent="Base.Theme.Mrsteam11GorkiProjekat" />
 </resources>

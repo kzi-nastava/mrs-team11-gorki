@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_navigation"
+    app:startDestination="@id/unuserHomeFragment">
+    <fragment
+        android:id="@+id/unuserHomeFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.UnuserHomeFragment"
+        tools:layout="@layout/fragment_unuser_home" />
+    <fragment
+        android:id="@+id/passengerRegistrationFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.PassengerRegisterFragment"
+        app:popUpTo="@id/unuserHomeFragment"
+        tools:layout="@layout/fragment_passenger_registration" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.HomeFragment"
+        app:popUpTo="@id/unuserHomeFragment"
+        tools:layout="@layout/fragment_home"/>
+    <!--app:popUpToInclusive="true"-->
+    <fragment
+        android:id="@+id/profileInfoFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.ProfileInfoFragment"
+        app:popUpTo="@id/homeFragment"
+        tools:layout="@layout/fragment_profile_info"/>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.ChangePasswordFragment"
+        app:popUpTo="@id/homeFragment"
+        tools:layout="@layout/fragment_change_password"/>
+    <fragment
+        android:id="@+id/vehicleInfoFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.VehicleInfoFragment"
+        app:popUpTo="@id/homeFragment"
+        tools:layout="@layout/fragment_vehicle_info"/>
+    <fragment
+        android:id="@+id/nav_driver_ride_history"
+        android:name="ftn.mrs_team11_gorki.fragments.HistoryFragment"
+        app:popUpTo="@id/homeFragment"
+        tools:layout="@layout/fragment_history"/>
+</navigation>

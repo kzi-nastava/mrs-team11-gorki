@@ -1,0 +1,46 @@
+<div class="backdrop" (click)="close.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <h1>Rate ride</h1>
+    <hr />
+    <!-- DRIVER RATING -->
+    <div class="rating-section">
+      <p class="texts">Driver rating</p>
+      <div class="stars">
+        <span
+          *ngFor="let star of [1,2,3,4,5]"
+          (click)="setDriverRating(star)"
+          [class.active]="star <= driverRating">
+          ★
+        </span>
+      </div>
+    </div>
+
+    <!-- VEHICLE RATING -->
+    <div class="rating-section">
+      <p class="texts">Vehicle rating</p>
+      <div class="stars">
+        <span
+          *ngFor="let star of [1,2,3,4,5]"
+          (click)="setVehicleRating(star)"
+          [class.active]="star <= vehicleRating">
+          ★
+        </span>
+      </div>
+    </div>
+
+    <!-- COMMENT -->
+    <textarea
+      [(ngModel)]="comment"
+      placeholder="Leave a comment...">
+    </textarea>
+
+    <button
+      class="submit-btn"
+      [disabled]="driverRating === 0 || vehicleRating === 0"
+      (click)="onSubmit()">
+      Submit
+    </button>
+
+  </div>
+</div>

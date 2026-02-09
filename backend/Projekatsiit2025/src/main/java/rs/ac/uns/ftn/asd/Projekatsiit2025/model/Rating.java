@@ -2,12 +2,25 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+@Entity
 public class Rating {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+    
 	private double driverRating;
 	private double vehicleRating;
 	private String comment;
 	private LocalDateTime createdAt;
+	
+	@ManyToOne
+	@JoinColumn(name = "ride_id")
 	private Ride ride;
 	
 	public Rating() {

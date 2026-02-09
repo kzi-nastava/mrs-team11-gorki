@@ -1,9 +1,24 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED) //SINGLE_TABLE
+@Table(name = "\"user\"")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+    
 	private String email;
 	private String password;
 	private String firstName;
@@ -13,6 +28,7 @@ public class User {
 	private String profileImage;
 	private Boolean active=false;
 	private Boolean blocked=false;
+	@Enumerated(EnumType.STRING)
 	private UserRole role;
 	
 	public User() {

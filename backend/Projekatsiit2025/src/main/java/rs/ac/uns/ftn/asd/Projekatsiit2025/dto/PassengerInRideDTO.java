@@ -1,15 +1,18 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto;
 
-import java.util.List;
-
-import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Passenger;
-
 public class PassengerInRideDTO {
 	
 	 	private String email;
 	 	private String firstName;
 	 	private String lastName;
 	 	private String phoneNumber;
+		public PassengerInRideDTO(String email, String firstName, String lastName, String phoneNumber) {
+			super();
+			this.email = email;
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.phoneNumber = phoneNumber;
+		}
 		public PassengerInRideDTO() {
 			super();
 		}

@@ -1,4 +1,4 @@
-<div class="personalInfoForm">
+<form *ngIf="user" class="personalInfoForm">
     <p class="personalInfoHeader">
         Personal information
     </p>
@@ -6,7 +6,7 @@
     <div class="formWrapper">
         <div class="formContentLeft">
             <img
-            [src]="imagePreview || '/user-pic.png'"
+            [src]="imagePreview || user.profileImage"
             class="userPic"
             (click)="fileInput.click()"
             />
@@ -18,22 +18,22 @@
             (change)="onImageSelected($event)"
             />
             <label>Email</label>
-            <input type="text" value="marko.pavlovic2404004@gmail.com">
+            <input type="text" [(ngModel)]="user.email" name="email">
             <div class="formButtons">
-                <button class="saveChanges">Save changes</button>
-                <button class="revertChanges">Revert changes</button>
+                <button class="saveChanges" (click)="saveChanges()">Save changes</button>
+                <button class="revertChanges" type="button" (click)="revertChanges()">Revert changes</button>
             </div>
         </div>
         <div class="secondDivider"></div>
         <div class="formContentRight">
             <label>First name</label>
-            <input type="text" value="Marko">
+            <input type="text" [(ngModel)]="user.firstName" name="firstName">
             <label>Last name</label>
-            <input type="text" value="Pavlovic">
+            <input type="text" [(ngModel)]="user.lastName" name="lastName">
             <label>Home address</label>
-            <input type="text" value="Mornarska 51, Novi Sad">
+            <input type="text" [(ngModel)]="user.address" name="address">
             <label>Phone number</label>
-            <input type="text" value="+381648816145">
+            <input type="text" [(ngModel)]="user.phoneNumber" name="phone">
         </div>
     </div>
-</div>
+</form>

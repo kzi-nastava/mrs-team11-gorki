@@ -27,9 +27,16 @@ android {
             )
         }
     }
+
+    buildFeatures{
+        viewBinding = true
+    }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+
+        isCoreLibraryDesugaringEnabled = true
     }
 }
 
@@ -39,7 +46,21 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.cardview)
+    //noinspection UseTomlInstead,GradleDependency
+    implementation("androidx.navigation:navigation-fragment:2.7.7")
+    //noinspection UseTomlInstead,GradleDependency
+    implementation("androidx.navigation:navigation-ui:2.7.7")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    //noinspection UseTomlInstead,NewerVersionAvailable
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    //noinspection UseTomlInstead,NewerVersionAvailable
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    //noinspection UseTomlInstead,NewerVersionAvailable
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    //noinspection UseTomlInstead,GradleDependency
+    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:2.1.2")
+    //noinspection UseTomlInstead,NewerVersionAvailable
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }

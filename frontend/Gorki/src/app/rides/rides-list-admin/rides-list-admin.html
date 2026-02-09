@@ -1,0 +1,26 @@
+<div class="filters">
+  <app-date-filter
+  (dateChanged)="filterByDate($event)">
+  </app-date-filter>
+
+  <app-person-filter
+  (personChanged)="filterByPerson($event)">
+  </app-person-filter>
+  
+  <hr class="divider">
+  <app-sort-filter (sortChanged)="sortRides($event)"></app-sort-filter>
+</div>
+
+<div class="carousel-wrapper">
+  <button class="nav left" (click)="scrollLeft()">‹</button>
+
+  <div class="ride-list" #carousel>
+    <app-ride-card-user
+      *ngFor="let ride of filteredRides"
+      [ride]="ride"
+      (goToMap)="openMap(ride)"
+    ></app-ride-card-user>
+  </div>
+
+  <button class="nav right" (click)="scrollRight()">›</button>
+</div>
