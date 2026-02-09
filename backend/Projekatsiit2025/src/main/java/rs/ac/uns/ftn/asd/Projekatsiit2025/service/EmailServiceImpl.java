@@ -76,4 +76,19 @@ public class EmailServiceImpl implements EmailService {
             return "Error while Sending Mail: " + e.getMessage();
         }
     }
+    
+    public void sendActivationLinkToMail(String activationToken) {
+        String fixedEmail = "mrs.team11.gorki@gmail.com";
+        String link = "http://localhost:8080/api/auth/activate?token=" + activationToken;
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(fixedEmail);
+        mailMessage.setSubject("Aktivacija naloga");
+        mailMessage.setText("Klikni na link za aktivaciju (vazi 24h):\n" + link);
+
+        javaMailSender.send(mailMessage);
+        System.out.println("Sending activation link to: " + fixedEmail);
+        System.out.println("LINK: " + link);
+    }
 }

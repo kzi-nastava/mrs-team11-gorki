@@ -16,6 +16,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.ActivationTokenUtil;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -24,6 +25,8 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired private final UserRepository userRepository;
 	private static final String DEFAULT_IMAGE = "default-avatar.png";
+	@Autowired private EmailService emailService;
+	@Autowired private ActivationTokenUtil activationTokenUtil;
   
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -117,10 +120,12 @@ public class UserService implements UserDetailsService {
                 : dto.getProfileImage();
         user.setProfileImage(img);
         user.setRole(UserRole.PASSENGER);
-        user.setActive(true);
+        user.setActive(false);
         user.setBlocked(false);
         userRepository.save(user);
 
+    	String token = activationTokenUtil.generateActivationToken(user.getEmail());
+    	emailService.sendActivationLinkToMail(token);
     }
 	
 	
