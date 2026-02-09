@@ -12,6 +12,7 @@ export class Registration {
   isConfirmationSent = false;
   registeredEmail = '';
   imagePreview: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private router: Router,
@@ -53,9 +54,7 @@ export class Registration {
       lastName: lastName.trim(),
       address: address.trim(),
       phoneNumber: Number(phoneNumber),
-      profileImage: (typeof this.imagePreview === 'string' && this.imagePreview.trim())
-        ? this.imagePreview.trim()
-        : null
+      profileImage: this.selectedFile ? this.selectedFile.name : null
     };
 
     this.registerService.register(dto).subscribe({
@@ -78,6 +77,8 @@ export class Registration {
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
+
+    this.selectedFile = file;
 
     const reader = new FileReader();
     reader.onload = () => {

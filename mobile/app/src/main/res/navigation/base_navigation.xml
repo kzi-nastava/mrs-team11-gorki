@@ -10,7 +10,7 @@
         tools:layout="@layout/fragment_unuser_home" />
     <fragment
         android:id="@+id/passengerRegistrationFragment"
-        android:name="ftn.mrs_team11_gorki.fragments.PassengerRegistrationFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.PassengerRegisterFragment"
         app:popUpTo="@id/unuserHomeFragment"
         tools:layout="@layout/fragment_passenger_registration" />
     <fragment

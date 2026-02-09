@@ -7,4 +7,6 @@ public interface EmailService {
     String sendSimpleMail(EmailDetails details);
 
     String sendMailWithAttachment(EmailDetails details);
+
+    void sendActivationLinkToMail(String activationToken);
 }

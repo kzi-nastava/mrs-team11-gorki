@@ -4,17 +4,21 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
+import ftn.mrs_team11_gorki.adapter.LocalDateTimeAdapter;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ftn.mrs_team11_gorki.adapter.LocalDateTimeAdapter;
 
-//Retrofit initializer
-public class ClientUtils {
-    public static final String BASE_URL = "http://10.0.2.2:8080/"; // emulator -> "8080 port"
+public final class ClientUtils {
+
+    private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static Retrofit retrofit;
+    private static AuthService authService;
+
+    private ClientUtils() {}
 
     public static Retrofit getRetrofit() {
         if (retrofit == null) {
@@ -23,7 +27,11 @@ public class ClientUtils {
                     .setLenient()
                     .create();
 
-            OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(20, TimeUnit.SECONDS)
+                    .writeTimeout(20, TimeUnit.SECONDS)
+                    .build();
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
@@ -32,5 +40,12 @@ public class ClientUtils {
                     .build();
         }
         return retrofit;
+    }
+
+    public static AuthService auth() {
+        if (authService == null) {
+            authService = getRetrofit().create(AuthService.class);
+        }
+        return authService;
     }
 }

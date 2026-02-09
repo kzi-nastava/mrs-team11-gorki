@@ -50,7 +50,9 @@ public class SecurityConfig {
             .requestMatchers("/api/vehicles").permitAll()
             .requestMatchers("/api/rides/estimate").permitAll()
             .requestMatchers("/sendMail").permitAll()
-            .requestMatchers("sendMailWithAttachment").permitAll()
+            .requestMatchers("/sendMailWithAttachment").permitAll()
+            .requestMatchers("/api/auth/activate").permitAll()
+            .requestMatchers("/favicon.ico").permitAll()
             .anyRequest().authenticated()
       )
       .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
