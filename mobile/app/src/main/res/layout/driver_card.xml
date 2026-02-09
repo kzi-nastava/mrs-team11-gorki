@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     style="@style/cardStyle">
     <TextView
+        android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/rideCardTitle"
@@ -48,28 +49,36 @@
         android:background="@color/purple" />
 
     <TextView
+        android:id="@+id/txtStartingTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/startingTime"
-        style="@style/cardLabel"/>
+        style="@style/cardLabel"
+        android:fontFamily="SofiaSansCondensed"/>
 
     <TextView
+        android:id="@+id/txtEndingTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/endingTime"
-        style="@style/cardLabel"/>
+        style="@style/cardLabel"
+        android:fontFamily="SofiaSansCondensed"/>
 
     <TextView
+        android:id="@+id/txtStartingPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/startingPoint"
-        style="@style/cardLabel"/>
+        style="@style/cardLabel"
+        android:fontFamily="SofiaSansCondensed"/>
 
     <TextView
+        android:id="@+id/txtDestination"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/destination"
-        style="@style/cardLabel"/>
+        style="@style/cardLabel"
+        android:fontFamily="SofiaSansCondensed"/>
 
     <View
         android:layout_width="320dp"
@@ -78,27 +87,35 @@
         android:background="@color/purple" />
 
     <TextView
+        android:id="@+id/txtPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/price"
-        style="@style/cardLabel"/>
+        style="@style/cardLabel"
+        android:fontFamily="SofiaSansCondensed"/>
 
     <TextView
+        android:id="@+id/txtCancelled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cancelled"
-        style="@style/cardLabel"/>
+        style="@style/cardLabel"
+        android:fontFamily="SofiaSansCondensed"/>
 
     <TextView
+        android:id="@+id/txtPanic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/panicActivated"
-        style="@style/cardLabel"/>
+        style="@style/cardLabel"
+        android:fontFamily="SofiaSansCondensed"/>
 
     <Button
+        android:id="@+id/btnMoreInfo"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="@string/moreInfo"
-        style="@style/cardButton" />
+        style="@style/cardButton"
+        android:fontFamily="SofiaSansCondensed"/>
 
 </LinearLayout>
