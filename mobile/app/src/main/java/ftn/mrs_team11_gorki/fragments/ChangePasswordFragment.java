@@ -1,66 +1,111 @@
 package ftn.mrs_team11_gorki.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import ftn.mrs_team11_gorki.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChangePasswordFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import ftn.mrs_team11_gorki.auth.ApiClient;
+import ftn.mrs_team11_gorki.auth.TokenStorage;
+import ftn.mrs_team11_gorki.databinding.FragmentChangePasswordBinding;
+import ftn.mrs_team11_gorki.dto.UpdatePasswordDTO;
+import ftn.mrs_team11_gorki.dto.UpdatedUserDTO;
+import ftn.mrs_team11_gorki.service.UserService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ChangePasswordFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ChangePasswordFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChangePasswordFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChangePasswordFragment newInstance(String param1, String param2) {
-        ChangePasswordFragment fragment = new ChangePasswordFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private FragmentChangePasswordBinding binding;
+    private UserService userService;
+    private Long userId;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_change_password, container, false);
+
+        binding = FragmentChangePasswordBinding.inflate(inflater, container, false);
+
+        TokenStorage ts = new TokenStorage(requireContext());
+        userId = ts.getUserId();
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        userService = ApiClient.getRetrofit(requireContext()).create(UserService.class);
+
+        binding.changePassword.doneButton.setOnClickListener(v -> onDoneClicked());
+    }
+
+    private void onDoneClicked() {
+        String current = binding.changePassword.currentPasswordInput.getText().toString();
+        String newPass = binding.changePassword.newPasswordInput.getText().toString();
+        String confirm = binding.changePassword.confirmNewPasswordInput.getText().toString();
+
+        if (current.isEmpty() || newPass.isEmpty() || confirm.isEmpty()) {
+            Toast.makeText(requireContext(), "Popuni sva polja", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!newPass.equals(confirm)) {
+            Toast.makeText(requireContext(), "Nova lozinka se ne poklapa", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        UpdatePasswordDTO dto = new UpdatePasswordDTO();
+        dto.setCurrentPassword(current);
+        dto.setNewPassword(newPass);
+        dto.setNewPasswordConfirmed(confirm);
+
+        setLoading(true);
+
+        userService.changePassword(userId, dto).enqueue(new Callback<UpdatedUserDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<UpdatedUserDTO> call,
+                                   @NonNull Response<UpdatedUserDTO> response) {
+                setLoading(false);
+
+                if (response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Lozinka promenjena", Toast.LENGTH_SHORT).show();
+                    binding.changePassword.currentPasswordInput.setText("");
+                    binding.changePassword.newPasswordInput.setText("");
+                    binding.changePassword.confirmNewPasswordInput.setText("");
+                } else {
+                    Toast.makeText(requireContext(),
+                            "Neuspešno (" + response.code() + ")",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UpdatedUserDTO> call, @NonNull Throwable t) {
+                setLoading(false);
+                Toast.makeText(requireContext(),
+                        "Greška: " + t.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setLoading(boolean loading) {
+        binding.changePassword.doneButton.setEnabled(!loading);
+        binding.changePassword.currentPasswordInput.setEnabled(!loading);
+        binding.changePassword.newPasswordInput.setEnabled(!loading);
+        binding.changePassword.confirmNewPasswordInput.setEnabled(!loading);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

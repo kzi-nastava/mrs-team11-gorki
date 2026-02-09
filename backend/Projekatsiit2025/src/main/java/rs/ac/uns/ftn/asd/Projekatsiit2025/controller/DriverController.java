@@ -52,9 +52,9 @@ public class DriverController {
 	}
 	
 	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
-	@GetMapping(value = "/{id}/vehicle/{vehicleId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetVehicleDTO> getVehicle(@PathVariable("vehicleId") Long vehicleID){
-		GetVehicleDTO vehicle = vehicleService.getById(vehicleID);
+	@GetMapping(value = "/{id}/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetVehicleDTO> getVehicle(@PathVariable("id") Long id){
+		GetVehicleDTO vehicle = vehicleService.getById(id);
 		if (vehicle == null) {
 			return new ResponseEntity<GetVehicleDTO>(HttpStatus.NOT_FOUND);
 		}
@@ -62,9 +62,9 @@ public class DriverController {
 	}
 	
 	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
-	@PutMapping(value = "/{id}/vehicle/{vehicleId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UpdatedVehicleDTO> updateVehicle(@PathVariable("vehicleId") Long vehicleID, @RequestBody UpdateVehicleDTO requestVehicle){
-		UpdatedVehicleDTO responseVehicle = vehicleService.updateVehicle(vehicleID, requestVehicle);
+	@PutMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UpdatedVehicleDTO> updateVehicle(@PathVariable("id") Long id, @RequestBody UpdateVehicleDTO requestVehicle){
+		UpdatedVehicleDTO responseVehicle = vehicleService.updateVehicle(id, requestVehicle);
 		return new ResponseEntity<UpdatedVehicleDTO>(responseVehicle, HttpStatus.OK); 
 	}
 	

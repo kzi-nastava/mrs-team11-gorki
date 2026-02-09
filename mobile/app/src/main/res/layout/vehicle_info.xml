@@ -175,12 +175,14 @@
         </RadioGroup>
 
         <Button
+            android:id="@+id/saveChangesButton"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="@string/saveChanges"
             style="@style/formButton" />
 
         <Button
+            android:id="@+id/revertChangesButton"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="@string/revertChanges"
