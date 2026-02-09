@@ -9,25 +9,31 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedVehicleDTO;
 import java.util.List;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Vehicle;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.DriverRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.VehicleRepository;
 
 @Service
 public class VehicleService {
 	private final VehicleRepository vehicleRepository;
+	private final DriverRepository driverRepository;
 	
-	public VehicleService(VehicleRepository vehicleRepository) {
+	public VehicleService(VehicleRepository vehicleRepository, DriverRepository driverRepository) {
 		this.vehicleRepository = vehicleRepository;
+		this.driverRepository = driverRepository;
 	}
 	
 	public GetVehicleDTO getById(Long id) {
-		Vehicle vehicle = vehicleRepository.findById(id).get();
+		Driver driver = driverRepository.findById(id).get();
+		Vehicle vehicle = driver.getVehicle();
 		return mapToGetVehicleDTO(vehicle);
 	}
 	
 	@Transactional
 	public UpdatedVehicleDTO updateVehicle(Long id, UpdateVehicleDTO dto) {
-		Vehicle vehicle = vehicleRepository.findById(id).get();
+		Driver driver = driverRepository.findById(id).get();
+		Vehicle vehicle = driver.getVehicle();
 		vehicle.setModel(dto.getModel());
 		vehicle.setBabyTransport(dto.getBabyTransport());
 		vehicle.setPetFriendly(dto.getPetFriendly());

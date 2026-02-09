@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RegisterRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatePasswordDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdateUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
@@ -62,9 +63,13 @@ public class UserService implements UserDetailsService {
 	}
 	
 	@Transactional
-	public UpdatedUserDTO updatePassword(Long id, UpdateUserDTO dto) {
+	public UpdatedUserDTO updatePassword(Long id, UpdatePasswordDTO dto) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		User user = userRepository.findById(id).get();
-		user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
+		if(!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {
+			return null;
+		}
+		user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
 		userRepository.save(user);
 		return mapToUpdatedUserDTO(user);
 	}
