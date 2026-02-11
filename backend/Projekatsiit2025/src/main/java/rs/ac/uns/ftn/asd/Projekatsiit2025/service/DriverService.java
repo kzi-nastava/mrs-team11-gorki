@@ -3,12 +3,12 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedUserDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedVehicleDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.CreateDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.CreatedDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.CreatedVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.EmailAlreadyExistsException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Vehicle;

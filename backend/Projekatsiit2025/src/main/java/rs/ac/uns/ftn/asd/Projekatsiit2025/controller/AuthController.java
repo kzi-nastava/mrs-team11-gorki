@@ -12,10 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverStatusRequestDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LoginRequestDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LoginResponseDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RegisterRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.DriverStatusRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.LoginRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.LoginResponseDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.RegisterRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatePasswordDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdateUserDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UpdatePasswordDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UpdateUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UpdatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.UserService;
 
 @RestController

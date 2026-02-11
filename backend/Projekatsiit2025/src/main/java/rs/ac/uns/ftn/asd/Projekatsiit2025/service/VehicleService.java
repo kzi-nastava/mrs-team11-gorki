@@ -3,12 +3,12 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetVehicleDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdateVehicleDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedVehicleDTO;
 import java.util.List;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.UpdateVehicleDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.UpdatedVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Vehicle;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.DriverRepository;

@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetVehicleDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdateVehicleDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedVehicleDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.CreateDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.CreatedDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.DriverRideHistoryDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.FinishRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.FinishedRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.UpdateVehicleDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.UpdatedVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.DriverService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.VehicleService;
@@ -26,10 +29,6 @@ import java.util.Collection;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.FinishedRideDTO;
 
 @RestController
 @RequestMapping("/api/drivers")

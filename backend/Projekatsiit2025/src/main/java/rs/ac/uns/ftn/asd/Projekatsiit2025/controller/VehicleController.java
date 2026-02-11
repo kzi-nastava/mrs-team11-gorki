@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetVehicleDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.VehicleService;
 
 @RestController

@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideHistoryResponseDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UserRideHistoryDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideHistoryResponseDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.UserRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;

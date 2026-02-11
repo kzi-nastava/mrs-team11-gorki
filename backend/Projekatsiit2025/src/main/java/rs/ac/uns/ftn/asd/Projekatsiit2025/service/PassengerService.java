@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRouteDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.LocationDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Passenger;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;

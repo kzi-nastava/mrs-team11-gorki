@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RegisterRequestDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatePasswordDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdateUserDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UpdatedUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.RegisterRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UpdatePasswordDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UpdateUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UpdatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;

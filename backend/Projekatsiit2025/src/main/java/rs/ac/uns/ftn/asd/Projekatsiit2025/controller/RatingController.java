@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateRatingDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedRatingDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreateRatingDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RatingService;
 
 @RestController
