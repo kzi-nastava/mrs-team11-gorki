@@ -17,8 +17,19 @@ public class AuthInterceptor implements Interceptor {
 
     @NonNull
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request original = chain.request();
+
+        String path = original.url().encodedPath();
+
+        boolean isPublic =
+                path.contains("/auth/login") ||
+                        path.contains("/auth/register") ||
+                        path.contains("/auth/reset");
+
+        if (isPublic) {
+            return chain.proceed(original);
+        }
 
         String token = tokenStorage.getToken();
         if (token == null || token.isEmpty()) {
