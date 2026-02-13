@@ -43,6 +43,9 @@
                 </mat-menu>
                 <div class="currentRide"><a routerLink="/ride-in-progress-driver">Track ride</a></div>
             }
+            @if(role=="ADMIN"){
+                <div class="home"><a routerLink="price-config">Price config</a></div>
+            }
         }
     </div>
     <div class="rightItems">

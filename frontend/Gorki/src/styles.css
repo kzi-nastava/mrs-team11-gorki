@@ -19,3 +19,10 @@ app-root {
   display: block;
   height: 100%;
 }
+.custom-snackbar {
+  background: linear-gradient(135deg, #5c4cff, #7c6cff);
+  color: white;
+  font-weight: bolder;
+  font-family: 'Sofia Sans Condensed';
+  border-radius: 20px;
+}
