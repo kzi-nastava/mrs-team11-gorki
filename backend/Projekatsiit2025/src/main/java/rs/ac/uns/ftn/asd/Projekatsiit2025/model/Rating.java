@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 @Entity
 public class Rating {
     @Id
@@ -23,17 +24,28 @@ public class Rating {
 	@JoinColumn(name = "ride_id")
 	private Ride ride;
 	
+	@ManyToOne
+	@JoinColumn(name="creator_id")
+	private Passenger passenger;
+	
 	public Rating() {
 		
 	}
 	public Rating(Long id, double driverRating, double vehicleRating, String comment, LocalDateTime createdAt,
-			Ride ride) {
+			Ride ride,Passenger passenger) {
 		this.id = id;
 		this.driverRating = driverRating;
 		this.vehicleRating = vehicleRating;
 		this.comment = comment;
 		this.createdAt = createdAt;
 		this.ride = ride;
+		this.passenger=passenger;
+	}
+	public Passenger getPassenger() {
+		return passenger;
+	}
+	public void setPassenger(Passenger passenger) {
+		this.passenger = passenger;
 	}
 	public Long getId() {
 		return id;

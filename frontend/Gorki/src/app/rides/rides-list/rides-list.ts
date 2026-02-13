@@ -6,6 +6,7 @@ import { SortFilter } from '../filters/sort-filter/sort-filter';
 import { RideDetails } from "../ride-details/ride-details";
 import { DriverHistoryService } from '../../service/driver-history-service';
 import { Ride } from '../models/ride';
+import { AuthService } from '../../infrastructure/auth.service';
 
 @Component({
   selector: 'app-rides-list',
@@ -22,7 +23,9 @@ export class RidesList {
   @ViewChild('carousel', { static: true })
   carousel!: ElementRef<HTMLDivElement>;
 
-  constructor(private rideHistoryService: DriverHistoryService) {}
+  constructor(private rideHistoryService: DriverHistoryService,
+              private authService:AuthService
+  ) {}
 
   ngOnInit() {
     this.loadRides();
@@ -43,7 +46,7 @@ export class RidesList {
   }
 
   loadRides() {
-    const driverId = 1;
+    const driverId = this.authService.getId();
     this.rideHistoryService.getDriverRides(driverId).subscribe({
       next: (rides) => {
         this.rides = [...rides];

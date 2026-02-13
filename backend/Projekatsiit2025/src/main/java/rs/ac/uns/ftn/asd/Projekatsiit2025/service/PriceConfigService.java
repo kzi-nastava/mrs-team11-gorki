@@ -10,7 +10,7 @@ public class PriceConfigService {
 	private PriceConfig priceConfig;
 
     public PriceConfigService() {
-        this.priceConfig = new PriceConfig(200, 1000, 500, 120); // default vrednosti
+        this.priceConfig = new PriceConfig(200, 1000, 500, 120); 
     }
 
     public PriceConfig getCurrentConfig() {

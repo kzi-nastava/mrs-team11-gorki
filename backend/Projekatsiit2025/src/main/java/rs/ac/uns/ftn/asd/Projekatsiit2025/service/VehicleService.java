@@ -3,14 +3,21 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.DriverStatusRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleHomeDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.UpdateVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.UpdatedVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Vehicle;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.DriverRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.VehicleRepository;
 
@@ -68,30 +75,33 @@ public class VehicleService {
 		return dto;
 	}
 	
-	public List<GetVehicleDTO> getAllVehicles(){
-		return vehicleRepository.findAll()
-				.stream()
-				.map(this::mapVehicleToDTO)
-				.toList();
+	public List<GetVehicleHomeDTO> getAllVehicles(){
+	    return vehicleRepository.findAll()
+	            .stream()
+	            .map(this::mapForHomePage)
+	            .filter(Objects::nonNull)
+	            .toList();
 	}
 	
-	private GetVehicleDTO mapVehicleToDTO(Vehicle vehicle) {
-		GetVehicleDTO dto = new GetVehicleDTO();
+	private GetVehicleHomeDTO mapForHomePage(Vehicle vehicle) {
+		GetVehicleHomeDTO dto=new GetVehicleHomeDTO();
 		dto.setId(vehicle.getId());
-		dto.setModel(vehicle.getModel());
-		dto.setType(vehicle.getType());
-		dto.setPlateNumber(vehicle.getPlateNumber());
-		dto.setBabyTransport(vehicle.getBabyTransport());
-		dto.setPetFriendly(vehicle.getPetFriendly());
-		dto.setSeats(vehicle.getSeats());
+		dto.setCurrentLocation(new LocationDTO(vehicle.getCurrentLocation().getLatitude(),
+							vehicle.getCurrentLocation().getLongitude(),
+							vehicle.getCurrentLocation().getAddress()));
 		
-		LocationDTO location=new LocationDTO();
-		location.setAddress(vehicle.getCurrentLocation().getAddress());
-		location.setLatitude(vehicle.getCurrentLocation().getLatitude());
-		location.setLongitude(vehicle.getCurrentLocation().getLongitude());
+		Driver driver = driverRepository.findByVehicle_Id(vehicle.getId());
+	    if (driver == null) return null;
+	    
+		dto.setVehicleAvailability(driver.getStatus());
 		
-		dto.setCurrentLocation(location);
-		
-		return dto;
+		if(dto.getVehicleAvailability().equals(DriverStatus.ACTIVE)||
+				dto.getVehicleAvailability().equals(DriverStatus.BUSY)) {
+			return dto;
+		}
+		else {
+			return null;
+		}
 	}
+	
 }

@@ -148,5 +148,6 @@ public class RideController {
 		            rideService.getScheduledRide(userId, from, to)
 		    );
 	}
+    
 
 }

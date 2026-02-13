@@ -5,6 +5,7 @@ import { Login } from '../../login/login';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../infrastructure/auth.service';
+import { MapService } from '../../map/map-service';
 
 type Role = 'admin' | 'driver' | 'user' | 'unuser';
 
@@ -25,7 +26,7 @@ export class Navbar {
   
   private sub?: Subscription;
 
-  constructor(private authService:AuthService, private router: Router){}
+  constructor(private authService:AuthService, private router: Router,private mapService:MapService ){}
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
@@ -76,13 +77,15 @@ export class Navbar {
   }
 
   logout(){
+
     localStorage.removeItem('user');
     this.authService.setUser();
     this.isLoggedIn = false;
     this.isRegistrationOpen = false;
     this.setActive(false);
     this.role = "";
-    this.router.navigate(["/HomePage"])
+    this.router.navigate(["/HomePage"]);
+    this.mapService.showInitialVehicles();
   }
 
   openRegistration(){

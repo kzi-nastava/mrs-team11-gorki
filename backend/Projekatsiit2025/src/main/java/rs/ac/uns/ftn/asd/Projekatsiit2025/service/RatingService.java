@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreateRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreateUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Rating;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Ride;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
@@ -41,6 +43,7 @@ public class RatingService {
         rating.setVehicleRating(dto.getVehicleRating());
         rating.setComment(dto.getComment());
         rating.setCreatedAt(LocalDateTime.now());
+        rating.setPassenger(ride.getCreator());
 
 		Rating saved = ratingRepository.save(rating);
 
@@ -56,6 +59,7 @@ public class RatingService {
         dto.setDriverRating(rating.getDriverRating());
         dto.setVehicleRating(rating.getVehicleRating());
         dto.setCreatdAt(rating.getCreatedAt());
+        dto.setCreatorId(rating.getPassenger().getId());
         return dto;
     }
     

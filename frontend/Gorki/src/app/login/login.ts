@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../infrastructure/auth.service';
 import { LoginRequest } from '../infrastructure/model/login.model';
 import { AuthResponse } from '../infrastructure/model/auth-response.model';
+import { MapService } from '../map/map-service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class Login {
   isResetSent: boolean = false;
   resetEmail: string = '';
 
-  constructor(private router: Router, private authService:AuthService
+  constructor(private router: Router, private authService:AuthService,private mapService:MapService
   ) {}
 
   forgotPassword(email: string) {
@@ -52,8 +53,9 @@ export class Login {
         this.loggedIn.emit();
         this.close.emit();
         this.router.navigateByUrl('/');
+        
         const el = document.getElementById('estimation');
-
+        this.mapService.clearAll();
         if (el) {
           el.style.filter = 'blur(0px)';
           el.style.pointerEvents = 'none';

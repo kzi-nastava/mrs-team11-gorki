@@ -2,6 +2,8 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating;
 
 import java.time.LocalDateTime;
 
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
+
 public class CreatedRatingDTO {
 	
     private Long ratingId;
@@ -9,7 +11,14 @@ public class CreatedRatingDTO {
     private double driverRating;
     private double vehicleRating;
     private LocalDateTime creatdAt;
+    private Long creatorId;
     
+	public double getCreatorId() {
+		return creatorId;
+	}
+	public void setCreatorId(Long creatorId) {
+		this.creatorId = creatorId;
+	}
 	public CreatedRatingDTO() {
 		super();
 	}

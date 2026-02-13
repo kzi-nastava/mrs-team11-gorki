@@ -43,7 +43,7 @@ export class PassengerHistoryService {
     cancellationReason: dto.cancellationReason || 'None',
     panic: dto.panicActivated,
     passengers: dto.passengers || [],
-    rating: 0 // ako backend još ne vraća ocenu
+    rating: dto.averageRating
   };
 }
 }

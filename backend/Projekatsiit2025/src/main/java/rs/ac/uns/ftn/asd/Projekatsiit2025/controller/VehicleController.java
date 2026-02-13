@@ -7,8 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleHomeDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.VehicleService;
 
 @RestController
@@ -23,7 +22,7 @@ public class VehicleController {
     
     //Home page raspored kola
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<GetVehicleDTO>> getAvailableVehicles(){
+	public ResponseEntity<Collection<GetVehicleHomeDTO>> getAvailableVehicles(){
 		
 		return ResponseEntity.ok(vehicleService.getAllVehicles());
 	}

@@ -2,21 +2,27 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Passenger;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Rating;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.GetPassengerDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.PassengerInRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.CreateRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.CreatedRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.DriverRideHistoryDTO;
@@ -37,6 +43,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.PassengerRepository;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.RatingRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.RideRepository;
 
 @Service
@@ -45,12 +52,17 @@ public class RideService {
     private final DriverAssignmentService driverAssignmentService;
     private final PriceConfigService priceConfigService;
     private final PassengerRepository passengerRepository;
+	@Autowired
+	private final RatingRepository ratingRepository;
 
-    public RideService(RideRepository rideRepository, DriverAssignmentService driverAssignmentService, PriceConfigService priceConfigService, PassengerRepository passengerRepository) {
+    public RideService(RideRepository rideRepository, DriverAssignmentService driverAssignmentService, 
+    		PriceConfigService priceConfigService, PassengerRepository passengerRepository,
+    		RatingRepository ratingRepository) {
         this.rideRepository = rideRepository;
         this.driverAssignmentService = driverAssignmentService;
         this.priceConfigService = priceConfigService;
         this.passengerRepository = passengerRepository;
+        this.ratingRepository=ratingRepository;
     }
     
     @Transactional(readOnly = true)
@@ -545,7 +557,7 @@ public class RideService {
                 toDateTime
         );
 
-        return rides.stream().map(this::mapUserRideHistoryToDTO).toList();
+        return rides.stream().map(this::mapUserRideHistoryToDTO).filter(Objects::nonNull).toList();
     }
 
     private UserRideHistoryDTO mapUserRideHistoryToDTO(Ride ride) {
@@ -578,6 +590,19 @@ public class RideService {
         	    route.getEstimatedTime()
 		);
         dto.setRoute(routeDTO);
+        Rating rate = ratingRepository
+        	    .findByRideIdAndPassengerId(
+        	        ride.getId(),
+        	        ride.getCreator().getId()
+        	    )
+        	    .orElse(null);
+        if(rate==null) {
+        	dto.setAverageRating(0);
+        }
+        else {
+        	dto.setAverageRating((rate.getDriverRating()+rate.getVehicleRating())/2);
+        }
+        
         return dto;
     }
 

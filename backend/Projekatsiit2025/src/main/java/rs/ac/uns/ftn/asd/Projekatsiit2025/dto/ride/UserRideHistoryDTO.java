@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.PassengerInRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.GetRouteDTO;
 
 public class UserRideHistoryDTO {
@@ -16,6 +17,7 @@ public class UserRideHistoryDTO {
     private String canceledBy; 
     private double price;
     private boolean panicActivated;
+    private double averageRating;
     private List<PassengerInRideDTO> passengers;
     
 	public UserRideHistoryDTO() {
@@ -75,6 +77,11 @@ public class UserRideHistoryDTO {
 	public void setPassengers(List<PassengerInRideDTO> passengers) {
 		this.passengers = passengers;
 	}
-    
-    
+	public double getAverageRating() {
+		return averageRating;
+	}
+	public void setAverageRating(double averageRating) {
+		this.averageRating = averageRating;
+	}
+	
 }
