@@ -1,0 +1,175 @@
+.page {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  font-family: 'Sofia Sans Condensed'!important;
+  min-height: 180px;
+}
+
+.card {
+  border-radius: 14px;
+  padding-left: 2%;
+  padding-right: 2%;
+  max-height: auto;
+}
+
+mat-card-title{
+    font-size: 36px;
+    color: #362D88;
+    font-weight: bolder;
+}
+.titleChange{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 12px;
+}
+.setVehicleInfo{
+    font-size: 24px!important;
+    padding-left: 0;
+}
+.searchRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+  margin-top: 12px;
+  font-size: 23px;
+}
+
+.searchField {
+  width: 100%;
+}
+
+.btnCol {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.driverBox {
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.driverHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  align-items: center;
+  font-size: 24px!important;
+}
+
+.driverName {
+  font-weight: 700;
+}
+
+.driverMeta {
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+.driverGrid, .rideGrid {
+  margin-top: 12px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+}
+
+.mini {
+  border-radius: 14px;
+  align-items: center;
+  padding-top: 3px;
+  min-height: 250px;
+}
+
+.bigValue {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+h3{
+    font-size: 36px;
+    color: #362D88;
+    font-weight: bolder;
+}
+.addr {
+  font-weight: 600;
+}
+
+.coords, .muted {
+  opacity: 0.8;
+}
+
+.flags {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.section {
+  margin-top: 12px;
+}
+
+.routeMeta {
+  display: flex;
+  gap: 18px;
+  margin: 8px 0 6px 0;
+  opacity: 0.9;
+}
+
+.pollingRow {
+  margin-top: 10px;
+}
+
+.creator {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0.95;
+}
+
+table[mat-table] {
+  width: 100%;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 24px!important;
+}
+
+th[mat-header-cell], td[mat-cell] {
+  padding: 10px 12px;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 24px!important;
+}
+
+tr[mat-header-row] {
+  font-weight: 700;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 24px!important;
+}
+
+.notFoundBox {
+  margin-top: 10px;
+  padding: 10px 12px;
+}
+
+.crtTitle{
+    margin-top: 5px;
+    font-size: 34.5px!important;
+    color: #362D88!important;
+    font-weight: bolder!important;
+}
+
+@media (max-width: 1100px) {
+  .driverGrid, .rideGrid {
+    grid-template-columns: 1fr;
+  }
+  .searchRow {
+    grid-template-columns: 1fr;
+  }
+  .btnCol {
+    grid-template-columns: 1fr;
+  }
+}
