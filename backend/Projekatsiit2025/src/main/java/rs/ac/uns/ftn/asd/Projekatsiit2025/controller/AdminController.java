@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,15 +14,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideHistoryResponseDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.UserRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.PriceConfig;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.PriceConfigService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
 @RestController
@@ -29,9 +33,12 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 public class AdminController {
     
     private final RideService rideService;
+    @Autowired
+    private final PriceConfigService priceConfigService;
 
-    public AdminController(RideService rideService) {
+    public AdminController(RideService rideService, PriceConfigService priceConfigService) {
         this.rideService = rideService;
+        this.priceConfigService=priceConfigService;
     }
 
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -80,5 +87,24 @@ public class AdminController {
          return ResponseEntity.ok(
                     rideService.getAdminRideHistory(userId, from, to)
             );
+    }
+    
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value="/priceConfig",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PriceConfig> getCurrentPriceConfig(){
+    	
+    	PriceConfig curentPriceConfig=priceConfigService.getCurrentConfig();
+    	return new ResponseEntity<PriceConfig>(curentPriceConfig,HttpStatus.OK);
+    	
+    }
+    
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping(value="/changePriceConfig",consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE )
+    public ResponseEntity<PriceConfig> updatePriceConfig(@RequestBody PriceConfig priceConfig){
+    	
+    	priceConfigService.updateConfig(priceConfig);
+    	return new ResponseEntity<PriceConfig>(priceConfigService.getCurrentConfig(),HttpStatus.OK);
+    	
     }
 }
