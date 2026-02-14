@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -54,4 +55,16 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 	        LocalDateTime to
 	);
 
+    //Funkc. 2.13. ride monitoring
+    // admin: preko query pronadji aktivnu voznju za driver-a
+    @Query("""
+		  select r from Ride r
+		  join fetch r.driver d
+		  join fetch r.route rt
+		  left join fetch rt.locations
+		  where d.id = :driverId and r.status = rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus.STARTED
+		""")
+	Optional<Ride> findActiveRideForDriver(@Param("driverId") Long driverId);
+  
+    
 }

@@ -25,6 +25,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleOther(Exception ex) {
+    	  ex.printStackTrace();
         ErrorResponse error = new ErrorResponse(
                 "Unexpected error occurred",
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
