@@ -108,13 +108,13 @@ public class AdminController {
     public ResponseEntity<AdminRideMonitorDTO> getActiveRide(@PathVariable Long driverId) {
       return ResponseEntity.ok(adminService.getActiveRideForDriver(driverId));
     }
-  
+    
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value="/priceConfig",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PriceConfig> getCurrentPriceConfig(){
     	
     	PriceConfig curentPriceConfig=priceConfigService.getCurrentConfig();
     	return new ResponseEntity<PriceConfig>(curentPriceConfig,HttpStatus.OK);
-    	
     }
     
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
