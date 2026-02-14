@@ -19,12 +19,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverInfoDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.AdminRideMonitorDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideHistoryResponseDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.UserRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.PriceConfig;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.AdminService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.PriceConfigService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
@@ -35,13 +40,16 @@ public class AdminController {
     private final RideService rideService;
     @Autowired
     private final PriceConfigService priceConfigService;
-
-    public AdminController(RideService rideService, PriceConfigService priceConfigService) {
+    @Autowired
+    private final AdminService adminService;
+  
+    public AdminController(RideService rideService, PriceConfigService priceConfigService,AdminService adminService) {
         this.rideService = rideService;
         this.priceConfigService=priceConfigService;
+        this.adminService=adminService;
     }
 
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/users/{id}/rides", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RideHistoryResponseDTO>> getRideHistory(
             @PathVariable Long id,
@@ -90,6 +98,17 @@ public class AdminController {
     }
     
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value="/drivers/search")
+    public ResponseEntity<GetDriverInfoDTO> searchDrivers(@RequestParam String q) {
+      return ResponseEntity.ok(adminService.searchDrivers(q));
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value="/drivers/{driverId}/ride/active")
+    public ResponseEntity<AdminRideMonitorDTO> getActiveRide(@PathVariable Long driverId) {
+      return ResponseEntity.ok(adminService.getActiveRideForDriver(driverId));
+    }
+  
     @GetMapping(value="/priceConfig",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PriceConfig> getCurrentPriceConfig(){
     	
