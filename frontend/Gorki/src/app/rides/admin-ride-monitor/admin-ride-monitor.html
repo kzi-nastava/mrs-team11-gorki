@@ -1,0 +1,252 @@
+<div class="page">
+  <mat-card class="card">
+    <div class="titleChange">
+        <mat-card-title>Driver ride overview - monitoring</mat-card-title>
+    </div>
+
+
+    <div class="searchRow">
+      <mat-form-field appearance="outline" class="searchField">
+        <mat-label>Enter first and last name</mat-label>
+
+        <input
+          matInput
+          [formControl]="searchCtrl"
+          placeholder="e.g. John Doe"
+          (keyup.enter)="findDriver()" />
+
+        <mat-progress-spinner
+          *ngIf="isSearching"
+          matSuffix
+          mode="indeterminate"
+          diameter="20">
+        </mat-progress-spinner>
+
+        <button
+          mat-icon-button
+          matSuffix
+          *ngIf="!isSearching && searchCtrl.value.length"
+          aria-label="Clear"
+          (click)="clearAll()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div class="btnCol">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="isSearching"
+          (click)="findDriver()">
+          <mat-icon>search</mat-icon>
+          Find driver
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!foundDriver || isLoadingRide"
+          (click)="loadActiveRide()">
+          <mat-icon>visibility</mat-icon>
+          Show active ride
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="searched && !isSearching && !foundDriver" class="muted notFoundBox">
+      Driver not found for entered specifics.
+    </div>
+
+    <div *ngIf="foundDriver as d" class="driverBox">
+      <mat-divider></mat-divider>
+
+      <div class="driverHeader">
+        <div>
+          <div class="driverName">{{ fullName(d) }}</div>
+          <div class="driverMeta">
+            {{ d.user.email }} • {{ "+381/ "+d.user.phoneNumber }}
+          </div>
+        </div>
+
+        <mat-chip-set>
+          <mat-chip [color]="d.user.active ? 'primary' : 'warn'" highlighted>
+            {{ d.user.active ? 'Active' : 'Inactive' }}
+          </mat-chip>
+          <mat-chip color="accent" highlighted>{{ d.user.role }}</mat-chip>
+        </mat-chip-set>
+      </div>
+
+      <div class="driverGrid">
+            <mat-card class="mini">
+            <mat-card-title>Activity (24h)</mat-card-title>
+            <mat-card-content>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="bigValue"><mat-icon style="gap: 6px !important;">schedule</mat-icon>{{"   "+ d.activityLast24h+" hours" }}</div>
+            </mat-card-content>
+            </mat-card>
+
+            <mat-card class="mini" *ngIf="d.vehicle as v">
+            <mat-card-title>Vehicle</mat-card-title>
+            <mat-card-content>
+                <div class="setVehicleInfo">
+                    <div><b>Model:</b> {{ v.model }}</div>
+                    <div><b>Type:</b> {{ v.type }}</div>
+                    <div><b>Plate number:</b> {{ v.plateNumber }}</div>
+                    <div><b>Seats:</b> {{ v.seats }}</div>
+                    <div class="flags">
+                    <mat-chip *ngIf="v.babyTransport" highlighted>Baby</mat-chip>
+                    <mat-chip *ngIf="v.petFriendly" highlighted>Pet friendly</mat-chip>
+                    </div>
+                </div>
+            </mat-card-content>
+            </mat-card>
+
+            <mat-card class="mini" *ngIf="d.vehicle as v">
+            <ng-container *ngIf="v.currentLocation as cl; else noVehLoc">
+                <mat-card-title>Current Location</mat-card-title>
+                <mat-card-content>
+                    <div class="setVehicleInfo">
+                        <div class="addr"><mat-icon  style="gap: 6px !important;">location_on</mat-icon> {{ cl.address }}</div>
+                        <div class="coords"><mat-icon  style="gap: 6px !important;">my_location</mat-icon>  {{ cl.latitude }}, {{ cl.longitude }}</div>
+                    </div>
+                </mat-card-content>
+            </ng-container>
+
+            <ng-template #noVehLoc>
+                <mat-card-title>Curent vehicle location</mat-card-title>
+                <mat-card-content class="muted">Location not available.</mat-card-content>
+            </ng-template>
+            </mat-card>
+      </div>
+
+      <div class="pollingRow" *ngIf="activeRide">
+        <mat-slide-toggle [checked]="pollingEnabled" (change)="togglePolling($event.checked)">
+          Auto-refresh ({{ pollingSeconds }}s)
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="card" *ngIf="activeRide as ar">
+    <mat-card-title>Active ride</mat-card-title>
+    <mat-card-subtitle style="font-size: 24px!important;">
+      Ride No. {{ ar.ride.id }} • Status: {{ ar.ride.status }}
+    </mat-card-subtitle>
+
+    <div class="rideGrid">
+      <mat-card class="mini">
+        <mat-card-title>Time info</mat-card-title>
+        <mat-card-content>
+            <div class="setVehicleInfo">
+                <div><mat-icon  style="gap: 6px !important;">access_time</mat-icon><b>Starting time:</b> {{ar.ride.startingTime | date:'medium' }}</div>
+                 <div><mat-icon  style="gap: 6px !important;">access_time</mat-icon><b>Ending time:</b> {{ ar.ride.endingTime ? (ar.ride.endingTime | date:'medium') : '—' }}</div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="mini">
+        <mat-card-title>Price</mat-card-title>
+        <mat-card-content>
+          <div class="bigValue"><mat-icon  style="gap: 6px !important;">attach_money</mat-icon>{{ ar.ride.price | number:'1.2-2' }}</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="mini" *ngIf="ar.currentLocation as rl; else noRideLoc">
+        <mat-card-title>Current Location</mat-card-title>
+        <mat-card-content>
+            <div class="setVehicleInfo">
+                 <div class="addr"><mat-icon  style="gap: 6px !important;">location_on</mat-icon>{{ rl.address }}</div>
+                 <div class="coords"><mat-icon style="gap: 6px !important;">my_location</mat-icon>{{ rl.latitude }}, {{ rl.longitude }}</div>
+            </div>
+        </mat-card-content>
+      </mat-card>
+
+      <ng-template #noRideLoc>
+        <mat-card class="mini">
+          <mat-card-title>Current Location</mat-card-title>
+          <mat-card-content class="muted">Location not available..</mat-card-content>
+        </mat-card>
+      </ng-template>
+    </div>
+
+    <mat-divider style="margin-top: 55px!important;margin-bottom: 2px!important;"></mat-divider>
+
+    <div class="section" *ngIf="ar.ride.route as r">
+      <ng-container *ngIf="r.locations.length">
+        <h3>Route</h3>
+
+        <div class="routeMeta">
+            <div class="setVehicleInfo" style="padding-left: 14px!important;">
+               <span><b><mat-icon  style="gap: 6px !important;">route</mat-icon> Distance:</b> {{ r.distance + " km " }}</span>
+               <br>
+               <span><b> <mat-icon  style="gap: 6px !important;">timer</mat-icon>Estimated time:</b> {{ r.estimatedTime }}</span>
+            </div>
+
+        </div>
+        <mat-list style="font-size: 24px!important;">
+            <mat-list-item *ngFor="let loc of r.locations; let i = index">
+                    <mat-icon matListItemIcon>
+                            {{ i === 0 ? 'trip_origin' : (i === (r.locations.length - 1) ? 'flag' : 'place') }}
+                            </mat-icon>
+                            <div matListItemTitle><b>{{ loc.address }}</b></div>
+                    <div matListItemLine>{{ loc.latitude }}, {{ loc.longitude }}</div>
+            </mat-list-item>
+        </mat-list>
+      </ng-container>
+    </div>
+
+    <div class="section">
+      <h3>Linked passengers</h3>
+
+      <table
+        mat-table
+        [dataSource]="ar.ride.linkedPassengers"
+        class="mat-elevation-z0"
+        *ngIf="ar.ride.linkedPassengers.length; else noPassengers">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Full Name</th>
+          <td mat-cell *matCellDef="let p">{{ p.user.firstName }} {{ p.user.lastName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let p">{{ p.user.email }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef>Phone number</th>
+          <td mat-cell *matCellDef="let p">{{ p.user.phoneNumber }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['name','email','phone']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['name','email','phone'];"></tr>
+      </table>
+
+      <ng-template #noPassengers>
+        <div class="muted">No linked passengers.</div>
+      </ng-template>
+
+    <div class="creator" *ngIf="ar.ride.creator as cr">
+        <div class="crtTitle">Creator</div>
+        <div class="setVehicleInfo">
+            <mat-icon>star</mat-icon>
+            <span>
+            {{ cr.user.firstName }} {{ cr.user.lastName }} ({{ cr.user.email }})
+            </span>
+        </div>
+    </div>
+
+    </div>
+  </mat-card>
+
+  <mat-card class="card" *ngIf="foundDriver && !activeRide">
+    <mat-card-title>Ride not shown.</mat-card-title>
+    <mat-card-content class="muted">
+      Click <b>“Show active ride”</b> to search for active ride
+    </mat-card-content>
+  </mat-card>
+</div>

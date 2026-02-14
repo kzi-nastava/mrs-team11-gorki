@@ -1,0 +1,107 @@
+<div class="page">
+  <mat-card class="price-card">
+
+    <mat-card-header>
+      <mat-card-title>PRICE CONFIG</mat-card-title>
+      <br>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" class="form">
+        <div class="grid">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Standard base price</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="priceForStandardVehicles"
+              [readonly]="!editMode"
+              [class.readonly]="!editMode"
+              min="0"
+            />
+            <mat-hint align="end">RSD</mat-hint>
+            <mat-error *ngIf="form.get('priceForStandardVehicles')?.hasError('required')">Required</mat-error>
+            <mat-error *ngIf="form.get('priceForStandardVehicles')?.hasError('min')">Must be ≥ 0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Luxury base price</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="priceForLuxuryVehicles"
+              [readonly]="!editMode"
+              [class.readonly]="!editMode"
+              min="0"
+            />
+            <mat-hint align="end">RSD</mat-hint>
+            <mat-error *ngIf="form.get('priceForLuxuryVehicles')?.hasError('required')">Required</mat-error>
+            <mat-error *ngIf="form.get('priceForLuxuryVehicles')?.hasError('min')">Must be ≥ 0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Van base price</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="priceForVans"
+              [readonly]="!editMode"
+              [class.readonly]="!editMode"
+              min="0"
+            />
+            <mat-hint align="end">RSD</mat-hint>
+            <mat-error *ngIf="form.get('priceForVans')?.hasError('required')">Required</mat-error>
+            <mat-error *ngIf="form.get('priceForVans')?.hasError('min')">Must be ≥ 0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Price per km</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="pricePerKm"
+              [readonly]="!editMode"
+              [class.readonly]="!editMode"
+              min="0"
+            />
+            <mat-hint align="end">RSD / km</mat-hint>
+            <mat-error *ngIf="form.get('pricePerKm')?.hasError('required')">Required</mat-error>
+            <mat-error *ngIf="form.get('pricePerKm')?.hasError('min')">Must be ≥ 0</mat-error>
+          </mat-form-field>
+
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="actions">
+      <button
+        id="editButton"
+        class="custom-edit-btn"
+        mat-stroked-button
+        type="button"
+        *ngIf="!editMode"
+        (click)="enableEdit()"
+      >
+        Edit
+      </button>
+
+      <div class="actions-right" *ngIf="editMode">
+        <button mat-button type="button" class="custom-edit-btn" (click)="cancel()" [disabled]="saving">
+          Cancel
+        </button>
+
+        <button
+          mat-button
+          class="custom-edit-btn"
+          type="button"
+          (click)="save()"
+          [disabled]="form.invalid || form.pristine || saving"
+        >
+          {{ saving ? 'Saving...' : 'Save changes' }}
+        </button>
+      </div>
+    </mat-card-actions>
+
+  </mat-card>
+</div>
