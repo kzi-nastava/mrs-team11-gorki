@@ -53,6 +53,7 @@ public class SecurityConfig {
             .requestMatchers("/sendMailWithAttachment").permitAll()
             .requestMatchers("/api/auth/activate").permitAll()
             .requestMatchers("/favicon.ico").permitAll()
+            .requestMatchers("/ws/**").permitAll()
             .anyRequest().authenticated()
       )
       .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
