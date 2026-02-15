@@ -3,16 +3,20 @@ import {MatMenuModule} from '@angular/material/menu';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Login } from '../../login/login';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../infrastructure/auth.service';
 import { MapService } from '../../map/map-service';
+import { MatDialog } from '@angular/material/dialog';
+import { ChatDialog } from '../../live-chat/users/chat-dialog/chat-dialog';
+import { AdminChat } from '../../live-chat/admin/admin-chat/admin-chat';
 
 type Role = 'admin' | 'driver' | 'user' | 'unuser';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MatMenuModule, RouterOutlet, RouterLink, Login, MatButtonToggleModule],
+  imports: [MatMenuModule,MatIconModule, RouterOutlet, RouterLink, Login, MatButtonToggleModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'], 
 })
@@ -26,7 +30,28 @@ export class Navbar {
   
   private sub?: Subscription;
 
-  constructor(private authService:AuthService, private router: Router,private mapService:MapService ){}
+  constructor(private authService:AuthService, private router: Router,private mapService:MapService,private dialog: MatDialog ){}
+
+  openSupport() {
+
+    if (this.role === 'ADMIN') {
+
+      this.dialog.open(AdminChat, {
+        autoFocus: false,
+        panelClass: 'supportDialog',
+        width: '900px',
+        maxWidth: '95vw'
+      });
+
+    } else {
+
+      this.dialog.open(ChatDialog, {
+        autoFocus: false,
+        panelClass: 'supportDialog',
+      });
+
+    }
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
