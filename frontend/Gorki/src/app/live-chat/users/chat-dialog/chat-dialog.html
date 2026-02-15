@@ -1,0 +1,38 @@
+<div class="chatWrap">
+  <div class="chatHeader" >
+    <div class="title">
+      <mat-icon>support_agent</mat-icon>
+      Live support
+    </div>
+
+    <div class="status" [class.ok]="connected">
+      <span class="dot"></span>
+      {{ connected ? 'Connected' : 'Offline' }}
+    </div>
+
+    <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="thread" id="thread">
+    <div *ngFor="let m of messages"
+         class="bubble"
+         [class.admin]="isAdminMessage(m)"
+         [class.user]="!isAdminMessage(m)">
+      <div class="content">{{ m.content }}</div>
+      <div class="meta">
+        <span class="sender">{{ m.sender }}</span>
+        <span class="time">{{ m.timeStamp | date:'short' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="composer">
+<input matInput [formControl]="msgCtrl" placeholder="Write a message..."
+       (keyup.enter)="send()" />
+    <button mat-raised-button color="primary" (click)="send()" [disabled]="msgCtrl.invalid">
+      Send
+    </button>
+  </div>
+</div>

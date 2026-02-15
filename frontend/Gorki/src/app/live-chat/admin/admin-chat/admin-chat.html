@@ -1,0 +1,104 @@
+<div class="supportShell">
+
+  <!-- LEFT: inbox -->
+  <aside class="inbox">
+    <div class="inboxHeader">
+      <div class="title">
+        <mat-icon>support_agent</mat-icon>
+        <span>Inbox</span>
+      </div>
+
+      <div class="status" [class.ok]="connected" [class.bad]="!connected">
+        <span class="dot"></span>
+        <span>{{ connected ? 'Connected' : 'Offline' }}</span>
+      </div>
+    </div>
+
+    <button class="refreshBtn" mat-stroked-button (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+
+    <div class="chatList">
+      <button
+        class="chatItem"
+        *ngFor="let c of chats"
+        (click)="select(c)"
+        [class.active]="selectedChat?.id === c.id"
+      >
+        <div class="chatTop">
+          <div class="chatTitle">Chat #{{ c.id }}</div>
+          <div class="pill" *ngIf="c.adminId">Assigned</div>
+          <div class="pill gray" *ngIf="!c.adminId">Unassigned</div>
+        </div>
+
+        <div class="chatMeta">
+          <span>User ID: {{ c.userId }}</span>
+          <span *ngIf="c.messages.length">Msgs: {{ c.messages.length }}</span>
+        </div>
+
+        <div class="chatPreview" *ngIf="c.messages.length">
+          {{ c.messages[c.messages.length - 1]?.content }}
+        </div>
+        <div class="chatPreview muted" *ngIf="!c.messages.length">
+          No messages yet
+        </div>
+      </button>
+    </div>
+  </aside>
+
+  <!-- RIGHT: thread -->
+  <main class="thread">
+    <div class="threadHeader" *ngIf="selectedChat; else pickChat">
+      <div class="threadTitle">
+        <div class="big">Chat #{{ selectedChat.id }}</div>
+        <div class="small">User ID: {{ selectedChat.userId }}</div>
+      </div>
+    </div>
+
+    <ng-template #pickChat>
+      <div class="emptyState">
+        <mat-icon>chat</mat-icon>
+        <div class="big">Select a chat</div>
+        <div class="small">Pick a conversation from the inbox to start replying.</div>
+      </div>
+    </ng-template>
+
+    <div class="messages" *ngIf="selectedChat">
+      <div
+        class="msgRow"
+        *ngFor="let m of messages"
+        [class.me]="isAdmin(m)"
+      >
+        <div class="bubble">
+          <div class="content">{{ m.content }}</div>
+          <div class="meta">
+            <span class="who">{{ senderLabel(m) }}</span>
+            <span class="sep">•</span>
+            <span class="time">{{ m.timeStamp | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="composer" *ngIf="selectedChat">
+      <input
+        matInput
+        class="input"
+        [formControl]="msgCtrl"
+        placeholder="Write a reply..."
+        (keydown.enter)="send()"
+      />
+      <button
+        mat-raised-button
+        class="sendBtn"
+        (click)="send()"
+        [disabled]="msgCtrl.invalid"
+      >
+        <mat-icon>send</mat-icon>
+        Send
+      </button>
+    </div>
+  </main>
+
+</div>
