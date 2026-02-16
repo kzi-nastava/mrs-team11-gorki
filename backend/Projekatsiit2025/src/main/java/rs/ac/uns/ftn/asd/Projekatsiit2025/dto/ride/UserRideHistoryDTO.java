@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.PassengerInRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.GetRouteDTO;
 
 public class UserRideHistoryDTO {

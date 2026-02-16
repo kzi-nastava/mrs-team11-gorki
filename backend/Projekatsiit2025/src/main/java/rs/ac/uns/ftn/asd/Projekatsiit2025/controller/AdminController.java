@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverInfoDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.AdminRideMonitorDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideHistoryResponseDTO;
@@ -125,5 +125,15 @@ public class AdminController {
     	priceConfigService.updateConfig(priceConfig);
     	return new ResponseEntity<PriceConfig>(priceConfigService.getCurrentConfig(),HttpStatus.OK);
     	
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional(readOnly = true)
+    @GetMapping("/rides/panic")
+    public ResponseEntity<Collection<UserRideHistoryDTO>> getAllPanicRides(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+    ) {
+        return ResponseEntity.ok(rideService.getAllPanicRides(from, to));
     }
 }

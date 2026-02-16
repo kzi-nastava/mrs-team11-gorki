@@ -1,6 +1,5 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverInfoDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
 

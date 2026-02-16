@@ -1,7 +1,5 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
-
 public class CreateRatingDTO {
     private double driverRating;
     private double vehicleRating;

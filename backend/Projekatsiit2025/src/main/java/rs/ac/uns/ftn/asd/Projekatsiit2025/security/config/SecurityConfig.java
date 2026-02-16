@@ -54,6 +54,8 @@ public class SecurityConfig {
             .requestMatchers("/api/auth/activate").permitAll()
             .requestMatchers("/favicon.ico").permitAll()
             .requestMatchers("/ws/**").permitAll()
+            .requestMatchers("/api/auth/forgot-password").permitAll()
+            .requestMatchers("/api/auth/reset-password").permitAll()
             .anyRequest().authenticated()
       )
       .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

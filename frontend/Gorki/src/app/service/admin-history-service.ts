@@ -9,8 +9,8 @@ export class AdminHistoryService {
 
   constructor(private http: HttpClient) {}
 
-  getAdminRides(adminId: number, from?: string, to?: string): Observable<UserHistoryRide[]> {
-    let url = `${environment.apiHost}/admin/${adminId}/rides/history`;
+  getPanicRides(from?: string, to?: string): Observable<UserHistoryRide[]> {
+    const url = `${environment.apiHost}/admin/rides/panic`;
 
     const params: any = {};
     if (from) params.from = from;
@@ -30,7 +30,7 @@ export class AdminHistoryService {
   };
 
   return {
-    id: dto.rideId,
+    id: dto.rideId ?? dto.id,
     startTime: formatTime(dto.startingTime),
     endTime: formatTime(dto.endingTime),
     startLocation: dto.route?.locations[0]?.address || 'Nepoznata lokacija',

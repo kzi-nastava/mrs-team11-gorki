@@ -2,13 +2,12 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.GetPassengerDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.PassengerInRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.CreateRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.CreatedRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.DriverRideHistoryDTO;
@@ -529,12 +527,17 @@ public class RideService {
         ride.setStatus(RideStatus.FINISHED);
 
         Route route = ride.getRoute();
-        if (route != null && route.getLocations() != null && !route.getLocations().isEmpty()) {
-            route.getLocations().set(route.getLocations().size() - 1, stopLocation);
+        if (route == null) throw new RuntimeException("Ride has no route");
+
+        if (route.getLocations() == null) {
+            route.setLocations(new ArrayList<>());
         }
 
-        if (ride.getDriver() != null) {
-            ride.getDriver().setStatus(DriverStatus.ACTIVE);
+        List<Location> locs = route.getLocations();
+        if (locs.isEmpty()) {
+            locs.add(stopLocation);              // fallback: nema lokacija
+        } else {
+            locs.set(locs.size() - 1, stopLocation);
         }
 
         rideRepository.save(ride);
@@ -692,11 +695,9 @@ public class RideService {
             LocalDate from,
             LocalDate to) {
 
-        LocalDateTime now = LocalDateTime.now();
-
-        LocalDateTime fromDateTime = (from == null)
-                ? now
-                : (from.isEqual(now.toLocalDate()) ? now : from.atStartOfDay());  // SAFE MIN
+        LocalDateTime fromDateTime = (from != null)
+                ? from.atTime(0, 0, 1)
+                : LocalDate.of(2000, 1, 1).atStartOfDay();  // SAFE MIN
 
         LocalDateTime toDateTime = (to != null)
                 ? to.atTime(23, 59, 59)
@@ -784,6 +785,26 @@ public class RideService {
         }
 
         return mapDriverHistoryToDTO(ride);
+    }
+
+    public Collection<UserRideHistoryDTO> getAllPanicRides(LocalDate from, LocalDate to) {
+
+        var rides = rideRepository.findAllByPanicActivatedTrue();
+
+        if (from != null) {
+            rides = rides.stream()
+                    .filter(r -> !r.getStartingTime().toLocalDate().isBefore(from))
+                    .collect(Collectors.toList());
+        }
+        if (to != null) {
+            rides = rides.stream()
+                    .filter(r -> !r.getStartingTime().toLocalDate().isAfter(to))
+                    .collect(Collectors.toList());
+        }
+
+        return rides.stream()
+                .map(this::mapUserRideHistoryToDTO)
+                .collect(Collectors.toList());
     }
 
 }

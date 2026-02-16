@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.repository;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +66,8 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 		  where d.id = :driverId and r.status = rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus.STARTED
 		""")
 	Optional<Ride> findActiveRideForDriver(@Param("driverId") Long driverId);
+
+    Collection<Ride> findAllByPanicActivatedTrue();
   
     Optional<Ride> findFirstByCreator_EmailAndStatusOrderByEndingTimeDesc(String email, RideStatus status);
 
