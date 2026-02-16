@@ -2,8 +2,6 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating;
 
 import java.time.LocalDateTime;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
-
 public class CreatedRatingDTO {
 	
     private Long ratingId;

@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreateRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreateUserDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Rating;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Ride;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
