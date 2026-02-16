@@ -3,7 +3,6 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.repository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,14 +3,10 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.DriverStatusRequestDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleHomeDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.UpdateVehicleDTO;
