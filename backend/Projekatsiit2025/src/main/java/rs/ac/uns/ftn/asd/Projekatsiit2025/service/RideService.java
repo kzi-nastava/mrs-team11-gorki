@@ -54,15 +54,18 @@ public class RideService {
     private final PassengerRepository passengerRepository;
 	@Autowired
 	private final RatingRepository ratingRepository;
+	@Autowired
+	private final NotificationService notificationService;
 
     public RideService(RideRepository rideRepository, DriverAssignmentService driverAssignmentService, 
     		PriceConfigService priceConfigService, PassengerRepository passengerRepository,
-    		RatingRepository ratingRepository) {
+    		RatingRepository ratingRepository,NotificationService notificationService) {
         this.rideRepository = rideRepository;
         this.driverAssignmentService = driverAssignmentService;
         this.priceConfigService = priceConfigService;
         this.passengerRepository = passengerRepository;
         this.ratingRepository=ratingRepository;
+        this.notificationService=notificationService;
     }
     
     @Transactional(readOnly = true)
@@ -344,24 +347,31 @@ public class RideService {
 
     @Transactional
     public FinishedRideDTO finishRide(Long driverId, FinishRideDTO dto) {
-        // 1️ Dohvati voznju po rideId i driverId
+
         Ride ride = rideRepository.findByIdAndDriver_Id(dto.getRideId(), driverId);
         if (ride == null) {
             throw new RuntimeException("Voznja ne postoji ili nije dodeljena ovom vozacu");
         }
 
-        // 2️ Zavrsavanje voznje
         ride.setStatus(RideStatus.FINISHED);
         ride.setEndingTime(LocalDateTime.now());
 
-        // 3️ Placanje
         if (Boolean.TRUE.equals(dto.getPaid())) {
-            ride.setPaid(true); 
+            ride.setPaid(true);
         }
+
+        // ✅ SAČUVAJ PROMENE
+        rideRepository.save(ride);
+
+        // ✅ DEBUG LOG (OBAVEZNO privremeno)
+        System.out.println("SENDING RATING_AVAILABLE to " + ride.getCreator().getEmail()
+                + " rideId=" + ride.getId());
+
+        // ✅ POŠALJI NOTIFIKACIJU
+        notificationService.sendRatingAvailable(ride.getCreator().getEmail(), ride.getId());
 
         Driver driver = ride.getDriver();
 
-        // 4️ Proveri sledecu zakazanu voznju
         Ride nextRide = rideRepository
                 .findFirstByDriver_IdAndStatusOrderByScheduledTimeAsc(driverId, RideStatus.ACCEPTED);
 

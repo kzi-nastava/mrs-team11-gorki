@@ -66,5 +66,6 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 		""")
 	Optional<Ride> findActiveRideForDriver(@Param("driverId") Long driverId);
   
-    
+    Optional<Ride> findFirstByCreator_EmailAndStatusOrderByEndingTimeDesc(String email, RideStatus status);
+
 }

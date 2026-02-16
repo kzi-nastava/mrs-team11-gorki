@@ -48,6 +48,7 @@ public class StompAuthChannelInterceptor implements ChannelInterceptor {
                         );
 
                         accessor.setUser(authentication);
+                        System.out.println("WS PRINCIPAL NAME = " + authentication.getName());
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
