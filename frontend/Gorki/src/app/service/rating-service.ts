@@ -16,4 +16,10 @@ export class RatingService {
       dto
     );
   }
+
+  getPendingLatest(): Observable<number | null> {
+  return this.http.get<number | null>(
+    `${environment.apiHost}/rides/ratings/pending-latest`
+  );
+}
 }
