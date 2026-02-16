@@ -1,10 +1,13 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 
 
+import java.security.Principal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,4 +41,12 @@ public class RatingController {
 			CreatedRatingDTO response=ratingService.createRating(id, dto);
 	        return new ResponseEntity<>(response, HttpStatus.CREATED);
 	    }
+	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
+    @GetMapping("/ratings/pending-latest")
+    public ResponseEntity<Long> pendingLatest(Principal principal) {
+		System.out.println("HIT pending-latest by " + (principal != null ? principal.getName() : "NULL"));
+	    Long rideId = ratingService.pendingLatestRideId(principal.getName());
+	    System.out.println("RETURN rideId=" + rideId);
+	    return ResponseEntity.ok(rideId);
+    }
 }

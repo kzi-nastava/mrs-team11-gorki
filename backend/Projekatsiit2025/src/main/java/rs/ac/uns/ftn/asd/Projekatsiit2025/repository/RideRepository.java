@@ -69,4 +69,6 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 
     Collection<Ride> findAllByPanicActivatedTrue();
   
+    Optional<Ride> findFirstByCreator_EmailAndStatusOrderByEndingTimeDesc(String email, RideStatus status);
+
 }
