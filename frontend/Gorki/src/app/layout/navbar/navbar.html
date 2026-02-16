@@ -51,12 +51,10 @@
     </div>
     <div class="rightItems">
         @if(isLoggedIn){
-            @if(isLoggedIn){
             <div class="support" (click)="openSupport()">
                 <mat-icon>support_agent</mat-icon>
                 Support
             </div>
-            }
             @if(role == "DRIVER"){
                 <mat-button-toggle-group class="activityLabelGroup" id="activeLabelGroup">
                     <mat-button-toggle style="background-color: green;" class="activityLabelButton" id="activeLabel" [value]="true" 
@@ -79,4 +77,6 @@
     </div>
 </header>
 <router-outlet/>
-
+@if(ratingDialogOpen){
+<app-rating-panel></app-rating-panel>
+}

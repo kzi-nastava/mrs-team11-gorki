@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './rating-panel.html',
-  styleUrl: './rating-panel.css',
+  styleUrls: ['./rating-panel.css'],
 })
 export class RatingPanel {
 

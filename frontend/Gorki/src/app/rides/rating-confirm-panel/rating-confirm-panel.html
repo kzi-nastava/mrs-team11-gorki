@@ -1,0 +1,21 @@
+<div class="wrap">
+
+  <div class="top">
+    <div class="icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+
+    <div class="content">
+      <h2>{{ data.title || 'Ride finished' }}</h2>
+      <p>
+        {{ data.message || 'Your ride was completed successfully. Would you like to rate the driver and vehicle?' }}
+      </p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button (click)="later()">Later</button>
+    <button mat-flat-button color="primary" (click)="rate()">Rate</button>
+  </div>
+
+</div>
