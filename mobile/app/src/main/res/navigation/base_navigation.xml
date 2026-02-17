@@ -39,4 +39,11 @@
         android:name="ftn.mrs_team11_gorki.fragments.HistoryFragment"
         app:popUpTo="@id/homeFragment"
         tools:layout="@layout/fragment_history"/>
+
+    <fragment
+        android:id="@+id/nav_price_conf"
+        android:name="ftn.mrs_team11_gorki.fragments.PriceConfigFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Price configuration"
+        tools:layout="@layout/fragment_price_config"/>
 </navigation>
