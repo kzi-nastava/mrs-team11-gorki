@@ -43,7 +43,7 @@ export class PassengerHistoryService {
     cancellationReason: dto.cancellationReason || 'None',
     panic: dto.panicActivated,
     passengers: dto.passengers || [],
-    rating: dto.averageRating
+    rating: dto.averageRating || 0
   };
 }
 }

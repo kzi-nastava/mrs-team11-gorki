@@ -34,15 +34,17 @@ export class RidesListAdmin {
 
   ngOnInit() {
     this.loadRides();
+    
   }
 
   loadRides() {
-    this.adminHistoryService.getPanicRides().subscribe({
+    this.adminHistoryService.getAdminRides().subscribe({
       next: (rides) => {
         this.rides = [...rides];
         this.allRides = [...rides];
+        this.filteredRides = [...rides];
       },
-      error: (err) => console.error('Ne mogu da dohvatim panic voznje', err),
+      error: (err) => console.error('Ne mogu da dohvatim admin voznje', err),
     });
   }
 
@@ -105,18 +107,18 @@ export class RidesListAdmin {
     });
   }
 
-  filterByPerson(event: { person: string | null }) {
-    const { person } = event;
+  filterByPerson(event: { personEmail: string | null }) {
+    const { personEmail } = event;
 
-    if (!person) {
-      this.filteredRides = [...this.allRides]; //clear
+    if (!personEmail) {
+      this.filteredRides = [...this.allRides];
       return;
     }
 
+    const email = personEmail.toLowerCase();
+
     this.filteredRides = this.allRides.filter(ride =>
-      ride.passengers.some(p =>
-        `${p.firstName} ${p.lastName}`.toLowerCase() === person.toLowerCase()
-      )
+      ride.passengers?.some(p => (p.email ?? '').toLowerCase() === email)
     );
   }
 

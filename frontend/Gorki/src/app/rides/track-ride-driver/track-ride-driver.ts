@@ -6,7 +6,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { PanicService } from '../../service/panic-service';
 import { StopRideService } from '../../service/stop-ride-service';
 import { AuthService } from '../../infrastructure/auth.service';
-import { RideInProgressService } from '../../service/passenger-ride-in-progress';
+import { DriverRideInProgress } from '../../service/driver-ride-in-progress';
 
 @Component({
   selector: 'app-track-ride-driver',
@@ -31,11 +31,11 @@ export class TrackRideDriver {
     private cdr: ChangeDetectorRef, 
     private panicService: PanicService, 
     private stopRideService: StopRideService,
-    private rideInProgressService: RideInProgressService,
+    private driverRideInProgress: DriverRideInProgress,
     private authService: AuthService) {}
 
   ngOnInit(){
-     this.rideInProgressService
+     this.driverRideInProgress
     .getActiveRide(this.authService.getId())
     .subscribe({
       next: (ride) => {
