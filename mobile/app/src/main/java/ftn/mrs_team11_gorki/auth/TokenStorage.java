@@ -3,6 +3,9 @@ package ftn.mrs_team11_gorki.auth;
 import android.content.Context;
 import android.content.SharedPreferences;
 import ftn.mrs_team11_gorki.dto.LoginResponse;
+import android.util.Base64;
+import org.json.JSONObject;
+
 public class TokenStorage {
     private static final String PREFS = "auth_prefs";
     private static final String KEY_TOKEN = "jwt_token";
@@ -34,6 +37,24 @@ public class TokenStorage {
 
     public String getRole() {
         return sp.getString(KEY_ROLE, null);
+    }
+
+    public String getEmailFromToken() {
+        String token = getToken();
+        if (token == null || token.isEmpty()) return null;
+
+        try {
+            String[] parts = token.split("\\.");
+            if (parts.length < 2) return null;
+
+            String payloadJson = new String(Base64.decode(parts[1], Base64.URL_SAFE), "UTF-8");
+            JSONObject payload = new JSONObject(payloadJson);
+
+            return payload.optString("sub", null);
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void clear() {
