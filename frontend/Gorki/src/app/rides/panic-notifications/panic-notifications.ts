@@ -7,6 +7,7 @@ import { DateFilter } from '../filters/date-filter/date-filter';
 import { SortFilter } from '../filters/sort-filter/sort-filter';
 import { AuthService } from '../../infrastructure/auth.service';
 import { AdminHistoryService } from '../../service/admin-history-service';
+import { PanicSocketService } from '../../service/panic-socket-service';
 
 @Component({
   selector: 'app-panic-notifications',
@@ -20,7 +21,8 @@ export class PanicNotifications {
 
   constructor(
     private authService: AuthService,
-    private adminHistoryService: AdminHistoryService
+    private adminHistoryService: AdminHistoryService,
+    private panicSocketService: PanicSocketService
   ) {}
 
   selectedRide: PanicRide | null = null;
@@ -47,6 +49,24 @@ export class PanicNotifications {
 
   ngOnInit() {
     this.loadRides();
+
+    const token = localStorage.getItem('user');
+    if (token) {
+      this.panicSocketService.connect(token, (evt) => {
+        this.loadRides();
+        this.playSound();
+        alert('New panic notification received!');
+      });
+    }
+  }
+
+  private audio = new Audio('notification-sound-1.wav');
+
+  playSound() {
+    this.audio.currentTime = 0;
+    this.audio.play().catch(() => {
+      // browser blokira autoplay dok user ne klikne negde
+    });
   }
 
   loadRides() {
