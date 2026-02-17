@@ -663,6 +663,10 @@ public class RideService {
                     .toList();
         }
 
+        rides = rides.stream()
+                .filter(r -> r.getStatus() == RideStatus.FINISHED)
+                .toList();
+
         return rides.stream()
                 .map(this::mapUserRideHistoryToDTO)
                 .toList();
