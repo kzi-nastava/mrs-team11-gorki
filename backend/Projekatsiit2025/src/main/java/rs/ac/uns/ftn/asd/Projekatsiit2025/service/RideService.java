@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.PassengerRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.RatingRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.RideRepository;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.webSocket.dto.PanicEventDTO;
 
 @Service
 public class RideService {
@@ -54,6 +56,8 @@ public class RideService {
 	private final RatingRepository ratingRepository;
 	@Autowired
 	private final NotificationService notificationService;
+    @Autowired
+    private PanicWsService panicWsService;
 
     public RideService(RideRepository rideRepository, DriverAssignmentService driverAssignmentService, 
     		PriceConfigService priceConfigService, PassengerRepository passengerRepository,
@@ -478,8 +482,30 @@ public class RideService {
         //    throw new RuntimeException("Ride not active");
         }
 
+        if (ride.getPanicActivated()) {
+            throw new RuntimeException("Ride already has panic activated");
+        }
+
         ride.setPanicActivated(true);
         rideRepository.save(ride);
+
+        // ko je okinuo panic? (opciono)
+        String role = null;
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getAuthorities() != null) {
+            role = auth.getAuthorities().stream()
+                    .map(a -> a.getAuthority())
+                    .filter(a -> a.equals("ROLE_DRIVER") || a.equals("ROLE_PASSENGER"))
+                    .findFirst()
+                    .orElse(null);
+            if (role != null) role = role.replace("ROLE_", ""); // DRIVER/PASSENGER
+        }
+
+        panicWsService.broadcast(new PanicEventDTO(
+                ride.getId(),
+                role,
+                java.time.LocalDateTime.now()
+        ));
     }
 
     @Transactional
@@ -619,74 +645,27 @@ public class RideService {
         return dto;
     }
 
-    @Transactional(readOnly = true)
-    public Collection<UserRideHistoryDTO> getAdminRideHistory(
-            Long userId,
-            LocalDate from,
-            LocalDate to) {
+    public Collection<UserRideHistoryDTO> getAdminRideHistory(LocalDate from, LocalDate to) {
 
-        LocalDateTime fromDateTime = (from != null)
-                ? from.atStartOfDay()
-                : LocalDate.of(2000, 1, 1).atStartOfDay();  // SAFE MIN
+        var rides = rideRepository.findAllByOrderByStartingTimeDesc();
 
-        LocalDateTime toDateTime = (to != null)
-                ? to.atTime(23, 59, 59)
-                : LocalDate.of(2100, 1, 1).atStartOfDay();  // SAFE MAX
-
-        List<Ride> acceptedRides = rideRepository.findByCreator_IdAndStatusAndStartingTimeBetween(
-                userId,
-                RideStatus.FINISHED,
-                fromDateTime,
-                toDateTime
-        );
-        
-        List<Ride> rides = new ArrayList<>(acceptedRides);
-
-        if(rides.isEmpty()){
-            List<Ride> acceptedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
-                userId,
-                RideStatus.FINISHED,
-                fromDateTime,
-                toDateTime
-            );
-
-            rides = new ArrayList<>(acceptedRidesDriver);
+        if (from != null) {
+        rides = rides.stream()
+                .filter(r -> r.getStartingTime() != null)
+                .filter(r -> !r.getStartingTime().toLocalDate().isBefore(from))
+                .toList();
         }
 
-        return rides.stream().map(this::mapAdminRideHistoryToDTO).toList();
-    }
+        if (to != null) {
+            rides = rides.stream()
+                    .filter(r -> r.getStartingTime() != null)
+                    .filter(r -> !r.getStartingTime().toLocalDate().isAfter(to))
+                    .toList();
+        }
 
-    private UserRideHistoryDTO mapAdminRideHistoryToDTO(Ride ride) {
-        UserRideHistoryDTO dto = new UserRideHistoryDTO();
-        dto.setRideId(ride.getId());
-        dto.setStartingTime(ride.getStartingTime());
-        dto.setEndingTime(ride.getEndingTime());
-        dto.setPrice(ride.getPrice());
-        dto.setPanicActivated(ride.getPanicActivated());
-        dto.setCanceled(ride.getStatus() == RideStatus.CANCELED);
-        dto.setCanceledBy(ride.getCancelledBy());
-        dto.setPassengers(ride.getLinkedPassengers()
-                .stream()
-                .map(p -> new PassengerInRideDTO(
-                        p.getEmail(),
-                        p.getFirstName(),
-                        p.getLastName(),
-                        String.valueOf(p.getPhoneNumber())
-                ))
-                .toList()
-        );
-        Route route = ride.getRoute();
-        GetRouteDTO routeDTO = new GetRouteDTO(
-        	    route.getId(),
-        	    route.getLocations().stream()
-        	         .map(loc -> 
-        	             new LocationDTO(loc.getLatitude(), loc.getLongitude(), loc.getAddress()))
-        	         .toList(),
-        	    route.getDistance(),
-        	    route.getEstimatedTime()
-		);
-        dto.setRoute(routeDTO);
-        return dto;
+        return rides.stream()
+                .map(this::mapUserRideHistoryToDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)

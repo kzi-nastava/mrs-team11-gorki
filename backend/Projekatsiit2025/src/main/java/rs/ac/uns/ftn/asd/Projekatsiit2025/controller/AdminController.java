@@ -25,6 +25,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverInfoDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.AdminRideMonitorDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideHistoryResponseDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.UserRideHistoryDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UserOptionDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.PriceConfig;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
@@ -49,7 +50,7 @@ public class AdminController {
         this.adminService=adminService;
     }
 
-	  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/users/{id}/rides", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RideHistoryResponseDTO>> getRideHistory(
             @PathVariable Long id,
@@ -81,20 +82,13 @@ public class AdminController {
         return new ResponseEntity<List<RideHistoryResponseDTO>>(rideHistory, HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}/rides/history")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Transactional(readOnly = true)
+    @GetMapping("/rides/history")
     public ResponseEntity<Collection<UserRideHistoryDTO>> getAdminRideHistory(
-            @PathVariable Long userId,
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate from,
-
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate to) {
-
-         return ResponseEntity.ok(
-                    rideService.getAdminRideHistory(userId, from, to)
-            );
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
+        return ResponseEntity.ok(rideService.getAdminRideHistory(from, to));
     }
     
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -135,5 +129,12 @@ public class AdminController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
     ) {
         return ResponseEntity.ok(rideService.getAllPanicRides(from, to));
+    }
+
+    @GetMapping("/users")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<List<UserOptionDTO>> getAllUsers() {
+        List<UserOptionDTO> users = adminService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }
