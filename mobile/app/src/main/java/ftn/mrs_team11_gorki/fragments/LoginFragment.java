@@ -70,7 +70,7 @@ public class LoginFragment extends DialogFragment {
             loginCall = authApi.login(request);
             loginCall.enqueue(new Callback<LoginResponse>() {
                 @Override
-                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                     if (!isAdded()) return;
 
                     formBinding.loginButton.setEnabled(true);
@@ -81,19 +81,19 @@ public class LoginFragment extends DialogFragment {
                         if (res.getToken() != null && !res.getToken().isEmpty()) {
                             new TokenStorage(requireContext()).save(res);
 
+
+                            ((ftn.mrs_team11_gorki.activities.MainActivity) requireActivity()).onAuthChanged();
+
                             Toast.makeText(requireContext(),
                                     "Login success: " + res.getRole(),
                                     Toast.LENGTH_SHORT).show();
 
                             dismiss();
-
-                            // navigacija tek nakon dismiss (da ne puca zbog dialog lifecycle)
-
                             NavController navController =
                                     Navigation.findNavController(requireActivity(), R.id.fragment_nav_content_main);
 
                             NavOptions navOptions = new NavOptions.Builder()
-                                    .setPopUpTo(R.id.unuserHomeFragment, true) // izbriši guest iz back stack-a
+                                    .setPopUpTo(R.id.unuserHomeFragment, true)
                                     .build();
 
                             navController.navigate(R.id.homeFragment, null, navOptions);
