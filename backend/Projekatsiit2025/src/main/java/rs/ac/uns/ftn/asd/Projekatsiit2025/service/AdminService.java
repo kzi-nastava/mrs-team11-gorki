@@ -16,6 +16,7 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.AdminRideMonitorDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.GetRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UserOptionDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.GetVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
@@ -25,22 +26,26 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Vehicle;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.AdminRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.DriverRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.RideRepository;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
 
 @Service
 public class AdminService {
 	
-	 @Autowired
-	 private final AdminRepository adminRepository;
+	 //@Autowired
+	 //private final AdminRepository adminRepository;
 	 @Autowired
 	 private final RideRepository rideRepository;
 	 @Autowired
 	 private final DriverRepository driverRepository;
+	 @Autowired
+	 private final UserRepository userRepository;
 	
 	 public AdminService(AdminRepository adminRepository, RideRepository rideRepository,
-		 	DriverRepository driverRepository) {
-		 this.adminRepository = adminRepository;
+		 	DriverRepository driverRepository, UserRepository userRepository) {
+		 //this.adminRepository = adminRepository;
 		 this.rideRepository = rideRepository;
 		 this.driverRepository = driverRepository;
+		 this.userRepository = userRepository;
 	 } 	
 	
 	 public GetDriverInfoDTO searchDrivers(String q) {
@@ -206,4 +211,16 @@ public class AdminService {
 
 		    return new LocationDTO(loc.getLatitude(), loc.getLongitude(), loc.getAddress());
 		}
+
+	@Transactional(readOnly = true)
+	public List<UserOptionDTO> getAllUsers() {
+		return userRepository.findAll().stream()
+			.map(u -> new UserOptionDTO(
+				u.getId(),
+				u.getFirstName(),
+				u.getLastName(),
+				u.getEmail()
+			))
+			.toList();
+	}
 }
