@@ -46,4 +46,11 @@
         app:popUpTo="@id/homeFragment"
         android:label="Price configuration"
         tools:layout="@layout/fragment_price_config"/>
+
+    <fragment
+        android:id="@+id/adminSupportFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.AdminSupportFragment"
+        tools:layout="@layout/fragment_admin_support" />
+
+
 </navigation>

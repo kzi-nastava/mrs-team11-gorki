@@ -21,6 +21,7 @@ import ftn.mrs_team11_gorki.R;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.databinding.ActivityMainBinding;
 import ftn.mrs_team11_gorki.fragments.LoginFragment;
+import ftn.mrs_team11_gorki.fragments.SupportChatDialogFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,11 +74,17 @@ public class MainActivity extends AppCompatActivity {
         TokenStorage ts = new TokenStorage(this);
         String token = ts.getToken();
         boolean isLoggedIn = token != null && !token.isEmpty();
-
+        String role=ts.getRole();
         if (!isLoggedIn) {
             getMenuInflater().inflate(R.menu.toolbar_menu_guest, menu);
+        } else {
+            if(role.equals("ADMIN")){
+                getMenuInflater().inflate(R.menu.toolbar_manu_admin_correct, menu);
+            }
+            else {
+                getMenuInflater().inflate(R.menu.toolbar_menu_logged_in, menu);
+            }
         }
-        // logged-in: nista (prazan meni)
 
         return true;
     }
@@ -94,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.nav_register) {
             navController.navigate(R.id.passengerRegistrationFragment);
             return true;
+        }
+        if (id == R.id.action_support_chat) {
+            new SupportChatDialogFragment().show(getSupportFragmentManager(), "supportChat");
+            return true;
+        }
+
+        if(id == R.id.adminSupportFragment){
+
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@android:color/white">
+
+    <!-- LEFT: INBOX -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.42"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Header row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvInboxTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Inbox"
+                android:textStyle="bold"
+                android:fontFamily="SofiaSansCondensed"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/tvWsStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="● Disconnected"
+                android:fontFamily="SofiaSansCondensed"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="Refresh"
+            android:fontFamily="SofiaSansCondensed"
+            android:layout_marginTop="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChats"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#EAEAEA"/>
+
+    <!-- RIGHT: CHAT -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.58"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Empty / header -->
+        <LinearLayout
+            android:id="@+id/chatHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvChatTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select a chat"
+                android:fontFamily="SofiaSansCondensed"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/tvChatSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick a conversation from the inbox to start replying."
+                android:textSize="12sp"
+                android:fontFamily="SofiaSansCondensed"
+                android:textColor="#777"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMessages"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"/>
+
+        <!-- Input row -->
+        <LinearLayout
+            android:id="@+id/inputRow"
+            android:layout_width="match_parent"
+            android:fontFamily="SofiaSansCondensed"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Write a reply..."
+                android:fontFamily="SofiaSansCondensed"
+                android:padding="12dp"
+                android:background="@android:color/transparent"/>
+
+            <ImageButton
+                android:id="@+id/btnSend"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:fontFamily="SofiaSansCondensed"
+                android:background="@drawable/bg_send_whatsapp"
+                android:src="@drawable/ic_send_whatsapp"
+                android:tint="@android:color/white"
+                android:padding="14dp"
+                android:contentDescription="Send"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
