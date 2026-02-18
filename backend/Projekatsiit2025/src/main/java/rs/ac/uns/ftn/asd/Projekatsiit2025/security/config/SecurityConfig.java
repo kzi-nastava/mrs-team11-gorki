@@ -57,7 +57,13 @@ public class SecurityConfig {
             .requestMatchers("/favicon.ico").permitAll()
             .requestMatchers("/ws/**").permitAll()
             .requestMatchers("/api/auth/forgot-password").permitAll()
+            .requestMatchers(
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**"
+                ).permitAll()
             .requestMatchers("/api/auth/reset-password").permitAll()
+            
             .anyRequest().authenticated()
       )
       .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
