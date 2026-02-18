@@ -47,6 +47,8 @@ public class SecurityConfig {
     		.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers("/api/auth/login").permitAll()
             .requestMatchers("/api/auth/register").permitAll()
+            .requestMatchers("/api/auth/redirect").permitAll()
+            .requestMatchers("/api/auth/activate/**").permitAll()
             .requestMatchers("/api/vehicles").permitAll()
             .requestMatchers("/api/rides/estimate").permitAll()
             .requestMatchers("/sendMail").permitAll()
