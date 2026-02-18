@@ -7,7 +7,7 @@ import { FinishRideDto } from '../../model/ui/finish-ride-dto';
 import { EndRideService } from '../../service/end-ride-service';
 import { AuthService } from '../../infrastructure/auth.service';
 import { DriverRideInProgress} from '../../service/driver-ride-in-progress';
-import { RideInProgressDTO } from '../../model/ui/ride-in-progress-dto';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-end-of-ride-panel',
@@ -39,7 +39,8 @@ export class EndOfRidePanel {
     private router: Router,
     private rideService: EndRideService,
     private authService:AuthService,
-    private driverService:DriverRideInProgress
+    private driverService:DriverRideInProgress,
+    private cdr:ChangeDetectorRef
   ) {}
 
   newRides: DriverScheduledRide[] = [];
@@ -77,6 +78,7 @@ export class EndOfRidePanel {
   }
   openModal() {
     this.isModalOpen = true;
+    this.cdr.detectChanges();
   }
 
   closeModal() {
@@ -87,12 +89,12 @@ export class EndOfRidePanel {
     console.log('START RIDE');
     this.closeModal();
     this.router.navigateByUrl('HomePage');
-    //ucitavanje novih podataka
+
   }
 
   goToScheduledRides() {
     console.log('GO TO SCHEDULED RIDES');
-    this.router.navigateByUrl('driver-sceduled-rides');
+    this.router.navigateByUrl('scheduled-rides');
     this.closeModal();
   }
   

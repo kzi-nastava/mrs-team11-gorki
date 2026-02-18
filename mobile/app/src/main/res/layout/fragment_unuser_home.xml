@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/unuserHome"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background">
+    tools:context=".fragments.UnuserHomeFragment">
 
-    <ImageView
+    <!-- MAPA -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/osmMap"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/mapa"/>
+        android:layout_height="match_parent" />
 
-    <include
-        android:id="@+id/unuserForm"
-        layout="@layout/estimation_form"
+    <!-- ESTIMATE PANEL PREKO MAPE -->
+    <LinearLayout
+        android:id="@+id/estimatePanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_margin="24dp"/>
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:background="@android:color/white">
+
+        <EditText
+            android:id="@+id/startingAddress"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:inputType="textPostalAddress"
+            android:hint="@string/startingAddressHint"
+            android:autofillHints="postalAddress"
+            style="@style/formInput"/>
+
+        <EditText
+            android:id="@+id/destinationAddress"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:inputType="textPostalAddress"
+            android:hint="@string/destinationAddressHint"
+            android:autofillHints="postalAddress"
+            style="@style/formInput"/>
+
+        <Button
+            android:id="@+id/btnEstimate"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="@string/estimate"
+            style="@style/formButton"/>
+
+    </LinearLayout>
 
 </FrameLayout>

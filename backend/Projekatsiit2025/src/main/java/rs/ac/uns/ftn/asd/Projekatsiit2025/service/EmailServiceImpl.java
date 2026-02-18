@@ -117,4 +117,20 @@ public class EmailServiceImpl implements EmailService {
 
         javaMailSender.send(mailMessage);
     }
+    
+    public void sendRideAcceptedMail(String to, String link) {
+        EmailDetails d = new EmailDetails();
+        d.setRecipient(to);
+        d.setSubject("Ride accepted");
+        d.setMsgBody("You were added to a ride and a driver has been found.\nTrack: " + link);
+        sendSimpleMail(d);
+    }
+
+    public void sendRideFinishedMail(String to, String link) {
+        EmailDetails d = new EmailDetails();
+        d.setRecipient(to);
+        d.setSubject("Ride completed");
+        d.setMsgBody("Ride finished successfully.\nDetails: " + link);
+        sendSimpleMail(d);
+    }
 }

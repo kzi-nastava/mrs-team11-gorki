@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:elevation="2dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:id="@+id/cardChat">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvChatName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Chat #1"
+                android:textStyle="bold"
+                android:fontFamily="SofiaSansCondensed"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tvAssigned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Assigned"
+                android:textSize="11sp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:fontFamily="SofiaSansCondensed"
+                android:background="@drawable/bg_chip_light"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User ID: 2   Msgs: 26"
+            android:textSize="12sp"
+            android:textColor="#666"
+            android:fontFamily="SofiaSansCondensed"
+            android:layout_marginTop="6dp"/>
+
+        <TextView
+            android:id="@+id/tvPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last message preview..."
+            android:fontFamily="SofiaSansCondensed"
+            android:textSize="12sp"
+            android:textColor="#222"
+            android:layout_marginTop="6dp"
+            android:maxLines="1"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

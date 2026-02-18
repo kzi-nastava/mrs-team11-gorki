@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { DateFilter } from '../filters/date-filter/date-filter';
@@ -9,6 +9,7 @@ import { RatingPanel } from "../rating-panel/rating-panel";
 import { RatingService } from '../../service/rating-service';
 import { PassengerHistoryService } from '../../service/passenger-history-service';
 import { AuthService } from '../../infrastructure/auth.service';
+
 
 @Component({
   selector: 'app-rides-list-user',
@@ -26,7 +27,8 @@ export class RidesListUser {
     private passengerHistoryService: PassengerHistoryService,
     private router: Router, 
     private ratingService: RatingService,
-    private authService:AuthService) {}
+    private authService:AuthService,
+    private cdr:ChangeDetectorRef) {}
 
   filteredRides:UserHistoryRide[]=[];
   allRides:UserHistoryRide[]=[];
@@ -153,6 +155,7 @@ export class RidesListUser {
 
         this.showRating = false;
         this.selectedRideForRating = null;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error("Greska pri ocenjivanju", err);

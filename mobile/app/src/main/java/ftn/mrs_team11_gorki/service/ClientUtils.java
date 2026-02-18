@@ -48,4 +48,8 @@ public final class ClientUtils {
         }
         return authService;
     }
+
+    public static AdminService getAdminService() {
+        return getRetrofit().create(AdminService.class);
+    }
 }
