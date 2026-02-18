@@ -2,11 +2,23 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.notification;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class NotificationDTO {
+	@NotNull(message = "Type is required")
     private String type;
+	@NotNull(message = "RideId is required")
+	@Positive(message = "RideId must be positive")
     private Long rideId;
+	@NotNull(message = "Title is required")
     private String title;
+	@NotNull(message = "Message is required")
     private String message;
+	
+	@NotNull(message = "Time is required")
+	@FutureOrPresent(message = "Time must be in present or future")
     private LocalDateTime createdAt;
 
     public NotificationDTO() {}

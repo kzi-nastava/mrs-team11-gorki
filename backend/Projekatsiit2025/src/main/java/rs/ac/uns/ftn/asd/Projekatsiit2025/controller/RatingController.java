@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreateRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RatingService;
@@ -36,7 +37,7 @@ public class RatingController {
 	    )
 	    public ResponseEntity<CreatedRatingDTO> rateRide(
 	            @PathVariable Long id,
-	            @RequestBody CreateRatingDTO dto) {
+	            @Valid @RequestBody CreateRatingDTO dto) {
 
 			CreatedRatingDTO response=ratingService.createRating(id, dto);
 	        return new ResponseEntity<>(response, HttpStatus.CREATED);

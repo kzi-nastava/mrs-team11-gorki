@@ -1,8 +1,17 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class RideEstimateRequestDTO {
-    private String startingAddress;
-    private String endingAddress;
+	@NotBlank(message = "Starting address is required")
+	@Size(max = 500, message = "Starting address too long")
+	private String startingAddress;
+
+	@NotBlank(message = "Ending address is required")
+	@Size(max = 500, message = "Ending address too long")
+	private String endingAddress;
+
 
 	public RideEstimateRequestDTO() {
 		super();

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.report.ReportDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.BlockUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
@@ -49,14 +50,14 @@ public class UserController {
 	
 	@PreAuthorize("hasAnyAuthority('ROLE_PASSENGER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UpdatedUserDTO> updateUser(@PathVariable("id") Long id, @RequestBody UpdateUserDTO requestUser){
+	public ResponseEntity<UpdatedUserDTO> updateUser(@PathVariable("id") Long id,@Valid @RequestBody UpdateUserDTO requestUser){
 		UpdatedUserDTO responseUser = userService.updatePersonalInfo(id, requestUser);
 		return new ResponseEntity<UpdatedUserDTO>(responseUser, HttpStatus.OK); 
 	}
 	
 	@PreAuthorize("hasAnyAuthority('ROLE_PASSENGER', 'ROLE_ADMIN', 'ROLE_DRIVER')")
 	@PutMapping(value = "/{id}/change-password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UpdatedUserDTO> updateUserPassword(@PathVariable("id") Long id, @RequestBody UpdatePasswordDTO dto){
+	public ResponseEntity<UpdatedUserDTO> updateUserPassword(@PathVariable("id") Long id,@Valid @RequestBody UpdatePasswordDTO dto){
 		UpdatedUserDTO responseUser = userService.updatePassword(id, dto);
 		if(responseUser == null) {
 			return new ResponseEntity<UpdatedUserDTO>(HttpStatus.NOT_ACCEPTABLE);
@@ -73,7 +74,7 @@ public class UserController {
 	
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PutMapping(value = "/block", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetUserDTO> blockUser(@RequestBody BlockUserDTO dto){
+	public ResponseEntity<GetUserDTO> blockUser(@Valid @RequestBody BlockUserDTO dto){
 		GetUserDTO user = userService.blockUser(dto);
 		return new ResponseEntity<GetUserDTO>(user, HttpStatus.OK);
 	}

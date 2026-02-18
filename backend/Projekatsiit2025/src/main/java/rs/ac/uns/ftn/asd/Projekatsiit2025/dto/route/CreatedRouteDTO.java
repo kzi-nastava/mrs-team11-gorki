@@ -3,13 +3,33 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
 
 public class CreatedRouteDTO {
+	
+	@Positive(message = "Id must be positive")
 	private Long id;
+
+	@NotEmpty(message = "Locations are required")
+	@Size(min = 2, message = "At least start and end location required")
+	@Valid
 	private List<LocationDTO> locations;
-	private double distance;
+
+	@NotNull(message = "Distance is required")
+	@PositiveOrZero(message = "Distance must be >= 0")
+	private Double distance;
+
+	@NotNull(message = "Estimated time is required")
 	private LocalDateTime estimatedTime;
+
+	
 	public CreatedRouteDTO() {
 		super();
 	}

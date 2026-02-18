@@ -1,12 +1,22 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 
 public class GetVehicleHomeDTO {
+	@Positive(message = "Id must be positive")
 	private Long id;
+
+	@NotNull(message = "Current location is required")
+	@Valid
 	private LocationDTO currentLocation;
+
+	@NotNull(message = "Vehicle availability is required")
 	private DriverStatus vehicleAvailability;
+
 	
 	public GetVehicleHomeDTO() {
 		super();

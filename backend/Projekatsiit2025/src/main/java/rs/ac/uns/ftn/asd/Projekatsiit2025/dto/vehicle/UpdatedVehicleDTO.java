@@ -1,15 +1,31 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.VehicleType;
 
 public class UpdatedVehicleDTO {
+	@Positive(message = "Id must be positive")
 	private Long id;
+
+	@Size(max = 100, message = "Model too long")
 	private String model;
+
 	private VehicleType type;
+
+	@Size(max = 20, message = "Plate number too long")
 	private String plateNumber;
-	private int seats;
+
+	@Min(value = 1, message = "Vehicle must have at least 1 seat")
+	@Max(value = 20, message = "Too many seats")
+	private Integer seats;
+
 	private Boolean babyTransport;
+
 	private Boolean petFriendly;
+
 	
 	public UpdatedVehicleDTO() {
 		super();
