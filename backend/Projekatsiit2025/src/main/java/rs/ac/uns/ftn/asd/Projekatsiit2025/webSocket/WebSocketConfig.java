@@ -30,6 +30,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*")
                 .setAllowedOrigins("http://localhost:4200")
                 .withSockJS();
+        
+        registry.addEndpoint("/ws-native").setAllowedOriginPatterns("*");
+
     }
 
     @Override

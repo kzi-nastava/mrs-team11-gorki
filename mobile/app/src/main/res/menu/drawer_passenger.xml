@@ -16,6 +16,11 @@
         android:icon="@drawable/ic_change_password"/>
 
     <item
+        android:id="@+id/nav_passenger_ride_history"
+        android:title="Ride history (Passenger)"
+        android:icon="@drawable/ic_ride_history"/>
+
+    <item
         android:id="@+id/nav_logout"
         android:title="Logout"
         android:icon="@drawable/ic_logout"/>
