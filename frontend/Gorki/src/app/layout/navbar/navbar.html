@@ -56,6 +56,10 @@
                 <mat-icon>support_agent</mat-icon>
                 Support
             </div>
+            <div class="notifications" (click)="openNotifications()">
+                <mat-icon>notifications</mat-icon>
+                Notifications
+            </div>
             @if(role == "DRIVER"){
                 <mat-button-toggle-group class="activityLabelGroup" id="activeLabelGroup">
                     <mat-button-toggle style="background-color: green;" class="activityLabelButton" id="activeLabel" [value]="true" 
