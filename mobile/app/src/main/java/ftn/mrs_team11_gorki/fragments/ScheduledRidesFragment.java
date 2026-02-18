@@ -1,6 +1,7 @@
 package ftn.mrs_team11_gorki.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,10 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ftn.mrs_team11_gorki.R;
-import ftn.mrs_team11_gorki.adapter.DriverRideHistoryRecyclerAdapter;
+import ftn.mrs_team11_gorki.adapter.ScheduledRideRecyclerAdapter;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
+import ftn.mrs_team11_gorki.dto.RideCancelRequestDTO;
+import ftn.mrs_team11_gorki.dto.RideCancelResponseDTO;
+import ftn.mrs_team11_gorki.service.ClientUtils;
 import ftn.mrs_team11_gorki.view.ScheduledRidesViewModel;
 import ftn.mrs_team11_gorki.view.SimpleItemSelectedListener;
+
+import android.util.Base64;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.nio.charset.StandardCharsets;
 
 public class ScheduledRidesFragment extends Fragment {
 
@@ -30,7 +39,7 @@ public class ScheduledRidesFragment extends Fragment {
     private Button btnRefresh;
     private Button btnClear;
 
-    private DriverRideHistoryRecyclerAdapter adapter;
+    private ScheduledRideRecyclerAdapter adapter;
     private ScheduledRidesViewModel viewModel;
 
     public ScheduledRidesFragment() {
@@ -69,7 +78,8 @@ public class ScheduledRidesFragment extends Fragment {
 
         RecyclerView rvHistory = view.findViewById(R.id.rvHistory);
 
-        adapter = new DriverRideHistoryRecyclerAdapter();
+        adapter = new ScheduledRideRecyclerAdapter();
+        adapter.setOnCancelClickListener(ride -> openCancelDialog(ride.getRideId()));
         rvHistory.setAdapter(adapter);
         rvHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
 
@@ -134,5 +144,93 @@ public class ScheduledRidesFragment extends Fragment {
         Long userId = ts.getUserId(); // driver/passenger/admin (ulogovan)
 
         viewModel.loadScheduled(token, userId, viewModel.getFromDate(), viewModel.getToDate());
+    }
+
+    private void openCancelDialog(Long rideId) {
+        View dv = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_cancel_reason, null);
+        EditText edt = dv.findViewById(R.id.edtCancelReason);
+
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(requireContext())
+                .setTitle("Cancel ride")
+                .setView(dv)
+                .setNegativeButton("Close", (d, w) -> d.dismiss())
+                .setPositiveButton("Confirm", null) // override kasnije
+                .create();
+
+        dialog.setOnShowListener(d -> {
+            Button btn = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+            btn.setOnClickListener(v -> {
+                String reason = edt.getText().toString().trim();
+                if (reason.isEmpty()) {
+                    edt.setError("Reason is required");
+                    return;
+                }
+                dialog.dismiss();
+                callCancelRide(rideId, reason);
+            });
+        });
+
+        dialog.show();
+    }
+
+    private void callCancelRide(Long rideId, String reason) {
+        TokenStorage ts = new TokenStorage(requireContext());
+        String token = ts.getToken();
+        Long actorId = ts.getUserId();
+
+        String cancelledBy = cancelledByFromJwt(token);
+        RideCancelRequestDTO body = new RideCancelRequestDTO(reason, cancelledBy, actorId);
+
+        ClientUtils.getRideService()
+                .cancelRide("Bearer " + token, rideId, body)
+                .enqueue(new retrofit2.Callback<RideCancelResponseDTO>() {
+                    @Override
+                    public void onResponse(@NonNull retrofit2.Call<RideCancelResponseDTO> call,
+                                           @NonNull retrofit2.Response<RideCancelResponseDTO> resp) {
+                        if (!resp.isSuccessful()) {
+                            txtStatus.setText("Cancel failed: HTTP " + resp.code());
+                            return;
+                        }
+                        // refresh lista
+                        loadNow();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull retrofit2.Call<RideCancelResponseDTO> call,
+                                          @NonNull Throwable t) {
+                        txtStatus.setText("Cancel failed: " + t.getMessage());
+                    }
+                });
+    }
+
+    private String cancelledByFromJwt(String jwt) {
+        try {
+            String[] parts = jwt.split("\\.");
+            String payloadJson = new String(
+                    Base64.decode(parts[1], Base64.URL_SAFE),
+                    StandardCharsets.UTF_8
+            );
+
+            JSONObject payload = new JSONObject(payloadJson);
+
+            // varijante koje se često koriste:
+            if (payload.has("role")) {
+                String role = payload.getString("role");
+                return role.contains("DRIVER") ? "DRIVER" : "PASSENGER";
+            }
+            if (payload.has("authorities")) {
+                Object a = payload.get("authorities");
+                if (a instanceof JSONArray) {
+                    for (int i = 0; i < ((JSONArray) a).length(); i++) {
+                        String auth = ((JSONArray) a).getString(i);
+                        if (auth.contains("DRIVER")) return "DRIVER";
+                    }
+                } else {
+                    String auth = String.valueOf(a);
+                    if (auth.contains("DRIVER")) return "DRIVER";
+                }
+            }
+        } catch (Exception ignored) {}
+        return "PASSENGER";
     }
 }

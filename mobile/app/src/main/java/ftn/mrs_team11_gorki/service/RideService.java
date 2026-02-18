@@ -3,9 +3,13 @@ package ftn.mrs_team11_gorki.service;
 import java.util.List;
 
 import ftn.mrs_team11_gorki.dto.DriverRideHistoryDTO;
+import ftn.mrs_team11_gorki.dto.RideCancelRequestDTO;
+import ftn.mrs_team11_gorki.dto.RideCancelResponseDTO;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -17,5 +21,12 @@ public interface RideService {
             @Path("userId") Long userId,
             @Query("from") String from,
             @Query("to") String to
+    );
+
+    @POST("api/rides/{id}/cancel")
+    Call<RideCancelResponseDTO> cancelRide(
+            @Header("Authorization") String bearer,
+            @Path("id") Long rideId,
+            @Body RideCancelRequestDTO body
     );
 }
