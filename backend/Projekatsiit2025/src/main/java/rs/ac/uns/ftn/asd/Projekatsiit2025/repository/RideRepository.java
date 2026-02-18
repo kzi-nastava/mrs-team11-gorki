@@ -16,6 +16,33 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 @Repository
 public interface RideRepository extends JpaRepository<Ride, Long> {
 	
+	List<Ride> findAllByDriverIdAndStatusAndStartingTimeBetween(
+            Long driverId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+	
+	List<Ride> findAllByLinkedPassengers_IdAndStatusAndStartingTimeBetween(
+            Long passengerId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+	
+	List<Ride> findAllByCreatorIdAndStatusAndStartingTimeBetween(
+            Long creatorId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+	
+	List<Ride> findAllByStatusAndStartingTimeBetween(
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+	
     List<Ride> findByDriverIdAndStartingTimeBetween(
             @Param("driverId") Long driverId,
             @Param("from") LocalDateTime from,
