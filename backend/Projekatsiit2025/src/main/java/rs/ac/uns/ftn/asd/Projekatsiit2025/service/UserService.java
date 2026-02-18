@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.BlockUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.RegisterRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.UpdatePasswordDTO;
@@ -77,6 +80,22 @@ public class UserService implements UserDetailsService {
 		return mapToUpdatedUserDTO(user);
 	}
 	
+	public Collection<GetUserDTO> getAllUsers(){
+		return this.userRepository.findByRoleNot(UserRole.ADMIN).stream().map(this::mapToGetUserDTO).toList();
+	}
+	
+	public GetUserDTO blockUser(BlockUserDTO dto) {
+		User user = userRepository.findById(dto.getId()).orElse(null);
+		user.setBlocked(!user.getBlocked());
+		if(user.getBlocked()) {
+			user.setBlockReason(dto.getBlockReason());
+		} else {
+			user.setBlockReason(null);
+		}
+		userRepository.save(user);
+		return mapToGetUserDTO(user);
+	}
+	
 	private GetUserDTO mapToGetUserDTO(User user) {
 	    GetUserDTO dto = new GetUserDTO();
 	    dto.setId(user.getId());
@@ -87,6 +106,8 @@ public class UserService implements UserDetailsService {
 	    dto.setAddress(user.getAddress());
 	    dto.setProfileImage(user.getProfileImage());
 	    dto.setActive(user.getActive());
+	    dto.setBlocked(user.getBlocked());
+	    dto.setBlockReason(user.getBlockReason());
 	    dto.setRole(user.getRole());
 	    return dto;
 	}
