@@ -10,15 +10,13 @@ import { Vehicle } from '../model/ui/vehicle';
   providedIn: 'root',
 })
 export class VehicleInfoService {
-  constructor(private http: HttpClient, private authService: AuthService){}
+  constructor(private http: HttpClient){}
 
-  getVehicleInfo(vehicleId: number): Observable<GetVehicleDTO>{
-    const userId = this.authService.getId();
-    return this.http.get<any>(`${environment.apiHost}/drivers/${userId}/vehicle/${vehicleId}`);
+  getVehicleInfo(userId: number): Observable<GetVehicleDTO>{
+    return this.http.get<any>(`${environment.apiHost}/drivers/${userId}/vehicle`);
   }
 
-  updateVehicleInfo(vehicleId: number, vehicle: Vehicle): Observable<GetVehicleDTO>{
-    const userId = this.authService.getId();
-    return this.http.put<GetVehicleDTO>(`${environment.apiHost}/drivers/${userId}/vehicle/${vehicleId}`, vehicle);
+  updateVehicleInfo(userId: number, vehicle: Vehicle): Observable<GetVehicleDTO>{
+    return this.http.put<GetVehicleDTO>(`${environment.apiHost}/drivers/${userId}/vehicle`, vehicle);
   }
 }

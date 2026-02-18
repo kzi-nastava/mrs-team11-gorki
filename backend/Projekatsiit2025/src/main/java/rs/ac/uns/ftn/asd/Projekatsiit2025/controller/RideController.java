@@ -57,6 +57,16 @@ public class RideController {
 	}
 	
 	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
+	@GetMapping(value = "/{id}/next-ride", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetRideDTO> getNextScheduledRide(@PathVariable("id") long id){
+		GetRideDTO dto = rideService.getNextScheduledRide(id);
+		if(dto == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<GetRideDTO>(dto, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
 	@PutMapping(value = "/{id}/start", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GetRideDTO> startRide(@PathVariable("id") Long id){
 		GetRideDTO ride = rideService.startRide(id);

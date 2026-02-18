@@ -11,6 +11,8 @@ public class GetUserDTO {
 	private String address;
 	private String profileImage;
 	private Boolean active;
+	private Boolean blocked;
+	private String blockReason;
 	private UserRole role;
 	
 	public GetUserDTO() {
@@ -18,7 +20,7 @@ public class GetUserDTO {
 	}
 	
 	public GetUserDTO(Long id, String email, String firstName, String lastName, int phoneNumber, String address,
-			String profileImage, Boolean active, UserRole role) {
+			String profileImage, Boolean active, Boolean blocked, String blockReason, UserRole role) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -28,6 +30,8 @@ public class GetUserDTO {
 		this.address = address;
 		this.profileImage = profileImage;
 		this.active = active;
+		this.blocked = blocked;
+		this.blockReason = blockReason;
 		this.role = role;
 	}
 	
@@ -79,6 +83,22 @@ public class GetUserDTO {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+	public Boolean getBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(Boolean blocked) {
+		this.blocked = blocked;
+	}
+
+	public String getBlockReason() {
+		return blockReason;
+	}
+
+	public void setBlockReason(String blockReason) {
+		this.blockReason = blockReason;
+	}
+
 	public UserRole getRole() {
 		return role;
 	}

@@ -1,10 +1,9 @@
 <div class="modal-background"></div>
 <div class="confirmation-modal">
-    <div class="ride-cost-header">The ride will cost {{price}} dinars</div>
+    <div class="ride-cost-header">Ride successfully ordered!</div>
     <div class="separator2"></div>
-    <div class="continue-question">Are you sure you want to proceed?</div>
+    <div class="continue-question">The ride will cost {{price}} dinars</div>
     <div class="cost-buttons">
-        <button class="yes" (click)="confirm.emit()">Yes</button>
-        <button class="no" (click)="close.emit()">No</button>
+        <button class="proceed" (click)="confirm.emit()">Proceed</button>
     </div>
 </div>

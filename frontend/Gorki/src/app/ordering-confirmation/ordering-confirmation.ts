@@ -7,7 +7,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './ordering-confirmation.css',
 })
 export class OrderingConfirmation {
-  @Output() close = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
   @Input() price!: number;
 }
