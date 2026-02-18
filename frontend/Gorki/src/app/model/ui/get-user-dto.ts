@@ -8,4 +8,6 @@ export interface GetUserDTO{
 	profileImage:string;
     active:boolean;
     blocked:boolean;
+	blockReason:string;
+	role:string;
 }

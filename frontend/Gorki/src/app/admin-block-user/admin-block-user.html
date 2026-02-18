@@ -1,0 +1,18 @@
+<div class="carousel-wrapper">
+  <button class="nav left" (click)="scrollLeft()">‹</button>
+
+  <div class="user-list" #carousel>
+    @for(user of users; track user.id){
+        <app-user-card [user]="user" (openBlock)="openBlockNote(user.id, user.blocked)"></app-user-card>
+    }
+  </div>
+  <button class="nav right" (click)="scrollRight()">›</button>
+</div>
+@if (isBlockNoteOpen) {
+  <app-block-note
+    [blocked]="selectedUserBlocked"
+    [userId]="selectedUserId"
+    (close)="closeBlockNote()"
+    (block)="blockUser($event)">
+  </app-block-note>
+}
