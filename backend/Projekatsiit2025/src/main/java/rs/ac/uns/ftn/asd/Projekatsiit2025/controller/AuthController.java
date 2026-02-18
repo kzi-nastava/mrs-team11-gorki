@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import jakarta.validation.Valid;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.ActivateDriverRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.DriverStatusRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.LoginRequestDTO;
@@ -48,7 +49,7 @@ public class AuthController {
     }
 	
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
 
     	// 1) autentikacija (uporedi sifru preko UserDetailsService + PasswordEncoder)
         UsernamePasswordAuthenticationToken authReq =
@@ -90,7 +91,7 @@ public class AuthController {
 
 	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
     @PatchMapping(value = "/status", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DriverStatusRequestDTO> changeDriverStatus(@RequestBody DriverStatusRequestDTO request) {
+    public ResponseEntity<DriverStatusRequestDTO> changeDriverStatus(@Valid @RequestBody DriverStatusRequestDTO request) {
 
     	
         DriverStatusRequestDTO response = new DriverStatusRequestDTO();
@@ -120,7 +121,7 @@ public class AuthController {
     }
 	
     @PostMapping(value="/reset-password", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> resetPassword(@RequestBody ResetPasswordDTO dto) {
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordDTO dto) {
 
         if(dto.getNewPassword() == null || dto.getNewPassword().isBlank())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password required");
@@ -140,7 +141,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> register(@RequestBody RegisterRequestDTO dto) {
+    public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequestDTO dto) {
         userService.register(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -221,7 +222,7 @@ public class AuthController {
 	}
 	
 	@PostMapping(value = "/activate/driver", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> activateDriver(@RequestBody ActivateDriverRequestDTO request) {
+	public ResponseEntity<Void> activateDriver(@Valid @RequestBody ActivateDriverRequestDTO request) {
 	    String email = activationTokenUtil.validateAndGetEmail(request.getToken());
 	    User user = userRepository.findByEmail(email)
 	        .orElseThrow(() ->

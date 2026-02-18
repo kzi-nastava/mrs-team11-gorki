@@ -1,7 +1,16 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class LoginRequestDTO {
+	
+	@NotNull(message = "Email is required")
+	@NotBlank(message = "Email must not be blank")
     private String email;
+	
+	@NotNull(message = "Email is required")
+	@NotBlank(message = "Email must not be blank")
     private String password;
     
 	public LoginRequestDTO() {

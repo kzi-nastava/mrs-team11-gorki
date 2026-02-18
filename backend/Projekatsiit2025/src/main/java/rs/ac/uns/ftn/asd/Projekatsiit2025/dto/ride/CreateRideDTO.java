@@ -3,16 +3,39 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.CreateRouteDTO;
 
 public class CreateRideDTO {
+	@NotNull(message = "Time is required")
 	private LocalDateTime scheduledTime;
+
+	@NotNull(message = "Route is required")
+	@Valid
 	private CreateRouteDTO route;
-	private List<String> linkedPassengersEmails;
+
+	@NotEmpty(message = "At least one passenger email is required")
+	private List<
+	    @NotBlank(message = "Passenger email must not be blank")
+	    String> linkedPassengersEmails;
+
+	@NotNull(message = "Creator id is required")
+	@Positive(message = "Creator id must be positive")
 	private Long creatorId;
+
+	@NotNull(message = "Baby transport flag is required")
 	private Boolean babyTransport;
-    private Boolean petFriendly;
-    private String vehicleType;
+
+	@NotNull(message = "Pet friendly flag is required")
+	private Boolean petFriendly;
+
+	@NotBlank(message = "Vehicle type is required")
+	private String vehicleType;
+
 	public CreateRideDTO() {
 		super();
 	}

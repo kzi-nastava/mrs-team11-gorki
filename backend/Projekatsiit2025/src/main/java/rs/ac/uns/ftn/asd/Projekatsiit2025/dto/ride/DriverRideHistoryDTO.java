@@ -3,20 +3,49 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.PassengerInRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.GetRouteDTO;
 
 public class DriverRideHistoryDTO {
 	
+	@Positive(message = "Ride id must be positive")
+	@NotNull(message = "Ride id is required")
 	private Long rideId;
-    private LocalDateTime startingTime;
-    private LocalDateTime endingTime;
-    private GetRouteDTO route;
-    private boolean canceled;
-    private String canceledBy; 
-    private double price;
-    private boolean panicActivated;
-    private List<PassengerInRideDTO> passengers;
+
+	@NotNull(message = "Starting time is required")
+	@PastOrPresent(message = "Starting time cannot be in the future")
+	private LocalDateTime startingTime;
+
+	@PastOrPresent(message = "Ending time cannot be in the future")
+	private LocalDateTime endingTime;
+
+	@NotNull(message = "Route is required")
+	@Valid
+	private GetRouteDTO route;
+
+	@NotNull(message = "Canceled flag is required")
+	private Boolean canceled;
+
+	@NotNull(message = "Canceled by flag is required")
+	private String canceledBy;
+
+	@NotNull(message = "Price is required")
+	@PositiveOrZero(message = "Price must be >= 0")
+	private Double price;
+
+	@NotNull(message = "Panic flag is required")
+	private Boolean panicActivated;
+
+	@NotEmpty(message = "Passengers list must not be empty")
+	@Valid
+	private List<PassengerInRideDTO> passengers;
+
     
 	public DriverRideHistoryDTO() {
 		super();

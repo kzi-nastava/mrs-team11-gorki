@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.chat.ChatDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.message.MessageDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.ChatService;
@@ -32,7 +33,7 @@ public class ChatController {
 
     // POST /api/support/messages -> fallback ako WS nije konektovan
     @PostMapping(value="/messages")
-    public ResponseEntity<MessageDTO> sendMessage(Principal principal, @RequestBody SendMessageRequest req) {
+    public ResponseEntity<MessageDTO> sendMessage(Principal principal,@Valid @RequestBody SendMessageRequest req) {
         return ResponseEntity.ok(chatService.userSendMessage(principal, req.getContent()));
     }
 }

@@ -1,9 +1,15 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
 
 public class GetDriverDTO {
+	
+	@Valid
+	@NotNull(message = "User is required")
 	private GetUserDTO user;
+	@NotNull(message = "Activity is required")
 	private double activityLast24h;
 	
 	public GetDriverDTO() {

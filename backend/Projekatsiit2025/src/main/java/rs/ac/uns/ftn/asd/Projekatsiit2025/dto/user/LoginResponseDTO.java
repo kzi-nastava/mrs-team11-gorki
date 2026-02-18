@@ -1,14 +1,31 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 
 public class LoginResponseDTO {
-    private Long id;
-    private UserRole role;
-    private boolean active;
-    private boolean blocked;
-    private String message;
-    private String token;
+	@Positive(message = "Id must be positive")
+	private Long id;
+
+	@NotNull(message = "User role is required")
+	private UserRole role;
+
+	@NotNull(message = "Active flag is required")
+	private Boolean active;
+
+	@NotNull(message = "Blocked flag is required")
+	private Boolean blocked;
+
+	@NotBlank(message = "Message is required")
+	@Size(max = 255, message = "Message too long")
+	private String message;
+
+	@NotBlank(message = "Token is required")
+	private String token;
+
     
     
 	public LoginResponseDTO() {

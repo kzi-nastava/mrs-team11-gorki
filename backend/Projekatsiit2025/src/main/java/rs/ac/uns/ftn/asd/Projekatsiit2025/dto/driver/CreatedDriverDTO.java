@@ -1,12 +1,20 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.CreatedVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 
 public class CreatedDriverDTO {
+	
+	@Valid
+	@NotNull(message = "User is required")
 	private CreatedUserDTO user;
+	@Valid
+	@NotNull(message = "Vehicle is required")
 	private CreatedVehicleDTO vehicle;
+	@NotNull(message = "Status is required")
 	private DriverStatus status;
 	
 	public CreatedDriverDTO() {

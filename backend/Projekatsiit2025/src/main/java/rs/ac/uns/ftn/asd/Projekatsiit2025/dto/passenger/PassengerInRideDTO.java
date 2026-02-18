@@ -1,11 +1,18 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger;
 
+import jakarta.validation.constraints.NotNull;
+
 public class PassengerInRideDTO {
-	
+	    
+		@NotNull(message = "Email is required")
 	 	private String email;
+		@NotNull(message = "First name is required")
 	 	private String firstName;
+		@NotNull(message = "Last name is required")
 	 	private String lastName;
-	 	private String phoneNumber;
+		@NotNull(message = "Phone number is required")
+	 	
+		private String phoneNumber;
 		public PassengerInRideDTO(String email, String firstName, String lastName, String phoneNumber) {
 			super();
 			this.email = email;

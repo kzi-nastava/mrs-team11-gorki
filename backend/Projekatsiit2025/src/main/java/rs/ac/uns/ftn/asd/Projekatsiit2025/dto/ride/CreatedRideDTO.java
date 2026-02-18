@@ -3,6 +3,12 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.GetPassengerDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.CreatedRouteDTO;
@@ -10,15 +16,41 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.PriceConfig;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 
 public class CreatedRideDTO {
+	
+	@Positive(message = "Id must be positive")
+	@NotNull(message = "Id is requried")
 	private Long id;
+
+	@NotNull(message = "Status is required")
 	private RideStatus status;
-	private double price;
+
+	@NotNull(message = "Price is required")
+	@PositiveOrZero(message = "Price must be >= 0")
+	private Double price;
+
+	@NotNull(message = "Time is required")
 	private LocalDateTime scheduledTime;
+
+	@Valid
 	private GetDriverDTO driver;
+
+	@NotNull(message = "Route is required")
+	@Valid
 	private CreatedRouteDTO route;
+
+	@NotNull(message = "Price config is required")
+	@Valid
 	private PriceConfig priceConfig;
+
+	@NotEmpty(message = "Linked passengers required")
+	@Valid
 	private List<GetPassengerDTO> linkedPassengers;
+
+	@NotNull(message = "Creator is required")
+	@Valid
 	private GetPassengerDTO creator;
+
+	
 	public CreatedRideDTO() {
 		super();
 	}

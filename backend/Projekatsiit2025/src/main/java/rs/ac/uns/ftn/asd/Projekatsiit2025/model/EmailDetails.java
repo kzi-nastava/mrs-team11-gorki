@@ -1,10 +1,16 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 
+import jakarta.validation.constraints.NotNull;
+
 public class EmailDetails {
 
+	@NotNull(message = "Recipient is required")
     private String recipient;
+	@NotNull(message = "Body is required")
     private String msgBody;
+	@NotNull(message = "Subject is required")
     private String subject;
+	
     private String attachment;
 
     public EmailDetails() {}

@@ -1,9 +1,19 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class ResetPasswordDTO {
-    private String token;
-    private String newPassword;
-    private String confirmNewPassword;
+	@NotBlank(message = "Token is required")
+	private String token;
+
+	@NotBlank(message = "New password is required")
+	@Size(min = 3, max = 100, message = "Password must be between 3 and 100 characters")
+	private String newPassword;
+
+	@NotBlank(message = "Confirm new password is required")
+	@Size(min = 3, max = 100, message = "Password must be between 3 and 100 characters")
+	private String confirmNewPassword;
 
     public ResetPasswordDTO() {}
 

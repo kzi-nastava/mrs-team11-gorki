@@ -2,12 +2,26 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 
 public class RideStopResponseDTO {
+
+	@NotNull(message = "Stop address is required")
+	@Valid
 	private Location stopAddress;
+
+	@NotNull(message = "Ending time is required")
+	@PastOrPresent(message = "Ending time cannot be in the future")
 	private LocalDateTime endingTime;
-	private double price;
+
+	@NotNull(message = "Price is required")
+	@PositiveOrZero(message = "Price must be >= 0")
+	private Double price;
+
     
 	public RideStopResponseDTO() {
 		super();

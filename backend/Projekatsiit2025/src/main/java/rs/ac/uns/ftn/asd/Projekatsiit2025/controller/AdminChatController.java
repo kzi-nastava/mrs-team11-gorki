@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.chat.ChatDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.message.MessageDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.ChatService;
@@ -33,7 +34,7 @@ public class AdminChatController {
 
     // POST /api/admin/support/messages -> fallback admin send preko REST-a
     @PostMapping(value="/messages")
-    public ResponseEntity<MessageDTO> adminSend(Principal principal, @RequestBody AdminSendMessageRequest req) {
+    public ResponseEntity<MessageDTO> adminSend(Principal principal, @Valid @RequestBody AdminSendMessageRequest req) {
         return ResponseEntity.ok(chatService.adminSendMessage(principal, req.getChatId(), req.getContent()));
     }
 }

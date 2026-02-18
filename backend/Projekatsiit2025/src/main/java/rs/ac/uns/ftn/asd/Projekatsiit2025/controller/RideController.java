@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.InconsistencyReportService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
@@ -51,7 +52,7 @@ public class RideController {
 	
 	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CreatedRideDTO> createRide(@RequestBody CreateRideDTO requestRide){
+	public ResponseEntity<CreatedRideDTO> createRide(@Valid @RequestBody CreateRideDTO requestRide){
 		CreatedRideDTO responseRide = rideService.createRide(requestRide);
 		return new ResponseEntity<CreatedRideDTO>(responseRide, HttpStatus.CREATED);
 	}
@@ -75,7 +76,7 @@ public class RideController {
 	
 	
     @PostMapping(value = "/estimate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideHistoryResponseDTO> estimateRide(@RequestBody RideEstimateRequestDTO request) {
+    public ResponseEntity<RideHistoryResponseDTO> estimateRide(@Valid @RequestBody RideEstimateRequestDTO request) {
 
         List<Location> locations = List.of(
                 new Location(45.2671, 19.8335, request.getStartingAddress()),
@@ -101,7 +102,7 @@ public class RideController {
     @PostMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideCancelResponseDTO> cancelRide(
             @PathVariable Long id,
-            @RequestBody RideCancelRequestDTO request) {
+            @Valid @RequestBody RideCancelRequestDTO request) {
 
         RideCancelResponseDTO response = rideService.cancelRide(id, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -116,7 +117,7 @@ public class RideController {
     )
     public ResponseEntity<RideStopResponseDTO> stopRide(
             @PathVariable Long id,
-            @RequestBody RideStopRequestDTO req) {
+            @Valid @RequestBody RideStopRequestDTO req) {
 
         Location stopLocation = new Location(req.getLatitude(), req.getLongitude(), req.getAddress());
         RideStopResponseDTO dto = rideService.stopRide(id, stopLocation);
@@ -131,7 +132,7 @@ public class RideController {
 	)
 	public ResponseEntity<CreatedInconsistencyReportDTO> reportInconsistency(
 	        @PathVariable Long rideId,
-	        @RequestBody CreateInconsistencyReportDTO dto) {
+	        @Valid  @RequestBody CreateInconsistencyReportDTO dto) {
 
 	    CreatedInconsistencyReportDTO response = inconsistencyReportService.createReport(rideId, dto);
 	    return new ResponseEntity<>(response, HttpStatus.CREATED);

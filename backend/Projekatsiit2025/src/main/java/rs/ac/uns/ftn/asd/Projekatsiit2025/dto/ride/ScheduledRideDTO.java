@@ -2,21 +2,54 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.passenger.PassengerInRideDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
 
 public class ScheduledRideDTO {
-    private GetUserDTO user;
-    private Long rideId;
-    private LocalDateTime startingTime;
-    private GetRouteDTO route;
-    private LocalDateTime date;
-    private double price;
-    private boolean canceled;
-    private String canceledBy;
-    private String cancellationReason;
-    private List<PassengerInRideDTO> passengers;
+	@NotNull(message = "User is required")
+	@Valid
+	private GetUserDTO user;
+
+	@Positive(message = "Ride id must be positive")
+	@NotNull
+	private Long rideId;
+
+	@NotNull(message = "Starting time is required")
+	@FutureOrPresent(message = "Starting time must be now or in the future")
+	private LocalDateTime startingTime;
+
+	@NotNull(message = "Route is required")
+	@Valid
+	private GetRouteDTO route;
+
+	@NotNull(message = "Date is required")
+	private LocalDateTime date;
+
+	@NotNull(message = "Price is required")
+	@PositiveOrZero(message = "Price must be >= 0")
+	private Double price;
+
+	@NotNull(message = "Canceled flag is required")
+	private Boolean canceled;
+
+	@Size(max = 100, message = "CanceledBy value too long")
+	private String canceledBy;
+
+	@Size(max = 500, message = "Cancellation reason too long")
+	private String cancellationReason;
+
+	@NotEmpty(message = "Passengers list must not be empty")
+	@Valid
+	private List<PassengerInRideDTO> passengers;
+
 
     public GetUserDTO getUser() {
         return user;

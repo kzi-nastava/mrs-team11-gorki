@@ -1,13 +1,38 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class CreateUserDTO {
+	@NotBlank(message = "Email is required")
+	@Size(max = 500, message = "Email too long")
 	private String email;
+
+	@NotBlank(message = "Password is required")
+	@Size(min = 3, max = 100, message = "Password must be between 8 and 100 characters")
 	private String password;
+
+	@NotBlank(message = "First name is required")
+	@Size(max = 100, message = "First name too long")
 	private String firstName;
+
+	@NotBlank(message = "Last name is required")
+	@Size(max = 100, message = "Last name too long")
 	private String lastName;
-	private int phoneNumber;
+
+	@NotNull(message = "Phone number is required")
+	@Positive(message = "Phone number must be positive")
+	private Integer phoneNumber;
+
+	@Size(max = 500, message = "Address too long")
 	private String address;
+
+	@Size(max = 1000000, message = "Profile image too large")
 	private String profileImage;
+
 	
 	public CreateUserDTO() {
 		super();

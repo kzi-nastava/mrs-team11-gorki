@@ -1,12 +1,27 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user;
 
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class UpdateUserDTO {
+	@Size(max = 255, message = "Email too long")
 	private String email;
+
+	@Size(max = 100, message = "First name too long")
 	private String firstName;
+
+	@Size(max = 100, message = "Last name too long")
 	private String lastName;
-	private int phoneNumber;
+
+	@Positive(message = "Phone number must be positive")
+	private Integer phoneNumber;
+
+	@Size(max = 500, message = "Address too long")
 	private String address;
+
+	@Size(max = 1000000, message = "Profile image too large")
 	private String profileImage;
+
 	public UpdateUserDTO() {
 		super();
 	}

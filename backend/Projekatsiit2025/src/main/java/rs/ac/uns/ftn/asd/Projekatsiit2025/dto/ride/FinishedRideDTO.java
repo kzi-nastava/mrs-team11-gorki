@@ -1,13 +1,25 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 
 public class FinishedRideDTO {
+	
+	@Positive(message = "Ride id must be positive")
+	@NotNull(message = "Ride id is required")
 	private Long rideId;
+
+	@NotNull(message = "Ride status is required")
 	private RideStatus rideStatus;
+
+	@NotNull(message = "Driver status is required")
 	private DriverStatus driverStatus;
+
+	@NotNull(message = "hasNextScheduledRide flag is required")
 	private Boolean hasNextScheduledRide;
+
 	
 	public FinishedRideDTO() {
 		super();

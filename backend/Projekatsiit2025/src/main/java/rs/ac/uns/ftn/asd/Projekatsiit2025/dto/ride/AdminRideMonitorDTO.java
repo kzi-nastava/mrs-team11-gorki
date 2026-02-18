@@ -1,12 +1,23 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverInfoDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
 
 public class AdminRideMonitorDTO {
-	  private GetRideDTO ride;
-	  private GetDriverInfoDTO driver;
-	  private LocationDTO currentLocation;
+	@NotNull(message = "Ride is required")
+	@Valid
+	private GetRideDTO ride;
+
+	@NotNull(message = "Driver info is required")
+	@Valid
+	private GetDriverInfoDTO driver;
+
+	@NotNull(message = "Current location is required")
+	@Valid
+	private LocationDTO currentLocation;
+
 	  
 	  public AdminRideMonitorDTO() {
 		  super();

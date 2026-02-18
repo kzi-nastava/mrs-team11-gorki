@@ -2,10 +2,23 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
 public class RideEstimateResponseDTO {
-    private LocalDateTime estimatedTime;
-    private double distance;
-    private String route;
+	@NotNull(message = "Estimated time is required")
+	private LocalDateTime estimatedTime;
+
+	@NotNull(message = "Distance is required")
+	@PositiveOrZero(message = "Distance must be >= 0")
+	private Double distance;
+
+	@NotBlank(message = "Route is required")
+	@Size(max = 500, message = "Route description too long")
+	private String route;
+
 
 	public RideEstimateResponseDTO() {
 		super();
