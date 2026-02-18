@@ -91,4 +91,17 @@ public class EmailServiceImpl implements EmailService {
         System.out.println("Sending activation link to: " + fixedEmail);
         System.out.println("LINK: " + link);
     }
+
+    public void sendResetLinkToFixedEmail(String resetToken, String email) {
+        String fixedEmail = "mrs.team11.gorki@gmail.com";
+        String link = "http://localhost:4200/reset?token=" + resetToken;
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(fixedEmail);
+        mailMessage.setSubject("Reset lozinke");
+        mailMessage.setText("Klikni na link za reset lozinke za email " + email + ":\n" + link);
+
+        javaMailSender.send(mailMessage);
+    }
 }

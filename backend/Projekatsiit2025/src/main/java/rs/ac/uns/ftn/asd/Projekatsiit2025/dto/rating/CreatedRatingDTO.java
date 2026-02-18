@@ -9,7 +9,14 @@ public class CreatedRatingDTO {
     private double driverRating;
     private double vehicleRating;
     private LocalDateTime creatdAt;
+    private Long creatorId;
     
+	public double getCreatorId() {
+		return creatorId;
+	}
+	public void setCreatorId(Long creatorId) {
+		this.creatorId = creatorId;
+	}
 	public CreatedRatingDTO() {
 		super();
 	}

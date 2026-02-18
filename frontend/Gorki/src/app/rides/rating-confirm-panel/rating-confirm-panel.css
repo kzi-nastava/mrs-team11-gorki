@@ -1,0 +1,67 @@
+.wrap{
+  padding: 22px 22px 18px;
+  display:flex;
+  flex-direction: column;   /* KLJUČNO */
+  gap:18px;
+  max-width: 500px;
+  height: 250px;
+}
+
+.top{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+}
+
+.icon{
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.06);
+  flex: 0 0 auto;
+}
+
+mat-icon{
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.content{
+  flex:1;   
+}
+
+.content h2{
+  margin:0 0 8px 0;
+  font-size:25px;
+  font-family:'Sofia Sans Condensed';
+  font-weight:700;
+}
+
+.content p{
+  margin:0;
+  opacity:.85;
+  line-height:1.4;
+  font-size:20px;
+  font-family:'Sofia Sans Condensed';
+
+  text-align: justify;     
+}
+
+.actions{
+  display:flex;
+  justify-content:center;  
+  margin-top: 90px;
+  gap:12px;
+  font-family: 'Sofia Sans Condensed';
+}
+
+.mdc-button {
+  min-width: 100px;
+  font-size: 22px;
+  font-family: 'Sofia Sans Condensed';
+}
+

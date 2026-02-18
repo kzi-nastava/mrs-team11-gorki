@@ -1,52 +1,44 @@
 import { Component,OnInit } from '@angular/core';
 import { MapComponent } from "../../map/map";
 import { MapService } from '../../map/map-service';
-import { EndOfRidePanel } from "../end-of-ride-panel/end-of-ride-panel";
 import { RideDetails } from "../ride-details/ride-details";
+import { AuthService } from '../../infrastructure/auth.service';
+import { DriverRideInProgress } from '../../service/driver-ride-in-progress';
+import { EndOfRidePanel } from '../end-of-ride-panel/end-of-ride-panel';
 
 @Component({
   selector: 'app-end-of-ride',
-  imports: [MapComponent, EndOfRidePanel],
+  imports: [MapComponent,EndOfRidePanel],
   templateUrl: './end-of-ride.html',
   styleUrl: './end-of-ride.css',
 })
 export class EndOfRide implements OnInit {
 
-  constructor(private mapService: MapService) {}
+    constructor(
+    private mapService: MapService,
+    private driverService: DriverRideInProgress,
+    private authService: AuthService
+  ) {}
 
-  async ngOnInit(){
-    this.mapService.clearAll();
-    this.mapService.clearRoute();
-    const pickupAddress = 'Jerneja Kopitara 32, Novi Sad';
-    const dropoffAddress = 'Hadži Ruvimova 45, Novi Sad';
+  ngOnInit() {
+    this.driverService
+      .getActiveRide(this.authService.getId())
+      .subscribe(ride => {
 
-    const pickupCoords = await this.geocode(pickupAddress);
-    const dropoffCoords = await this.geocode(dropoffAddress);
+        const pickupCoords: [number, number] = [
+          ride.route.locations[0].latitude,
+          ride.route.locations[0].longitude,
+        ];
 
-    this.mapService.showSnappedRoute(
-    pickupCoords,
-    dropoffCoords
+        const dropoffCoords: [number, number] = [
+          ride.route.locations[1].latitude,
+          ride.route.locations[1].longitude,
+        ];
 
-  );
-  }
-
-  async geocode(address: string): Promise<[number, number]> {
-    const url =
-      'https://nominatim.openstreetmap.org/search?' +
-      new URLSearchParams({
-        q: address,
-        format: 'json',
-        limit: '1',
+        this.mapService.showSnappedRoute(pickupCoords, dropoffCoords);
+        this.mapService.showDriverEndPosition(dropoffCoords);
       });
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (!data.length) {
-      throw new Error('Address not found');
-    }
-
-    return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
   }
+  
 
 }

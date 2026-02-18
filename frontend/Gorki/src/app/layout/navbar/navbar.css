@@ -68,7 +68,36 @@ header {
     font-size: 32px;
     margin-right: 15px;
 }
+.support {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 
+  padding: 6px 12px;
+  border-radius: 20px;
+
+  cursor: pointer;
+  user-select: none;
+
+  background: #362D88;
+  color: white;
+
+  transition: all 0.2s ease;
+}
+
+.support mat-icon {
+  font-size: 20px;
+  transform: translateX(-2px);
+}
+
+.support:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+
+.support:active {
+  transform: translateY(0px) scale(0.97);
+}
 .login{
     color: #362D88;
     font-family: 'Sofia Sans Condensed';

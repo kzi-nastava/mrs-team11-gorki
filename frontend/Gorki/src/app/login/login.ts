@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../infrastructure/auth.service';
 import { LoginRequest } from '../infrastructure/model/login.model';
+import { AuthService } from '../infrastructure/auth.service';
 import { AuthResponse } from '../infrastructure/model/auth-response.model';
+import { MapService } from '../map/map-service';
+import { ResetPasswordService } from '../service/reset-password-service';
 
 @Component({
   selector: 'app-login',
@@ -18,16 +20,21 @@ export class Login {
   isResetSent: boolean = false;
   resetEmail: string = '';
 
-  constructor(private router: Router, private authService:AuthService
+  constructor(private router: Router, private authService: AuthService, private resetPasswordService: ResetPasswordService,private mapService:MapService
   ) {}
 
   forgotPassword(email: string) {
-    if(!email) {
-      alert("Please enter your email address to reset your password.");
-      return;
-    }
-    this.resetEmail = email;
-    this.isResetSent = true;
+    if(!email) { alert("Enter email"); return; }
+
+    this.resetPasswordService.forgotPassword(email).subscribe({
+      next: () => {
+        this.resetEmail = "mrs.team11.gorki@gmail.com";
+        this.isResetSent = true;
+        alert("Reset link sent.");
+      },
+      error: (err) => alert(err?.error?.message ?? "Reset failed")
+
+    });
   }
 
   login(email: string, password: string) {
@@ -52,8 +59,9 @@ export class Login {
         this.loggedIn.emit();
         this.close.emit();
         this.router.navigateByUrl('/');
+        
         const el = document.getElementById('estimation');
-
+        this.mapService.clearAll();
         if (el) {
           el.style.filter = 'blur(0px)';
           el.style.pointerEvents = 'none';
@@ -67,10 +75,10 @@ export class Login {
     });
   }
 
-  goToReset(){
-    this.close.emit();
-    this.router.navigate(['/reset']);
-  }
+  // goToReset(){
+  //   this.close.emit();
+  //   this.router.navigate(['/reset']);
+  // }
 
   closeLogin() { 
     this.close.emit();

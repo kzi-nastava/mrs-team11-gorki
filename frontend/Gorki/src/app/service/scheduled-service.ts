@@ -40,7 +40,7 @@ export class ScheduledService {
       canceled: dto.canceled,
       cancelationReason: dto.cancellationReason || 'None',
       passengers: dto.passengers || [],
-      rating: 0 // ako backend još ne vraća ocenu
+      rating: dto.averageRating || null
     };
   }
   

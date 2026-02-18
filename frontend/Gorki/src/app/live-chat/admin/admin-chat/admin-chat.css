@@ -1,0 +1,264 @@
+.supportShell{
+  display:flex;
+  height: 70vh;
+  min-height: 520px;
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  overflow: hidden;
+  font-family: 'Sofia Sans Condensed';
+  background: #fff;
+}
+
+/* LEFT */
+.inbox{
+  width: 340px;
+  border-right: 1px solid #ededed;
+  display:flex;
+  flex-direction: column;
+}
+
+.inboxHeader{
+  padding: 14px 14px 10px 14px;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.title{
+  display:flex;
+  font-size: 30px;
+  align-items:center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  font-size: 20px!important;
+  gap: 6px;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #eaeaea;
+  background: #fafafa;
+}
+
+.status .dot{
+  width: 8px;
+  height: 8px;
+    font-size: 20px!important;
+  border-radius: 50%;
+  background: #999;
+}
+
+.status.ok .dot{ background: #2e7d32;   font-size: 20px!important; }
+.status.bad .dot{ background: #c62828;   font-size: 20px!important;}
+
+.refreshBtn{
+  margin: 0 14px 10px 14px;
+  font-size: 20px!important;
+}
+
+.chatList{
+  overflow:auto;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 28px!important;
+  padding: 8px 10px 12px 10px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chatItem{
+  text-align:left;
+  width: 100%;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 28px!important;
+  border: 1px solid #efefef;
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  cursor:pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.chatItem:hover{
+  background: #fafafa;
+  border-color: #e6e6e6;
+}
+
+.chatItem.active{
+  border-color: #bdbdbd;
+  background: #f7f7f7;
+}
+
+.chatTop{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.chatTitle{
+  font-weight: 700;
+    font-size: 25px!important;
+}
+
+.pill{
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #dcdcdc;
+  background: #f5f5f5;
+}
+
+.pill.gray{
+  opacity: .75;
+}
+
+.chatMeta{
+  margin-top: 6px;
+    font-size: 17px!important;
+  display:flex;
+  gap: 10px;
+  opacity: .85;
+}
+
+.chatPreview{
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.25;
+  max-height: 2.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+    font-size: 15x!important;
+}
+
+.chatPreview.muted{
+  opacity: .6;
+}
+
+/* RIGHT */
+.thread{
+  flex: 1;
+  display:flex;
+  flex-direction: column;
+  font-family: 'Sofia Sans Condensed';
+}
+
+.threadHeader{
+  padding: 14px 16px;
+  border-bottom: 1px solid #ededed;
+}
+
+.threadTitle .big{
+  font-weight: 800;
+  font-size: 25px;
+}
+
+.threadTitle .small{
+  font-size: 15px;
+  opacity: .75;
+  margin-top: 2px;
+}
+
+.emptyState{
+  height: 100%;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  gap: 10px;
+  font-family: 'Sofia Sans Condensed';
+  opacity: .75;
+  text-align:center;
+
+}
+
+.emptyState .big{
+  font-weight: 800;
+    font-size: 25px;
+}
+.emptyState .small{
+    font-size: 17px;
+  max-width: 360px;
+}
+
+/* messages */
+.messages{
+  flex: 1;
+  overflow:auto;
+  padding: 16px;
+  background: #fbfbfb;
+  
+}
+
+.msgRow{
+  display:flex;
+  margin-bottom: 12px;
+  justify-content: flex-start;
+}
+
+.msgRow.me{
+  justify-content: flex-end;
+  
+}
+
+.bubble{
+  max-width: 70%;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.msgRow.me .bubble{
+  border-color: #dcdcdc;
+}
+
+.content{
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.meta{
+  margin-top: 6px;
+  font-size: 11px;
+  opacity: .7;
+  display:flex;
+  align-items:center;
+  gap: 6px;
+}
+
+.who{
+  font-weight: 700;
+}
+
+.sep{
+  opacity: .6;
+}
+
+/* composer */
+.composer{
+  border-top: 1px solid #ededed;
+  padding: 10px;
+  display:flex;
+  font-family: 'Sofia Sans Condensed';
+  gap: 10px;
+  align-items:center;
+  height: 60px;
+  background: #fff;
+}
+
+.input{
+  flex: 1;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 17px;
+    height: 35px;
+}
+
+.sendBtn mat-icon{
+  margin-right: 6px;
+}

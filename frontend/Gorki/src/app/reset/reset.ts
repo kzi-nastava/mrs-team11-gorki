@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
+import { ResetPasswordService } from '../service/reset-password-service';
 
 @Component({
   selector: 'app-reset',
@@ -10,20 +11,16 @@ import { RouterLink, Router } from '@angular/router';
 export class Reset {
   private router = inject(Router);
 
+  constructor(private route: ActivatedRoute, private resetPasswordService: ResetPasswordService) {}
+
   resetPassword(newPassword: string, confirmNewPassword: string) {
-    if (!newPassword) {
-      alert("Please enter your new password.");
-      return;
-    }
-    if (!confirmNewPassword) {
-      alert("Please confirm your new password.");
-      return;
-    }
-    if (newPassword !== confirmNewPassword) {
-      alert("Passwords do not match. Please try again.");
-      return;
-    }
-    
-    this.router.navigate(['/']);
+    const token = this.route.snapshot.queryParamMap.get('token');
+    if(!token) { alert("Missing token"); return; }
+
+    this.resetPasswordService.resetPassword({ token, newPassword, confirmNewPassword }).subscribe({
+      next: () => { alert("Password changed"); this.router.navigate(['/']); },
+      error: (err) => alert(err?.error?.message ?? "Reset failed")
+    });
   }
+
 }
