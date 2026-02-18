@@ -24,6 +24,7 @@ import { RideInProgressDriver } from './ride-in-progress-driver/ride-in-progress
 import { RideListMap } from './rides/ride-list-map/ride-list-map';
 import { AuthGuard } from './infrastructure/auth.guard';
 import { Login } from './login/login';
+import { AdminBlockUser } from './admin-block-user/admin-block-user';
 
 export const routes: Routes = [
     {
@@ -146,6 +147,12 @@ export const routes: Routes = [
         component:RideListMap,
         canActivate: [AuthGuard],
         data: { role: ['ADMIN','PASSENGER']}
+    },
+    {
+        path:'block-users',
+        component:AdminBlockUser,
+        canActivate:[AuthGuard],
+        data: { role: ['ADMIN']}
     }
 ];
 

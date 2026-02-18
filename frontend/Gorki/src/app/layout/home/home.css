@@ -12,3 +12,63 @@
   left: 24px;
   z-index: 1000;
 }
+
+.blockedInfo{
+    position: absolute;
+    top: 85px;
+    left: 400px;
+    width: 400px;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 25px auto 0 auto;
+    border-radius: 25px;
+    font-family: 'Sofia Sans Condensed';
+    position: fixed;
+    z-index: 1000;
+}
+
+.blockedHeader{
+    color: #362D88;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 15px;
+}
+
+strong{
+    color: red;
+}
+
+.someDivider{
+    height: 2px;
+    width: 400px;
+    background-color: #362D88;
+}
+
+.blockedReason{
+    color: #362D88;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.reason{
+    background-color: #ECECEC;
+    color: #8480AA;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px;
+    width: 250px;
+    resize: none;
+    overflow-y: auto;
+    cursor: default;
+    outline: none;
+}
+
+.theReason{
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+    justify-content: space-between;
+    align-items: center;
+}

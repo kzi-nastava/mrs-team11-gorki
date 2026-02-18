@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PersonalInfo {
   imagePreview: string | ArrayBuffer | null = null;
+  isBlocked: boolean = false;
   user!: GetUserDTO;
   originalUser!:GetUserDTO;
 
@@ -27,6 +28,7 @@ export class PersonalInfo {
       next: (user) => {
         this.user = user;
         this.originalUser = structuredClone(user);
+        this.isBlocked = this.user.blocked;
       }
     });
   }
@@ -34,7 +36,6 @@ export class PersonalInfo {
   saveChanges(): void {
   const dto: UpdateUserDTO = {
     email: this.user.email,
-    password: '', // ili null ako backend dozvoljava
     firstName: this.user.firstName,
     lastName: this.user.lastName,
     phoneNumber: Number(this.user.phoneNumber),
