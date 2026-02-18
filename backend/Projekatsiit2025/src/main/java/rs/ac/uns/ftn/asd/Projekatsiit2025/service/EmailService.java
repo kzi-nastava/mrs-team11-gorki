@@ -9,4 +9,6 @@ public interface EmailService {
     String sendMailWithAttachment(EmailDetails details);
 
     void sendActivationLinkToMail(String activationToken);
+    
+    void sendActivationLinkToDriverMail(String activationToken);
 }

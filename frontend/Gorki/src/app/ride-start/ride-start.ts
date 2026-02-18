@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { OrderedRide } from '../model/ui/orderedRide';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { StartRideService } from '../service/start-ride-service';
+import { AuthService } from '../infrastructure/auth.service';
+import { GetRideDTO } from '../model/ui/get-ride-dto';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-ride-start',
@@ -9,43 +12,30 @@ import { OrderedRide } from '../model/ui/orderedRide';
 })
 export class RideStart {
   isModalOpen: boolean = false;
-  ride: OrderedRide = {
-    route: {
-      id: 1,
-      startingPoint: 'Miše Dimitrijevića 5, Grbavica',
-      stoppingPoints: [
-        'Ive Andrica 15, Liman 4',
-      ],
-      destination: 'Jerneja Kopitara 32, Telep'
-    },
-    creator: {
-      email:'marko.pavlovic2404004@gmail.com',
-      firstName:'Marko',
-      lastName:'Pavlovic',
-      phoneNumber:381648816145,
-      address:'Mornarska 51, Novi Sad',
-      profileImage:'/user-pic.png',
-    },
-    linkedPassengers: [
-    {
-      email:'ognjen.miletic@gmail.com',
-      firstName:'Ognjen',
-      lastName:'Miletic',
-      phoneNumber:381647612354,
-      address:'Mornarska 51, Novi Sad',
-      profileImage:'/user-pic.png',
-    },
-    {
-      email:'luka.beric@gmail.com',
-      firstName:'Luka',
-      lastName:'Beric',
-      phoneNumber:381649356741,
-      address:'Mornarska 51, Novi Sad',
-      profileImage:'/user-pic.png',
-    }],
-    scheduledTime: '14.05',
-    price: 10.00
-  };
+
+  constructor(private startRideService: StartRideService, private authService: AuthService, private cdr:ChangeDetectorRef, private snackbar:MatSnackBar){}
+
+  ride?: GetRideDTO | null;
+
+  ngOnInit(){
+    this.startRideService.getNextScheduledRide(this.authService.getId()).subscribe(ride => {
+      this.ride = ride;
+      this.cdr.detectChanges();
+    });
+  }
+
+  start(){
+    const id = this.ride?.id;
+    if(id == null){
+      return
+    }
+    this.startRideService.startRide(id).subscribe({
+      next: () => {
+        this.snackbar.open('Ride started successfully!', 'Close', {duration:4000});
+      },
+      error: (err) => console.log(err)
+    });
+  }
 
   openModal() {
     this.isModalOpen = true;

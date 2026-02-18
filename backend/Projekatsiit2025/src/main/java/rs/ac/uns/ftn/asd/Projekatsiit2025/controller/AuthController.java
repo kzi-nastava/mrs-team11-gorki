@@ -1,5 +1,7 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,9 +11,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.ActivateDriverRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.DriverStatusRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.LoginRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.LoginResponseDTO;
@@ -51,13 +55,13 @@ public class AuthController {
         	    .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
 
         
-        if(!user.getActive() || user.getBlocked()) {
+        if(!user.getActive()) {
         	LoginResponseDTO response = new LoginResponseDTO();
         	response.setId(user.getId());
             response.setRole(user.getRole());
             response.setActive(user.getActive());
             response.setBlocked(user.getBlocked());
-            response.setMessage("Account is blocked or inactive.");
+            response.setMessage("Account is inactive.");
         	return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
         }
 
@@ -111,71 +115,97 @@ public class AuthController {
     }
     
 	@GetMapping(value = "/activate", produces = "text/html; charset=UTF-8")
-public String activateAccount(@RequestParam String token) {
+	public String activateAccount(@RequestParam String token) {
+	
+	    try {
+	        String email = activationTokenUtil.validateAndGetEmail(token);
+	
+	        User user = userRepository.findByEmail(email)
+	                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+	
+	        if (!user.getActive()) {
+	            user.setActive(true);
+	            userRepository.save(user);
+	        }
+	
+	        return """
+	            <!doctype html>
+	            <html lang="en">
+	            <head>
+	              <meta charset="utf-8">
+	              <meta name="viewport" content="width=device-width, initial-scale=1">
+	              <title>Activation successful</title>
+	              <style>
+	                body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:#0b1220;color:#e6edf3;display:grid;place-items:center;min-height:100vh}
+	                .card{background:#121a2b;border:1px solid #22304f;border-radius:16px;padding:28px;max-width:520px;width:92%;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+	                h1{margin:0 0 8px;font-size:22px}
+	                p{margin:0 0 18px;opacity:.9;line-height:1.4}
+	                .ok{display:inline-block;background:#16a34a;color:#052e12;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
+	                a.btn{display:inline-block;text-decoration:none;background:#60a5fa;color:#07101f;padding:10px 14px;border-radius:10px;font-weight:700}
+	              </style>
+	            </head>
+	            <body>
+	              <div class="card">
+	                <div class="ok">SUCCESS</div>
+	                <h1>Account activated</h1>
+	                <p>You can now log in to the application.</p>
+	              </div>
+	            </body>
+	            </html>
+	        """;
+	
+	    } catch (Exception e) {
+	        return """
+	            <!doctype html>
+	            <html lang="en">
+	            <head>
+	              <meta charset="utf-8">
+	              <meta name="viewport" content="width=device-width, initial-scale=1">
+	              <title>Activation failed</title>
+	              <style>
+	                body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:#160b0b;color:#ffecec;display:grid;place-items:center;min-height:100vh}
+	                .card{background:#261010;border:1px solid #5a1f1f;border-radius:16px;padding:28px;max-width:520px;width:92%}
+	                h1{margin:0 0 8px;font-size:22px}
+	                p{margin:0 0 18px;opacity:.9;line-height:1.4}
+	                .bad{display:inline-block;background:#ef4444;color:#2b0b0b;padding:6px 10px;border-radius:999px;font-weight:800;font-size:12px}
+	                a.btn{display:inline-block;text-decoration:none;background:#fca5a5;color:#2b0b0b;padding:10px 14px;border-radius:10px;font-weight:700}
+	              </style>
+	            </head>
+	            <body>
+	              <div class="card">
+	                <div class="bad">ERROR</div>
+	                <h1>The link is invalid or has expired</h1>
+	                <p>Try registering again or request a new activation link.</p>
+	              </div>
+	            </body>
+	            </html>
+	        """;
+	    }
+	}
+	
+	@GetMapping(value = "/redirect")
+	public ResponseEntity<Void> redirectToFrontend(@RequestParam String token){
+		URI uri = URI.create("http://localhost:4200/driver-pass-activation?token=" + token);
+		return ResponseEntity.status(HttpStatus.FOUND).location(uri).build();
+	}
+	
+	@PostMapping(value = "/activate/driver", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> activateDriver(@RequestBody ActivateDriverRequestDTO request) {
+	    String email = activationTokenUtil.validateAndGetEmail(request.getToken());
+	    User user = userRepository.findByEmail(email)
+	        .orElseThrow(() ->
+	            new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found")
+	        );
+	    if (user.getActive()) {
+	        throw new ResponseStatusException(
+	            HttpStatus.BAD_REQUEST,
+	            "Account already activated"
+	        );
+	    }
+	    user.setPassword(new BCryptPasswordEncoder().encode(request.getPassword()));
+	    user.setActive(true);
+	    userRepository.save(user);
 
-    try {
-        String email = activationTokenUtil.validateAndGetEmail(token);
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-
-        if (!user.getActive()) {
-            user.setActive(true);
-            userRepository.save(user);
-        }
-
-        return """
-            <!doctype html>
-            <html lang="en">
-            <head>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <title>Activation successful</title>
-              <style>
-                body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:#0b1220;color:#e6edf3;display:grid;place-items:center;min-height:100vh}
-                .card{background:#121a2b;border:1px solid #22304f;border-radius:16px;padding:28px;max-width:520px;width:92%;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-                h1{margin:0 0 8px;font-size:22px}
-                p{margin:0 0 18px;opacity:.9;line-height:1.4}
-                .ok{display:inline-block;background:#16a34a;color:#052e12;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px}
-                a.btn{display:inline-block;text-decoration:none;background:#60a5fa;color:#07101f;padding:10px 14px;border-radius:10px;font-weight:700}
-              </style>
-            </head>
-            <body>
-              <div class="card">
-                <div class="ok">SUCCESS</div>
-                <h1>Account activated</h1>
-                <p>You can now log in to the application.</p>
-              </div>
-            </body>
-            </html>
-        """;
-
-    } catch (Exception e) {
-        return """
-            <!doctype html>
-            <html lang="en">
-            <head>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <title>Activation failed</title>
-              <style>
-                body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:#160b0b;color:#ffecec;display:grid;place-items:center;min-height:100vh}
-                .card{background:#261010;border:1px solid #5a1f1f;border-radius:16px;padding:28px;max-width:520px;width:92%}
-                h1{margin:0 0 8px;font-size:22px}
-                p{margin:0 0 18px;opacity:.9;line-height:1.4}
-                .bad{display:inline-block;background:#ef4444;color:#2b0b0b;padding:6px 10px;border-radius:999px;font-weight:800;font-size:12px}
-                a.btn{display:inline-block;text-decoration:none;background:#fca5a5;color:#2b0b0b;padding:10px 14px;border-radius:10px;font-weight:700}
-              </style>
-            </head>
-            <body>
-              <div class="card">
-                <div class="bad">ERROR</div>
-                <h1>The link is invalid or has expired</h1>
-                <p>Try registering again or request a new activation link.</p>
-              </div>
-            </body>
-            </html>
-        """;
-    }
-}
+	    return ResponseEntity.ok().build();
+	}
 }

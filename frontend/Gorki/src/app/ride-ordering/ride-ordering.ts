@@ -1,26 +1,36 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { NgClass, NgIf } from "@angular/common";
+import { CommonModule, NgClass, NgIf } from "@angular/common";
 import { ReactiveFormsModule, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { OrderingConfirmation } from '../ordering-confirmation/ordering-confirmation';
 import { OrderRideService } from '../service/order-ride-service';
 import { Validators } from '@angular/forms';
 import { CreateRouteDTO } from '../model/ui/create-route-dto';
 import { CreateRideDTO } from '../model/ui/create-ride-dto';
 import { AuthService } from '../infrastructure/auth.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, startWith, switchMap, catchError } from 'rxjs/operators';
+import { NominatimService } from '../service/nominatim-service';
 
 @Component({
   selector: 'app-ride-ordering',
-  imports: [MatRadioModule, MatFormFieldModule, MatSelectModule, NgClass, ReactiveFormsModule, RouterLink, OrderingConfirmation],
+  imports: [CommonModule, MatRadioModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatAutocompleteModule, NgClass, ReactiveFormsModule, RouterLink, OrderingConfirmation, MatSnackBarModule],
   templateUrl: './ride-ordering.html',
   styleUrl: './ride-ordering.css',
 })
 export class RideOrdering {
+  @Input() isBlocked!: boolean;
   activeForm: 'main' | 'stopping' | 'passengers' = 'main';
   createdPrice!: number;
+  startOptions$!: Observable<string[]>;
+  endOptions$!: Observable<string[]>;
+  stopOptions$: Observable<string[]>[] = [];
   mainForm = new FormGroup({
     startAddress: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
     endAddress: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
@@ -37,7 +47,60 @@ export class RideOrdering {
   });
   isModalOpen: boolean = false;
 
-  constructor(private orderingService:OrderRideService, private authService: AuthService){}
+  constructor(private orderingService:OrderRideService, private authService: AuthService, private snackBar:MatSnackBar, private cdr:ChangeDetectorRef, private nominatim:NominatimService){}
+
+  private addressOptionsFor(control: FormControl<string | null>): Observable<string[]> {
+    return control.valueChanges.pipe(
+      startWith(control.value ?? ''),
+      map(v => (v ?? '').trim()),
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => {
+        if (term.length < 3) return of([]);
+        return this.nominatim.search(term, 6).pipe(
+          map(items => items.map(i => i.display_name)),
+          catchError(() => of([]))
+        );
+      })
+    );
+  }
+
+  private applyFavouriteRoute(route: { startingPoint: string; destination: string; stoppingPoints?: string[] }) {
+    this.mainForm.patchValue({
+      startAddress: route.startingPoint ?? '',
+      endAddress: route.destination ?? '',
+    });
+
+    const stops = route.stoppingPoints ?? [];
+
+    this.pointss.clear();
+    this.stopOptions$ = [];
+
+    if (stops.length === 0) {
+      const ctrl = new FormControl<string>('', { nonNullable: true });
+      this.pointss.push(ctrl);
+      this.stopOptions$.push(this.addressOptionsFor(ctrl));
+    } else {
+      for (const s of stops) {
+        const ctrl = new FormControl<string>(s, { nonNullable: true });
+        this.pointss.push(ctrl);
+        this.stopOptions$.push(this.addressOptionsFor(ctrl));
+      }
+    }
+
+    this.activeForm = 'main';
+  }
+
+  ngOnInit(): void {
+    this.startOptions$ = this.addressOptionsFor(this.mainForm.controls.startAddress);
+    this.endOptions$ = this.addressOptionsFor(this.mainForm.controls.endAddress);
+    this.stopOptions$ = this.points.map(ctrl => this.addressOptionsFor(ctrl as any));
+    const selected = history?.state.selectedRoute as any;
+    if(selected){
+      this.applyFavouriteRoute(selected);
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }
 
   async geocode(address: string): Promise<[number, number]> {
     const url =
@@ -61,7 +124,7 @@ export class RideOrdering {
   async order() {
     if (this.mainForm.invalid) {
       this.mainForm.markAllAsTouched();
-      alert('Start and end address are required.');
+      this.snackBar.open('Start and end address are required.', 'Close', {duration:4000});
       return;
     }
 
@@ -101,7 +164,6 @@ export class RideOrdering {
         ],
       };
 
-      // Ako tvoj CreateRideDTO očekuje route:
       const dto: CreateRideDTO = {
         route: route,
         linkedPassengersEmails: passengers,
@@ -115,18 +177,19 @@ export class RideOrdering {
 
       this.orderingService.orderRide(dto).subscribe({
         next: (created) => {
-          alert("Ride ordered successfully!");
-          this.isModalOpen = true;
+          this.snackBar.open("Ride ordered successfully!", 'Close', {duration:4000})
           this.createdPrice = created.price;
+          this.isModalOpen = true;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error(err);
-          alert('Ride ordering failed.');
+          this.snackBar.open("Ride ordering failed.", 'Close', {duration:4000})
         },
       });
     } catch (e) {
       console.error(e);
-      alert('One of the addresses could not be geocoded.');
+      this.snackBar.open('One of the addresses could not be geocoded.', 'Close', {duration:4000});
     }
   }
   get points(): FormControl[] {
@@ -146,11 +209,14 @@ export class RideOrdering {
   }
 
   addStoppingPoint() {
-    this.pointss.push(new FormControl(''));
+    const ctrl = new FormControl<string>('', { nonNullable: true });
+    this.pointss.push(ctrl);
+    this.stopOptions$.push(this.addressOptionsFor(ctrl));
   }
 
   removeStoppingPoint(index: number) {
     this.pointss.removeAt(index);
+    this.stopOptions$.splice(index, 1);
   }
 
   addPassenger() {
