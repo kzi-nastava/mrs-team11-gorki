@@ -63,6 +63,8 @@ dependencies {
     coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:2.1.2")
     //noinspection UseTomlInstead,NewerVersionAvailable
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.preference:preference:1.2.1")
 }
