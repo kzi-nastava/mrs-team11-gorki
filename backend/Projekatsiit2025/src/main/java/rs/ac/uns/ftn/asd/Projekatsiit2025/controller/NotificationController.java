@@ -20,11 +20,11 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.service.NotificationService;
 public class NotificationController {
 	
     private final NotificationService notificationService;
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
 
     public NotificationController(NotificationService notificationService, UserRepository userRepository) {
         this.notificationService = notificationService;
-        this.userRepository = userRepository;
+        //this.userRepository = userRepository;
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_PASSENGER','ROLE_DRIVER','ROLE_ADMIN')")

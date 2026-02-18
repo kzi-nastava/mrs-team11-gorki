@@ -52,4 +52,8 @@ public final class ClientUtils {
     public static AdminService getAdminService() {
         return getRetrofit().create(AdminService.class);
     }
+
+    public static RideService getRideService() {
+        return getRetrofit().create(RideService.class);
+    }
 }
