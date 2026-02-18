@@ -13,4 +13,8 @@ public interface EmailService {
     void sendActivationLinkToDriverMail(String activationToken);
 
     void sendResetLinkToFixedEmail(String resetToken, String email);
+    
+    void sendRideAcceptedMail(String to, String link);
+    
+    public void sendRideFinishedMail(String to, String link);
 }

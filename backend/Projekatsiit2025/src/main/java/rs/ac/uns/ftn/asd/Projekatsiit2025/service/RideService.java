@@ -60,16 +60,19 @@ public class RideService {
 	private final NotificationService notificationService;
     @Autowired
     private PanicWsService panicWsService;
+    @Autowired EmailService emailService;
 
     public RideService(RideRepository rideRepository, DriverAssignmentService driverAssignmentService, 
     		PriceConfigService priceConfigService, PassengerRepository passengerRepository,
-    		RatingRepository ratingRepository,NotificationService notificationService) {
+    		RatingRepository ratingRepository,NotificationService notificationService,
+    		EmailService emailService) {
         this.rideRepository = rideRepository;
         this.driverAssignmentService = driverAssignmentService;
         this.priceConfigService = priceConfigService;
         this.passengerRepository = passengerRepository;
         this.ratingRepository=ratingRepository;
         this.notificationService=notificationService;
+        this.emailService=emailService;
     }
     
     @Transactional(readOnly = true)
@@ -127,6 +130,17 @@ public class RideService {
     	ride.setPriceConfig(priceConfigService.getCurrentConfig());
     	ride.setPrice(priceConfigService.calculatePrice(VehicleType.valueOf(dto.getVehicleType()), route.getDistance()));
     	rideRepository.save(ride);
+    	
+    	//Notifikacije ulinkovanim putnicima
+    	String link = "http://localhost:4200/ride-in-progress";
+    	String content = "You were added to a ride and the driver has been found. Track the ride: " + link;
+
+    	for (Passenger p : ride.getLinkedPassengers()) {
+    	    notificationService.createAndSend(p.getEmail(),ride.getId(), "RIDE_ACCEPTED", content);
+    	    emailService.sendRideAcceptedMail("mrs.team11.gorki@gmail.com", link); 
+    	    System.out.println("MAIL STATUS to " + p.getEmail());
+    	}
+    	
     	return mapToCreatedRideDTO(ride);
     }
     
@@ -373,16 +387,29 @@ public class RideService {
         if (Boolean.TRUE.equals(dto.getPaid())) {
             ride.setPaid(true);
         }
-
-        // ✅ SAČUVAJ PROMENE
         rideRepository.save(ride);
 
-        // ✅ DEBUG LOG (OBAVEZNO privremeno)
         System.out.println("SENDING RATING_AVAILABLE to " + ride.getCreator().getEmail()
                 + " rideId=" + ride.getId());
 
-        // ✅ POŠALJI NOTIFIKACIJU
+        //Moze da se oceni
         notificationService.sendRatingAvailable(ride.getCreator().getEmail(), ride.getId());
+        
+        //===== Uspesno zavrsena voznja=====
+        String link = "http://localhost:4200/rides-list-user";
+        String content = "Ride finished successfully. You can view details here: " + link;
+
+        emailService.sendRideFinishedMail("mrs.team11.gorki@gmail.com", link);
+        notificationService.createAndSend(ride.getCreator().getEmail(),ride.getId(), "RIDE_FINISHED", content);
+
+        for (Passenger p : ride.getLinkedPassengers()) {
+            if (p.getId().equals(ride.getCreator().getId())) continue;
+
+            emailService.sendRideFinishedMail("mrs.team11.gorki@gmail.com", link);
+            notificationService.createAndSend(p.getEmail(),ride.getId() ,"RIDE_FINISHED", content);
+        }
+        
+       //===== Uspesno zavrsena voznja=====
 
         Driver driver = ride.getDriver();
 
