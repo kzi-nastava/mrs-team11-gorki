@@ -5,6 +5,7 @@ import { TrackRideDriver } from '../rides/track-ride-driver/track-ride-driver';
 import { DriverRideInProgress } from '../service/driver-ride-in-progress';
 import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../infrastructure/auth.service';
 
 @Component({
   selector: 'app-ride-in-progress-driver',
@@ -21,13 +22,14 @@ export class RideInProgressDriver implements OnInit {
   constructor(
       private mapService: MapService,
       private rideService: DriverRideInProgress,
-      private cdr: ChangeDetectorRef
+      private cdr: ChangeDetectorRef,
+      private authService: AuthService
     ) {}
 
   async ngOnInit() {
     this.mapService.clearAll();
 
-    this.rideService.getActiveRideAddresses(1).subscribe({
+    this.rideService.getActiveRideAddresses(this.authService.getId()).subscribe({
       next: async ({ pickup, dropoff }) => {
         this.pickupAddress = pickup;
         this.dropoffAddress = dropoff;

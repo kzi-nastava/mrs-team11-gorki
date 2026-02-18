@@ -5,6 +5,9 @@ import { Ride,Passenger, PanicRide } from '../models/ride';
 import { RideCardPanic } from '../ride-card-panic/ride-card-panic';
 import { DateFilter } from '../filters/date-filter/date-filter';
 import { SortFilter } from '../filters/sort-filter/sort-filter';
+import { AuthService } from '../../infrastructure/auth.service';
+import { AdminHistoryService } from '../../service/admin-history-service';
+import { PanicSocketService } from '../../service/panic-socket-service';
 
 @Component({
   selector: 'app-panic-notifications',
@@ -15,7 +18,16 @@ import { SortFilter } from '../filters/sort-filter/sort-filter';
 })
 
 export class PanicNotifications {
+
+  constructor(
+    private authService: AuthService,
+    private adminHistoryService: AdminHistoryService,
+    private panicSocketService: PanicSocketService
+  ) {}
+
   selectedRide: PanicRide | null = null;
+  filteredRides:PanicRide[]=[];
+  allRides:PanicRide[]=[];
   @ViewChild('carousel', { static: true })
   carousel!: ElementRef<HTMLDivElement>;
 
@@ -33,91 +45,38 @@ export class PanicNotifications {
     });
   }
 
-  rides:PanicRide[] = [
-    {
-    id: 1,
-    rating: 4.5,
-    startTime: '17:05',
-    endTime: '17:20',
-    startLocation: 'Miše Dimitrijevića 5, Grbavica',
-    destination: 'Jerneja Kopitara 32, Telep',
-    price: 15,
-    date: new Date(2025, 11, 16),
-    passengers: [
-      { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' },
-      { email: 'ana@example.com', firstName: 'Ana', lastName: 'Anić', phoneNumber: '0612345678' },
-      { email: 'marko@gmail.com', firstName: 'Marko', lastName: 'Marković', phoneNumber: '0623456789' },
-    ]
-  },
-  {
-    id: 2,
-    rating: 3.0,
-    startTime: '14:00',
-    endTime: '14:10',
-    startLocation: 'Miše Dimitrijevića 5, Grbavica',
-    destination: 'Bul. Mihaila Pupina 68, Centar',
-    price: 10,
-    date: new Date(2025, 11, 16),
-    passengers: [
-      { email: 'ana@example.com', firstName: 'Ana', lastName: 'Anić', phoneNumber: '0612345678' },
-      { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' },
-    ]
-  },
-  {
-    id: 3,
-    rating: 2.0,
-    startTime: '11:00',
-    endTime: '11:08',
-    startLocation: 'Bulevar Oslobođenja 189, Liman 2',
-    destination: 'Tolstojeva 34, Centar',
-    price: 7,
-    date: new Date(2025, 11, 9),
-    passengers: [
-      { email: 'marko@example.com', firstName: 'Marko', lastName: 'Marković', phoneNumber: '0623456789' },
-      { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
-      { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' },
-      { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' },
-    ]
-  },
-  {
-    id: 4,
-    rating: 4.7,
-    startTime: '12:00',
-    endTime: '12:30',
-    startLocation: 'Bulevar Oslobođenja 189, Liman 2',
-    destination: 'Iriski put, Sremska Kamenica',
-    price: 25,
-    date: new Date(2025, 10, 11),
-    passengers: [
-      { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
-      { email: 'marko@example.com', firstName: 'Marko', lastName: 'Marković', phoneNumber: '0623456789' },
-      { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' },
-      { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' },
-      { email: 'jovana@example.com', firstName: 'Jovana', lastName: 'Jovanović', phoneNumber: '0634567890' },
-    ]
-  },
-  {
-    id: 5,
-    rating: 1.0,
-    startTime: '19:00',
-    endTime: '19:15',
-    startLocation: 'Futoški put 29, Bistrica',
-    destination: 'Sremska 9, Stari grad',
-    price: 20,
-    date: new Date(2025, 10, 11),
-    passengers: [
-      { email: 'petar@example.com', firstName: 'Petar', lastName: 'Petrović', phoneNumber: '0645678901' },
-      { email: 'marko@example.com', firstName: 'Marko', lastName: 'Marković', phoneNumber: '0623456789' },
-      { email: 'ivan@example.com', firstName: 'Ivan', lastName: 'Ivić', phoneNumber: '0601234567' },
-    ]
-  }
-  ];
+  rides:PanicRide[] = [];
 
-  filteredRides:PanicRide[]=[];
-  allRides:PanicRide[]=[];
   ngOnInit() {
-    this.filteredRides = [...this.rides];
-    this.allRides=[...this.rides];
+    this.loadRides();
+
+    const token = localStorage.getItem('user');
+    if (token) {
+      this.panicSocketService.connect(token, (evt) => {
+        this.loadRides();
+        this.playSound();
+        alert('New panic notification received!');
+      });
+    }
+  }
+
+  private audio = new Audio('notification-sound-1.wav');
+
+  playSound() {
+    this.audio.currentTime = 0;
+    this.audio.play().catch(() => {
+      // browser blokira autoplay dok user ne klikne negde
+    });
+  }
+
+  loadRides() {
+    this.adminHistoryService.getPanicRides().subscribe({
+      next: (rides) => {
+        this.rides = [...rides];
+        this.allRides = [...rides];
+      },
+      error: (err) => console.error('Ne mogu da dohvatim panic voznje', err),
+    });
   }
 
   openRideDetails(ride: PanicRide) {
@@ -157,7 +116,7 @@ export class PanicNotifications {
     const { from, to } = event;
    
     if (!from && !to) {
-      this.filteredRides = [...this.rides];
+      this.rides = [...this.rides];
       return;
     }
 

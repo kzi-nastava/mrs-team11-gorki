@@ -33,6 +33,12 @@ public class RatingService {
         if (ride.getStatus() != RideStatus.FINISHED) {
             throw new RuntimeException("Voznja jos nije zavrsena");
         }
+        
+        //3 Proslo vise od 3 dana
+        if (ride.getEndingTime() == null ||
+                ride.getEndingTime().plusDays(3).isBefore(LocalDateTime.now())) {
+                throw new RuntimeException("Rok za ocenjivanje je istekao");
+        }
 
         // 3️ Kreiranje ocene
         Rating rating = new Rating();
@@ -41,6 +47,7 @@ public class RatingService {
         rating.setVehicleRating(dto.getVehicleRating());
         rating.setComment(dto.getComment());
         rating.setCreatedAt(LocalDateTime.now());
+        rating.setPassenger(ride.getCreator());
 
 		Rating saved = ratingRepository.save(rating);
 
@@ -56,8 +63,43 @@ public class RatingService {
         dto.setDriverRating(rating.getDriverRating());
         dto.setVehicleRating(rating.getVehicleRating());
         dto.setCreatdAt(rating.getCreatedAt());
+        dto.setCreatorId(rating.getPassenger().getId());
         return dto;
     }
     
+    @Transactional
+    public Long pendingLatestRideId(String email) {
 
+        Ride ride = rideRepository
+            .findFirstByCreator_EmailAndStatusOrderByEndingTimeDesc(email, RideStatus.FINISHED)
+            .orElse(null);
+
+        if (ride == null) {
+            System.out.println("PENDING: no finished ride for " + email);
+            return null;
+        }
+
+        System.out.println("PENDING: found rideId=" + ride.getId()
+            + " endingTime=" + ride.getEndingTime()
+            + " status=" + ride.getStatus());
+
+        if (ride.getEndingTime() == null) {
+            System.out.println("PENDING: endingTime is NULL -> returning null");
+            return null;
+        }
+
+        if (ride.getEndingTime().isBefore(LocalDateTime.now().minusDays(3))) {
+            System.out.println("PENDING: expired -> returning null");
+            return null;
+        }
+
+        Long passengerId = ride.getCreator().getId();
+        boolean alreadyRated = ratingRepository
+            .findByRideIdAndPassengerId(ride.getId(), passengerId)
+            .isPresent();
+
+        System.out.println("PENDING: alreadyRated=" + alreadyRated + " passengerId=" + passengerId);
+
+        return alreadyRated ? null : ride.getId();
+    }
 }

@@ -26,7 +26,8 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 @RequestMapping("/api/passengers")
 public class PassengerController {
 	private final PassengerService passengerService;
-  private final RideService rideService;
+	private final RideService rideService;
+
 	
 	public PassengerController(PassengerService passengerService, RideService rideService) {
 		this.passengerService = passengerService;

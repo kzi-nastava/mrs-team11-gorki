@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,22 +21,26 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.DriverStatusRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.LoginRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.LoginResponseDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.RegisterRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.ResetPasswordDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.User;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.ActivationTokenUtil;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.JwtTokenUtil;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.service.EmailService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-	  @Autowired private UserRepository userRepository; 
+    @Autowired private UserRepository userRepository; 
     @Autowired private AuthenticationManager authenticationManager;
     @Autowired private JwtTokenUtil jwtTokenUtil;
     @Autowired private final UserService userService;
     @Autowired private ActivationTokenUtil activationTokenUtil;
+    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private EmailService emailService;
   
     public AuthController(UserRepository userRepository, UserService userService) {
     	this.userRepository=userRepository;
@@ -100,12 +105,38 @@ public class AuthController {
 
         return new ResponseEntity<>("User logged out successfully", HttpStatus.OK);
     }
-	
-	@PreAuthorize("hasAnyAuthority('ROLE_DRIVER', 'ROLE_ADMIN', 'ROLE_PASSENGER')")
-    @PostMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> resetPassword(@RequestParam String email) {
 
-        return new ResponseEntity<>("Password reset link sent to " + email, HttpStatus.OK);
+    @PostMapping(value="/forgot-password")
+    public ResponseEntity<Void> forgotPassword(@RequestParam String email) {
+
+        userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        String token = activationTokenUtil.generateActivationToken(email);
+
+        emailService.sendResetLinkToFixedEmail(token, email);
+
+        return ResponseEntity.ok().build();
+    }
+	
+    @PostMapping(value="/reset-password", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> resetPassword(@RequestBody ResetPasswordDTO dto) {
+
+        if(dto.getNewPassword() == null || dto.getNewPassword().isBlank())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password required");
+
+        if(!dto.getNewPassword().equals(dto.getConfirmNewPassword()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match");
+
+        String email = activationTokenUtil.validateAndGetEmail(dto.getToken());
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userRepository.save(user);
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) @ResponseStatus(HttpStatus.CREATED)

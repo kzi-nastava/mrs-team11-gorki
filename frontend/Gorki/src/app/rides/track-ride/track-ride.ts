@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { MapService } from '../../map/map-service';
 import { InconsistencyService } from '../../service/inconsistency-report-service';
 import { PanicService } from '../../service/panic-service';
+import { AuthService } from '../../infrastructure/auth.service';
+import { RideInProgressService } from '../../service/passenger-ride-in-progress';
 
 @Component({
   selector: 'app-track-ride',
@@ -13,7 +15,7 @@ import { PanicService } from '../../service/panic-service';
 })
 export class TrackRide {
 
-  currentRideId: number = 2;
+  currentRideId: number = 0;
   showReportModal = false;
   noteText = '';
 
@@ -21,7 +23,22 @@ export class TrackRide {
     private mapService: MapService,
     private inconsistencyService: InconsistencyService,
     private panicService: PanicService,
+    private authService:AuthService,
+    private rideInProgressService:RideInProgressService
   ) {}
+
+  ngOnInit(){
+     this.rideInProgressService
+    .getActiveRide(this.authService.getId())
+    .subscribe({
+      next: (ride) => {
+        this.currentRideId = ride.rideId; 
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
 
   reportInconsistency() {
     this.showReportModal = true;

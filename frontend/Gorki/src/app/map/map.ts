@@ -2,6 +2,8 @@ import {  AfterViewInit, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapService } from './map-service';
 import * as L from 'leaflet';
+import { VehicleService } from '../service/vehicle-service';
+import { HomeVehicle } from '../model/ui/vehicle';
 
 var availableCar=L.icon({
           iconUrl:'availableCar.ico',
@@ -27,7 +29,6 @@ var alertVehicle=L.icon({
   styleUrls: ['./map.css']
 })
 export class MapComponent implements AfterViewInit {
-
   map!: any;
   private routeLayer = L.layerGroup();
   private vehiclesLayer = L.layerGroup();
@@ -38,7 +39,7 @@ export class MapComponent implements AfterViewInit {
   private animationTimer: any;
   private animationPoints: [number, number][] = [];
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService, private vehicleService:VehicleService) {}
 
   initMap(){
     this.map = L.map('map').setView([45.2671, 19.8335], 13);
@@ -61,7 +62,6 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.initMap();
-    //this.drawVehicles();
   }
 
   animateDriver(points: [number, number][]) {
@@ -122,47 +122,28 @@ export class MapComponent implements AfterViewInit {
   drawVehicles() {
     this.vehiclesLayer.clearLayers();
 
-    // Liman / Telep
-    L.marker([45.240055, 19.825589], { icon: availableCar })
-      .addTo(this.vehiclesLayer);
+    this.vehicleService.getAllVehicles().subscribe({
+      next: (allVehicles: HomeVehicle[]) => {
+        allVehicles.forEach(v => {
+          const lat = v.currentLocation.latitude;
+          const lng = v.currentLocation.longitude;
+        
+          const icon = (v.vehicleAvailability === 'ACTIVE' || v.vehicleAvailability === 'BUSY')
+            ? availableCar
+            : unavailableCar;
 
-    L.marker([45.243599, 19.819983], { icon: unavailableCar })
-      .addTo(this.vehiclesLayer);-
+          L.marker([lat, lng], { icon }).addTo(this.vehiclesLayer);
+        });
 
-    // Centar / Liman
-    L.marker([45.251667, 19.836944], { icon: availableCar })
-      .addTo(this.vehiclesLayer);
+      },
+      error: (err) => {
+        console.error('getAllVehicles failed', err);
+      }
+    });
+}
 
-    L.marker([45.246389, 19.844167], { icon: unavailableCar })
-      .addTo(this.vehiclesLayer);
-
-    // Grbavica
-    L.marker([45.245278, 19.825833], { icon: availableCar })
-      .addTo(this.vehiclesLayer);
-
-    L.marker([45.247500, 19.829444], { icon: unavailableCar })
-      .addTo(this.vehiclesLayer);
-
-    // Detelinara
-    L.marker([45.262222, 19.806667], { icon: availableCar })
-      .addTo(this.vehiclesLayer);
-
-    L.marker([45.259722, 19.812222], { icon: unavailableCar })
-      .addTo(this.vehiclesLayer);
-
-    // Novo naselje
-    L.marker([45.267778, 19.795833], { icon: availableCar })
-      .addTo(this.vehiclesLayer);
-
-    L.marker([45.264444, 19.801944], { icon: unavailableCar })
-      .addTo(this.vehiclesLayer);
-
-    // Podbara
-    L.marker([45.257500, 19.852222], { icon: availableCar })
-      .addTo(this.vehiclesLayer);
-
-    // Petrovaradin
-    L.marker([45.246111, 19.875833], { icon: unavailableCar })
+  drawDriverEndPosition(position:[number,number]){
+      L.marker(position, { icon: unavailableCar })
       .addTo(this.vehiclesLayer);
   }
 

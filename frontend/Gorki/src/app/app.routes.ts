@@ -24,6 +24,9 @@ import { RideInProgressDriver } from './ride-in-progress-driver/ride-in-progress
 import { RideListMap } from './rides/ride-list-map/ride-list-map';
 import { AuthGuard } from './infrastructure/auth.guard';
 import { Login } from './login/login';
+import { AdminBlockUser } from './admin-block-user/admin-block-user';
+import { AdminRideMonitor } from './rides/admin-ride-monitor/admin-ride-monitor';
+import { PriceConfig } from './price-config/price-config';
 
 export const routes: Routes = [
     {
@@ -146,118 +149,24 @@ export const routes: Routes = [
         component:RideListMap,
         canActivate: [AuthGuard],
         data: { role: ['ADMIN','PASSENGER']}
+    },
+    {
+        path:'block-users',
+        component:AdminBlockUser,
+        canActivate:[AuthGuard],
+        data: { role: ['ADMIN']}
+    },
+    {
+        path: 'admin-ride-monitor',
+        component:AdminRideMonitor,
+        canActivate: [AuthGuard],
+        data: { role: ['ADMIN']}
+    },
+    {
+        path:'price-config',
+        component:PriceConfig,
+        canActivate:[AuthGuard],
+        data:{role:['ADMIN']}
+
     }
 ];
-
-/* OVAKO CE IZGLEDATI APP.ROUTES KADA SE NAPISE SERVIS LOGIKA U JAVI ZA LOGOVANJE
-//JAVNE RUTE, SVI IMAJU PRISTUP
-    {
-        path: '',
-        redirectTo: 'HomePage',
-        pathMatch: 'full'
-    },
-    {
-        path: 'HomePage',
-        component: Home
-    },
-    { 
-        path: 'register', 
-        component: Registration,
-        canActivate: [AuthGuard],
-        data:{role:['ROLE_UNUSER']} 
-    },
-    { 
-        path: 'reset', 
-        component: Reset 
-    },
-    {
-        path:'login',
-        component:Login,
-        canActivate: [AuthGuard],
-        data:{role:['ROLE_UNUSER']}
-    },
-    {   
-        path:'map',
-        component:MapComponent
-    },
-
-    //USER RUTE SVIH REGISTERED USER-A
-    {
-        path: 'personal-info',
-        component: PersonalInfo,
-        canActivate:[AuthGuard],
-        data:{ role : [ 'ROLE_ADMIN' , 'ROLE_DRIVER' , 'ROLE_USER' ] }
-    },
-    {
-        path: 'change-password',
-        component: ChangePassword,
-        canActivate:[AuthGuard],
-        data:{ role : [ 'ROLE_ADMIN' , 'ROLE_DRIVER' , 'ROLE_USER' ] }
-    },
-
-    //DRIVER RUTE
-    {
-        path: 'vehicle-information',
-        component: VehicleInformation,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_DRIVER'] }
-    },
-    {
-        path:'rides-list',
-        component:RidesList,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_DRIVER'] }
-    },
-    {
-        path:'driver-sceduled-rides',
-        component:DriverScheduledRidesList,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_DRIVER'] }
-    },
-    {
-        path:'end-of-ride',
-        component:EndOfRide,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_DRIVER'] }
-    },
-    { // +REGISTERED USER
-        path:'scheduled-rides', 
-        component:ScheduledRides,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_DRIVER' , 'ROLE_USER'] }
-    },
-
-    //REGISTERED USER RUTE    
-    {
-        path:'rides-list-user',
-        component:RidesListUser,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_USER'] }
-    },
-    {
-        path:'ride-in-progress',
-        component:RideInProgress,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_USER'] }
-    },
-    {
-        path:'track-ride',
-        component:TrackRide,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_USER'] }
-    },
-
-    //ADMIN RUTE
-    {
-        path:'panic-notifications',
-        component:PanicNotifications,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_ADMIN'] }
-    },
-    {
-        path:'rides-list-admin',
-        component:RidesListAdmin,
-        canActivate: [AuthGuard],
-        data: { role: ['ROLE_ADMIN'] }
-    }
-*/ 

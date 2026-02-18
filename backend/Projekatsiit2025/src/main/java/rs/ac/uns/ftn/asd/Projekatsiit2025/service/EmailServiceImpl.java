@@ -95,7 +95,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendActivationLinkToDriverMail(String activationToken) {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
         String link = "http://localhost:8080/api/auth/redirect?token=" + activationToken;
-
+      
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
         mailMessage.setTo(fixedEmail);
@@ -103,7 +103,18 @@ public class EmailServiceImpl implements EmailService {
         mailMessage.setText("Click the activation link to set up your password and activate your account (lasts 24h):\n" + link);
 
         javaMailSender.send(mailMessage);
-        System.out.println("Sending activation link to: " + fixedEmail);
-        System.out.println("LINK: " + link);
+    }
+
+    public void sendResetLinkToFixedEmail(String resetToken, String email) {
+        String fixedEmail = "mrs.team11.gorki@gmail.com";
+        String link = "http://localhost:4200/reset?token=" + resetToken;
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(fixedEmail);
+        mailMessage.setSubject("Reset lozinke");
+        mailMessage.setText("Klikni na link za reset lozinke za email " + email + ":\n" + link);
+
+        javaMailSender.send(mailMessage);
     }
 }

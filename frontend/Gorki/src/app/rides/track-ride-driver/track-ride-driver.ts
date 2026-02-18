@@ -5,6 +5,8 @@ import { MapService } from '../../map/map-service';
 import { ChangeDetectorRef } from '@angular/core';
 import { PanicService } from '../../service/panic-service';
 import { StopRideService } from '../../service/stop-ride-service';
+import { AuthService } from '../../infrastructure/auth.service';
+import { DriverRideInProgress } from '../../service/driver-ride-in-progress';
 
 @Component({
   selector: 'app-track-ride-driver',
@@ -17,7 +19,7 @@ export class TrackRideDriver {
 
   showReportModal = false;
   noteText = '';
-  currentRideId: number = 6;
+  currentRideId: number = 0;
 
   @Input() pickupAddress = '';
   @Input() dropoffAddress = '';
@@ -28,8 +30,23 @@ export class TrackRideDriver {
     private mapService: MapService, 
     private cdr: ChangeDetectorRef, 
     private panicService: PanicService, 
-    private stopRideService: StopRideService) {}
+    private stopRideService: StopRideService,
+    private driverRideInProgress: DriverRideInProgress,
+    private authService: AuthService) {}
 
+  ngOnInit(){
+     this.driverRideInProgress
+    .getActiveRide(this.authService.getId())
+    .subscribe({
+      next: (ride) => {
+        this.currentRideId = ride.rideId; 
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+  
   updateDropoff(address: string) {
     this.dropoffAddress = address;
   }
