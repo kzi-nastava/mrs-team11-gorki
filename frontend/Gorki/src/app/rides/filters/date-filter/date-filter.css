@@ -35,7 +35,13 @@ mat-datepicker-toggle{
   font-family: 'Sofia Sans Condensed';
 }
 
-#dateInput{
+#dateInput1{
+  font-family: 'Sofia Sans Condensed';
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#dateInput2{
   font-family: 'Sofia Sans Condensed';
   font-size: 20px;
   font-weight: bold;

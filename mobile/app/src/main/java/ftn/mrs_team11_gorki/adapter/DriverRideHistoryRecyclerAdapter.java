@@ -47,8 +47,8 @@ public class DriverRideHistoryRecyclerAdapter
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("dd.MM.yyyy");
         h.txtTitle.setText("Ride No. "+safe(r.getRideId()));
-        h.txtStartingTime.setText("Starting time: " + safe(r.getStartingTime().format(formatter)));
-        h.txtEndingTime.setText("Ending time: " + safe(r.getEndingTime().format(formatter)));
+        h.txtStartingTime.setText("Starting time: " + (r.getStartingTime() != null ? r.getStartingTime().format(formatter) : "-"));
+        h.txtEndingTime.setText("Ending time: " + (r.getEndingTime() != null ? r.getEndingTime().format(formatter) : "-"));
         h.txtPrice.setText("Price: " + r.getPrice());
         h.txtCancelled.setText("Cancelled: " + r.isCanceled());
         h.txtPanic.setText("Panic activated: " + r.isPanicActivated());

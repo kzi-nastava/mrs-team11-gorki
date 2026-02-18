@@ -1,0 +1,74 @@
+.chart-wrap {
+  height: 320px;
+  padding: 15px;
+}
+.bgChart{
+    background-color: white;
+    border-radius: 25px;
+}
+.summary {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+.content{
+    padding: 20px;
+}
+.card {
+  padding: 12px;
+  border-radius: 12px;
+  background-color: white;
+  font-family: 'Sofia Sans Condensed';
+  font-size: 20px;
+  color: #362D88;
+  font-weight: bold;
+  flex: 1;
+}
+.error { color: #c00; }
+
+.btn {
+    margin-top: 30px;
+    margin-left: 200px;
+    width: 240px;
+    height: 50px;
+    border-radius: 15px;
+    border: none;
+    font-family: 'Sofia Sans Condensed';
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #362D88;
+    color: white;
+    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.5);
+}
+
+.btn:not(:disabled):hover{
+    background-color: #4b448b;
+}
+
+.btn:not(:disabled):active{
+    background-color: #5951a5;
+}
+
+.btn:disabled{
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+h2{
+    font-family: 'Sofia Sans Condensed';
+    color: #362D88;
+    font-weight: bold;
+    padding: 20px;
+}
+
+h3{
+    font-family: 'Sofia Sans Condensed';
+    color: #362D88;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.searchUser{
+    display: flex;
+    flex-direction: row;
+}

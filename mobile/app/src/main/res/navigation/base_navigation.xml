@@ -54,6 +54,21 @@
         android:name="ftn.mrs_team11_gorki.fragments.AdminPanicListFragment"
         app:popUpTo="@id/homeFragment"
         tools:layout="@layout/fragment_admin_panic_list" />
+    <fragment
+        android:id="@+id/nav_driver_scheduled_rides"
+        android:name="ftn.mrs_team11_gorki.fragments.ScheduledRidesFragment"
+        app:popUpTo="@id/homeFragment"
+        tools:layout="@layout/fragment_scheduled_rides" />
+    <fragment
+        android:id="@+id/nav_passenger_scheduled_rides"
+        android:name="ftn.mrs_team11_gorki.fragments.ScheduledRidesFragment"
+        app:popUpTo="@id/homeFragment"
+        tools:layout="@layout/fragment_scheduled_rides" />
+    <fragment
+        android:id="@+id/nav_admin_scheduled_rides"
+        android:name="ftn.mrs_team11_gorki.fragments.ScheduledRidesFragment"
+        app:popUpTo="@id/homeFragment"
+        tools:layout="@layout/fragment_scheduled_rides" />
 
     <fragment
         android:id="@+id/nav_price_conf"

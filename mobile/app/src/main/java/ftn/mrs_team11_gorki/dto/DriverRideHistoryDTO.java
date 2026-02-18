@@ -1,10 +1,13 @@
 package ftn.mrs_team11_gorki.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class DriverRideHistoryDTO {
     private Long rideId;
+    @SerializedName(value = "startingTime", alternate = {"scheduledTime"})
     private LocalDateTime startingTime;
     private LocalDateTime endingTime;
     private GetRouteDTO route;

@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ErrorResponse;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.EmailAlreadyExistsException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.NoEligibleDriverException;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.UserNotFoundException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.LinkedPassengerNotFoundException;
 
 @ControllerAdvice
@@ -24,6 +25,16 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 	
 	@ExceptionHandler(NoEligibleDriverException.class)
