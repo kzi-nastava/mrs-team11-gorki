@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,9 +26,11 @@ public class User {
 	private String lastName;
 	private int phoneNumber;
 	private String address;
+	@Column(name = "profile_image", columnDefinition = "TEXT")
 	private String profileImage;
 	private Boolean active=false;
 	private Boolean blocked=false;
+	private String blockReason;
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 	
@@ -36,7 +39,7 @@ public class User {
 	}
 	
 	public User(Long id, String email, String password, String firstName, String lastName, int phoneNumber,
-			String address, String profileImage, UserRole role, Boolean active, Boolean blocked) {
+			String address, String profileImage, UserRole role, Boolean active, Boolean blocked, String blockReason) {
 		this.id = id;
 		this.email = email;
 		this.password = password;
@@ -47,6 +50,7 @@ public class User {
 		this.profileImage = profileImage;
 		this.active = active;
 		this.blocked = blocked;
+		this.blockReason = blockReason;
 		this.role = role;
 	}
 	public Long getId() {
@@ -109,6 +113,14 @@ public class User {
 	public void setBlocked(Boolean blocked) {
 		this.blocked = blocked;
 	}
+	public String getBlockReason() {
+		return blockReason;
+	}
+
+	public void setBlockReason(String blockReason) {
+		this.blockReason = blockReason;
+	}
+
 	public UserRole getRole() {
 		return role;
 	}

@@ -1,7 +1,21 @@
 <div class="map-wrapper" id="homePage">
   <app-map></app-map>
   @if (role == "PASSENGER") {
-    <app-ride-ordering></app-ride-ordering>
+    @if(isBlocked){
+      <div class="blockedInfo">
+        <div class="blockedHeader">
+            Your account is currently <strong>blocked</strong>
+        </div>
+        <div class="someDivider"></div>
+        <div class="theReason">
+            <div class="blockedReason">
+                Reason:
+            </div>
+            <textarea class="reason" readonly [(ngModel)]="user.blockReason"></textarea>
+        </div>
+      </div>
+    }
+    <app-ride-ordering [isBlocked]="isBlocked"></app-ride-ordering>
   } @else if (role == "DRIVER") {
     <app-ride-start></app-ride-start>
   } @else {

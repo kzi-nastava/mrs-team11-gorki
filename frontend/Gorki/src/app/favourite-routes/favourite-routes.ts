@@ -1,7 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { FavouriteRouteCard } from '../favourite-route-card/favourite-route-card';
 import { Route } from '../model/ui/route';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-favourite-routes',

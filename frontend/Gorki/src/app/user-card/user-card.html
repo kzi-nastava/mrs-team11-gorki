@@ -1,0 +1,33 @@
+<div class="user-card">
+  <h1>User - id {{ user.id }}</h1>
+  <hr />
+  <ul>
+    <li><img [src]="user.profileImage"/></li>
+    <li><strong>Email</strong> - {{ user.email }}</li>
+    <li><strong>First name</strong> - {{ user.firstName }}</li>
+    <li><strong>Last name</strong> - {{ user.lastName }}</li>
+    <li><strong>Home address</strong> - {{ user.address }}</li>
+    <li><strong>Phone number</strong> - {{ user.phoneNumber }} </li>
+  </ul>
+  <hr />
+  <ul>
+    <li><strong>Role</strong> - {{ user.role }} </li>
+    <li class="status">
+      <strong>Active</strong>
+      <span class="icon" [class.active]="user.active"></span>
+    </li>
+    <li class="status">
+      <strong>Blocked</strong>
+      <span class="icon" [class.active]="user.blocked"></span>
+    </li>
+  </ul>
+
+  <button class="more-info" (click)="openBlockNote()">
+    @if(!user.blocked){
+      BLOCK
+    } @else {
+      UNBLOCK
+    }
+    
+  </button>
+</div>

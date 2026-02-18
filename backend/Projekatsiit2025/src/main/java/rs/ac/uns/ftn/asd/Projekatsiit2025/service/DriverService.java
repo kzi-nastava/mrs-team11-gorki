@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,15 +17,20 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.DriverRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.ActivationTokenUtil;
 
 @Service
 public class DriverService {
-	private final DriverRepository driverRepository;
-	private final UserRepository userRepository;
+	@Autowired private final DriverRepository driverRepository;
+	@Autowired private final UserRepository userRepository;
+	private final EmailService emailService;
+	@Autowired private final ActivationTokenUtil util;
 	
-	public DriverService(DriverRepository driverRepository, UserRepository userRepository) {
+	public DriverService(DriverRepository driverRepository, UserRepository userRepository, EmailService emailService, ActivationTokenUtil util) {
 		this.driverRepository = driverRepository;
 		this.userRepository = userRepository;
+		this.emailService = emailService;
+		this.util = util;
 	}
 	
 	@Transactional
@@ -38,8 +44,10 @@ public class DriverService {
         driver.setLastName(dto.getUser().getLastName());
         driver.setPhoneNumber(dto.getUser().getPhoneNumber());
         driver.setAddress(dto.getUser().getAddress());
+        driver.setProfileImage(dto.getUser().getProfileImage());
         driver.setRole(UserRole.DRIVER);
         driver.setActive(false);
+        driver.setBlocked(false);
         driver.setStatus(DriverStatus.ACTIVE);
         Vehicle vehicle = new Vehicle();
         vehicle.setModel(dto.getVehicle().getModel());
@@ -50,6 +58,8 @@ public class DriverService {
         vehicle.setPetFriendly(dto.getVehicle().getPetFriendly());
         driver.setVehicle(vehicle);
         Driver saved = driverRepository.save(driver);
+        String activationToken = util.generateActivationToken(driver.getEmail());
+        emailService.sendActivationLinkToDriverMail(activationToken);
         return mapToCreatedDriverDTO(saved);
 	}
 	

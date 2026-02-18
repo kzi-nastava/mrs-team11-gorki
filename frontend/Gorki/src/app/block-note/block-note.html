@@ -1,0 +1,18 @@
+<div class="backdrop">
+  <div class="modal">
+    <h2>Block user</h2>
+    <div class="divider"></div>
+    <p class="note">Note</p>
+    <textarea class="reason-input" placeholder="Write your reason here." [(ngModel)]="reason"></textarea>
+    <div class="buttons">
+        <button class="block-btn" (click)="onBlock()">
+            @if(!blocked){
+                Block
+            } @else {
+                Unblock
+            }
+        </button>
+        <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+    </div>
+  </div>
+</div>

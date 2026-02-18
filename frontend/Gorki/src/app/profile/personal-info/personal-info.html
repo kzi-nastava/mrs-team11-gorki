@@ -1,39 +1,93 @@
-<form *ngIf="user" class="personalInfoForm">
-    <p class="personalInfoHeader">
-        Personal information
-    </p>
-    <div class="firstDivider"></div>
-    <div class="formWrapper">
-        <div class="formContentLeft">
-            <img
-            [src]="imagePreview || user.profileImage"
-            class="userPic"
-            (click)="fileInput.click()"
-            />
-            <input
-            type="file"
-            #fileInput
-            accept="image/*"
-            hidden
-            (change)="onImageSelected($event)"
-            />
-            <label>Email</label>
-            <input type="text" [(ngModel)]="user.email" name="email">
-            <div class="formButtons">
-                <button class="saveChanges" (click)="saveChanges()">Save changes</button>
-                <button class="revertChanges" type="button" (click)="revertChanges()">Revert changes</button>
-            </div>
+@if(isBlocked && user.role == 'DRIVER'){
+    <div class="blockedInfo">
+        <div class="blockedHeader">
+            Your account is currently <strong>blocked</strong>
         </div>
-        <div class="secondDivider"></div>
-        <div class="formContentRight">
-            <label>First name</label>
-            <input type="text" [(ngModel)]="user.firstName" name="firstName">
-            <label>Last name</label>
-            <input type="text" [(ngModel)]="user.lastName" name="lastName">
-            <label>Home address</label>
-            <input type="text" [(ngModel)]="user.address" name="address">
-            <label>Phone number</label>
-            <input type="text" [(ngModel)]="user.phoneNumber" name="phone">
+        <div class="someDivider"></div>
+        <div class="theReason">
+            <div class="blockedReason">
+                Reason:
+            </div>
+            <textarea class="reason" readonly [(ngModel)]="user.blockReason"></textarea>
         </div>
     </div>
-</form>
+    <form *ngIf="user" class="personalInfoForm2">    
+        <p class="personalInfoHeader">
+            Personal information
+        </p>
+        <div class="firstDivider"></div>
+        <div class="formWrapper">
+            <div class="formContentLeft">
+                <img
+                [src]="imagePreview || user.profileImage"
+                class="userPic"
+                (click)="fileInput.click()"
+                />
+                <input
+                type="file"
+                #fileInput
+                accept="image/*"
+                hidden
+                (change)="onImageSelected($event)"
+                />
+                <label>Email</label>
+                <input type="text" [(ngModel)]="user.email" name="email">
+                <div class="formButtons">
+                    <button class="saveChanges" (click)="saveChanges()">Save changes</button>
+                    <button class="revertChanges" type="button" (click)="revertChanges()">Revert changes</button>
+                </div>
+            </div>
+            <div class="secondDivider"></div>
+            <div class="formContentRight">
+                <label>First name</label>
+                <input type="text" [(ngModel)]="user.firstName" name="firstName">
+                <label>Last name</label>
+                <input type="text" [(ngModel)]="user.lastName" name="lastName">
+                <label>Home address</label>
+                <input type="text" [(ngModel)]="user.address" name="address">
+                <label>Phone number</label>
+                <input type="text" [(ngModel)]="user.phoneNumber" name="phone">
+            </div>
+        </div>
+    </form>
+} @else {
+    <form *ngIf="user" class="personalInfoForm">    
+        <p class="personalInfoHeader">
+            Personal information
+        </p>
+        <div class="firstDivider"></div>
+        <div class="formWrapper">
+            <div class="formContentLeft">
+                <img
+                [src]="imagePreview || user.profileImage"
+                class="userPic"
+                (click)="fileInput.click()"
+                />
+                <input
+                type="file"
+                #fileInput
+                accept="image/*"
+                hidden
+                (change)="onImageSelected($event)"
+                />
+                <label>Email</label>
+                <input type="text" [(ngModel)]="user.email" name="email">
+                <div class="formButtons">
+                    <button class="saveChanges" (click)="saveChanges()">Save changes</button>
+                    <button class="revertChanges" type="button" (click)="revertChanges()">Revert changes</button>
+                </div>
+            </div>
+            <div class="secondDivider"></div>
+            <div class="formContentRight">
+                <label>First name</label>
+                <input type="text" [(ngModel)]="user.firstName" name="firstName">
+                <label>Last name</label>
+                <input type="text" [(ngModel)]="user.lastName" name="lastName">
+                <label>Home address</label>
+                <input type="text" [(ngModel)]="user.address" name="address">
+                <label>Phone number</label>
+                <input type="text" [(ngModel)]="user.phoneNumber" name="phone">
+            </div>
+        </div>
+    </form>
+}
