@@ -20,6 +20,7 @@
                     <button mat-menu-item [routerLink]="['/vehicle-information']">Vehicle information</button>
                     <button mat-menu-item [routerLink]="['/driver-pass-activation']">Driver password activation</button>
                     <button mat-menu-item [routerLink]="['/rides-list']">Ride history (Driver)</button>
+                    <button mat-menu-item [routerLink]="['/report']">Report for past rides</button>
                 }
                 @if(role == "ADMIN"){
                     <button mat-menu-item [routerLink]="['/panic-notifications']">Panic notifications</button>
@@ -28,10 +29,12 @@
                     <button mat-menu-item [routerLink]="['/driver-registration']">Driver registration</button>
                     <button mat-menu-item [routerLink]="['/block-users']">Block users</button>
                     <button mat-menu-item [routerLink]="['/admin-ride-monitor']">Rides monitoring</button>
+                    <button mat-menu-item [routerLink]="['/report-admin']">Report for past rides</button>
                 }
                 @if(role=="PASSENGER"){
                     <button mat-menu-item [routerLink]="['/scheduled-rides']">Scheduled rides</button>
                     <button mat-menu-item [routerLink]="['/rides-list-user']">Ride history (User)</button>
+                    <button mat-menu-item [routerLink]="['/report']">Report for past rides</button>
                 }
             </mat-menu>
             @if(role == "PASSENGER"){

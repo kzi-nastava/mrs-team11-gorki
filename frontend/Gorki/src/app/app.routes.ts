@@ -27,6 +27,8 @@ import { Login } from './login/login';
 import { AdminBlockUser } from './admin-block-user/admin-block-user';
 import { AdminRideMonitor } from './rides/admin-ride-monitor/admin-ride-monitor';
 import { PriceConfig } from './price-config/price-config';
+import { Report } from './report/report';
+import { ReportAdmin } from './report-admin/report-admin';
 
 export const routes: Routes = [
     {
@@ -168,5 +170,17 @@ export const routes: Routes = [
         canActivate:[AuthGuard],
         data:{role:['ADMIN']}
 
-    }
+    },
+    {
+        path:'report',
+        component:Report,
+        canActivate:[AuthGuard],
+        data:{role:['PASSENGER', 'DRIVER']}
+    },
+    {
+        path:'report-admin',
+        component:ReportAdmin,
+        canActivate:[AuthGuard],
+        data:{role:['ADMIN']}
+    },
 ];
