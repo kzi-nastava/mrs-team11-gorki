@@ -1,0 +1,91 @@
+<div class="page">
+  <!-- LEFT: Inbox -->
+  <aside class="left">
+    <div class="top">
+      <div class="title">
+        <mat-icon class="titleIcon">notifications</mat-icon>
+        <span>Inbox</span>
+      </div>
+
+      <div class="status">
+        <span class="dot"></span>
+        <span>Connected</span>
+      </div>
+    </div>
+
+    <button class="refreshBtn" mat-stroked-button (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+
+    <div class="list">
+      <div *ngIf="loading" class="loading">
+        <mat-spinner diameter="26"></mat-spinner>
+        <span>Loading...</span>
+      </div>
+
+      <div
+        *ngFor="let n of items; trackBy: trackById"
+        class="card"
+        [class.active]="selected?.id === n.id"
+        (click)="select(n)"
+      >
+        <div class="cardTop">
+          <div class="cardTitle">
+            <span class="unreadDot" *ngIf="!n.read"></span>
+            {{ n.purpose || 'Notification' }}
+          </div>
+
+          <div class="badge" [class.badgeUnread]="!n.read">
+            {{ n.read ? 'Read' : 'New' }}
+          </div>
+        </div>
+
+        <div class="meta">
+          <span class="metaText">{{ formatTime(n.createdAt) }}</span>
+        </div>
+
+        <div class="snippet">
+          {{ n.content || 'No content' }}
+        </div>
+      </div>
+
+      <div *ngIf="!loading && items.length === 0" class="emptyLeft">
+        No notifications yet.
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT: Preview -->
+  <main class="right">
+    <ng-container *ngIf="selected; else placeholder">
+      <div class="preview">
+        <div class="previewHeader">
+          <div class="previewTitle">
+            <mat-icon>campaign</mat-icon>
+            <div>
+              <h2>{{ selected.purpose || 'Notification' }}</h2>
+              <p>{{ formatTime(selected.createdAt) }}</p>
+            </div>
+          </div>
+
+          <div class="readPill" [class.readPillUnread]="!selected.read">
+            {{ selected.read ? 'Read' : 'New' }}
+          </div>
+        </div>
+
+        <div class="previewBody">
+          {{ selected.content }}
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #placeholder>
+      <div class="placeholder">
+        <mat-icon class="phIcon">notifications_none</mat-icon>
+        <h2>Select a notification</h2>
+        <p>Pick a notification from the inbox to view details.</p>
+      </div>
+    </ng-template>
+  </main>
+</div>

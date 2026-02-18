@@ -16,6 +16,7 @@ import { RatingService } from '../../service/rating-service';
 import { SupportChatService } from '../../service/chat-service';
 import { CreateRatingDto } from '../../model/ui/create-rating-dto';
 import { RatingConfirmPanel } from '../../rides/rating-confirm-panel/rating-confirm-panel';
+import { NotificationInbox } from '../../notification-inbox/notification-inbox';
 
 @Component({
   selector: 'app-navbar',
@@ -155,6 +156,20 @@ export class Navbar implements OnInit, OnDestroy {
       }
     });
   }
+
+  openNotifications(): void {
+    if (!this.isLoggedIn) return;
+
+  this.dialog.open(NotificationInbox, {
+      autoFocus: false,
+      panelClass: 'notifDialog',
+      width: '1000px',
+      maxWidth: '95vw',
+      height: '720px',
+      maxHeight: '90vh',
+    });
+  }
+
 
   private openRatingDialog(rideId: number): void {
     if (this.ratingDialogOpen) return;
