@@ -36,6 +36,8 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.UserRideHistoryDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.CreatedRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.NoEligibleDriverException;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.LinkedPassengerNotFoundException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Ride;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
@@ -110,7 +112,7 @@ public class RideService {
     	List<Passenger> linkedPassengers = new ArrayList<Passenger>();
     	if(dto.getLinkedPassengersEmails().size() != 0) {
     		for(String email : dto.getLinkedPassengersEmails()) {
-        		Passenger passenger = passengerRepository.findByEmail(email).get();
+        		Passenger passenger = passengerRepository.findByEmail(email).orElseThrow(() -> new LinkedPassengerNotFoundException("Passengers with email " + email + " is not found."));
         		linkedPassengers.add(passenger);
         	}
     	}
@@ -118,12 +120,14 @@ public class RideService {
     	Passenger creator = passengerRepository.findById(dto.getCreatorId()).get();
     	ride.setCreator(creator);
     	ride.setDriver(driverAssignmentService.selectDriver(dto.getBabyTransport(), dto.getPetFriendly(), VehicleType.valueOf(dto.getVehicleType()), route, dto.getScheduledTime()));
-    	ride.setStatus(RideStatus.REQUESTED);
+    	if(ride.getDriver() == null) {
+    		throw new NoEligibleDriverException("There are no eligible drivers currently.");
+    	}
+    	ride.setStatus(RideStatus.ACCEPTED);
     	ride.setPriceConfig(priceConfigService.getCurrentConfig());
     	ride.setPrice(priceConfigService.calculatePrice(VehicleType.valueOf(dto.getVehicleType()), route.getDistance()));
     	rideRepository.save(ride);
     	return mapToCreatedRideDTO(ride);
-    	
     }
     
     @Transactional
@@ -135,8 +139,15 @@ public class RideService {
     	ride.setEndingTime(ride.getStartingTime().plusMinutes(getEstimatedTime(ride.getRoute())));
     	ride.setPanicActivated(false);
     	ride.setCancellationReason("");
+    	ride.setPaid(false);
     	rideRepository.save(ride);
     	return mapToGetRideDTO(ride);
+    }
+    
+    @Transactional(readOnly = true)
+    public GetRideDTO getNextScheduledRide(Long id) {
+    	Ride ride = this.rideRepository.findFirstByDriverIdAndStatusOrderByScheduledTimeAsc(id, RideStatus.ACCEPTED).orElse(null);
+    	return ride == null ? null : mapToGetRideDTO(ride);
     }
 
     private DriverRideHistoryDTO mapDriverHistoryToDTO(Ride ride) {
@@ -190,6 +201,7 @@ public class RideService {
     		linkedPassengers.add(mapToGetPassengerDTO(passenger));
     	}
     	dto.setLinkedPassengers(linkedPassengers);
+    	dto.setRoute(mapToGetRouteDTO(ride.getRoute()));
     	return dto;
     }
     
@@ -309,7 +321,7 @@ public class RideService {
         long hh = totalMinutes / 60;
         long mm = totalMinutes % 60;
 
-        return LocalDateTime.of(0, 1, 1, (int) hh, (int) mm);
+        return LocalDateTime.of(1, 1, 1, (int) hh, (int) mm);
     }
     
     private double haversineDistance(double lat1, double lon1, double lat2, double lon2) {

@@ -1,4 +1,4 @@
-<form> 
+<form *ngIf="form" [formGroup]="form"> 
     <div class="first-step" [ngClass]="{'hidden': firstStep !== true}">
         <div class="steps-label">
             <div class="1">1</div>
@@ -18,25 +18,25 @@
                         <label class="fieldName" for="firstName">First name</label>
                     </div>
                     <div class="formElement">
-                        <input class="inputField" id="firstName" name="firstName">
+                        <input class="inputField" id="firstName" formControlName="firstNameInput">
                     </div>
                     <div class="formElement">
                         <label class="fieldName" for="lastName">Last name</label>
                     </div>
                     <div class="formElement">
-                        <input class="inputField" id="lastName" name="lastNameInput">
+                        <input class="inputField" id="lastName" formControlName="lastNameInput">
                     </div>
                     <div class="formElement">
                         <label class="fieldName" for="homeAddress">Home address</label>
                     </div>
                     <div class="formElement">
-                        <input class="inputField" id="homeAddress" name="homeAddressInput">
+                        <input class="inputField" id="homeAddress" formControlName="homeAddressInput">
                     </div>
                     <div class="formElement">
                         <label class="fieldName" for="phoneNumber">Phone number</label>
                     </div>
                     <div class="formElement">
-                        <input class="inputField" id="phoneNumber" name="phoneNumberInput">
+                        <input class="inputField" id="phoneNumber" formControlName="phoneNumberInput">
                     </div>
                 </div>
                 <div class="verticalDivider"></div>
@@ -51,7 +51,7 @@
                         <label id="email-label" class="fieldName" for="email">E-mail</label>
                     </div>
                     <div class="formElement">
-                        <input class="inputField" id="email" name="emailInput" #emailInput>
+                        <input class="inputField" id="email" formControlName="emailInput" #emailInput>
                     </div>
                 </div>
             </div>
@@ -79,39 +79,38 @@
             <div class="formWrapper">
                 <div class="formContentLeft">
                     <label class="labels">Model</label>
-                    <input class="inputs" type="text" value="Ford Focus">
+                    <input class="inputs" type="text" formControlName="modelInput">
                     <label class="labels" id="licensePlate">License plate</label>
-                    <input class="inputs" type="text" value="NS-523-SV">
+                    <input class="inputs" type="text" formControlName="licensePlateInput">
                     <label class="labels">Number of seats</label>
-                    <input class="inputs" type="text" value="5">
+                    <input class="inputs" type="number" formControlName="seatsInput">
                 </div>
                 <div class="secondDivider"></div>
                 <div class="formContentRight">
                     <label class="labels">Type</label>
                     <mat-form-field>
                         <mat-label>Select an option</mat-label>
-                        <mat-select value="standard">
-                            <mat-option>None</mat-option>
-                            <mat-option value="standard">Standard</mat-option>
-                            <mat-option value="luxury">Luxury</mat-option>
-                            <mat-option value="van">Van</mat-option>
+                        <mat-select formControlName="typeSelect">
+                            <mat-option value="STANDARD">Standard</mat-option>
+                            <mat-option value="LUXURY">Luxury</mat-option>
+                            <mat-option value="VAN">Van</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <label class="labels">Baby transport available</label>
-                    <mat-radio-group aria-label="Select an option" class="radio" value="1">
-                        <mat-radio-button value="1">Yes</mat-radio-button>
-                        <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-group aria-label="Select an option" class="radio" formControlName="babyRadio">
+                        <mat-radio-button [value]="true">Yes</mat-radio-button>
+                        <mat-radio-button [value]="false">No</mat-radio-button>
                     </mat-radio-group>
                     <label class="labels">Pet friendly</label>
-                    <mat-radio-group aria-label="Select an option" class="radio" value="2">
-                        <mat-radio-button value="1">Yes</mat-radio-button>
-                        <mat-radio-button value="2">No</mat-radio-button>
+                    <mat-radio-group aria-label="Select an option" class="radio" formControlName="petRadio">
+                        <mat-radio-button [value]="true">Yes</mat-radio-button>
+                        <mat-radio-button [value]="false">No</mat-radio-button>
                     </mat-radio-group>
                 </div>
                 
             </div>
             <div class="formButtons">
-                <button class="saveChanges">Register</button>
+                <button class="saveChanges" type="button" (click)="submit()">Register</button>
                 <button class="revertChanges" type="button" (click)="backToFirstStep()">Back</button>
             </div>
         </div>

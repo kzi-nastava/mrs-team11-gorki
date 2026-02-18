@@ -10,7 +10,7 @@ public class PriceConfigService {
 	private PriceConfig priceConfig;
 
     public PriceConfigService() {
-        this.priceConfig = new PriceConfig(200, 1000, 500, 120); 
+        this.priceConfig = new PriceConfig(200, 1000, 500, 120);
     }
 
     public PriceConfig getCurrentConfig() {
@@ -21,13 +21,13 @@ public class PriceConfigService {
         this.priceConfig = newConfig;
     }
     
-    public double calculatePrice(VehicleType vehicleType, double distanceKm) {
+    public long calculatePrice(VehicleType vehicleType, double distanceKm) {
         double basePrice = switch(vehicleType) {
             case STANDARD -> priceConfig.getPriceForStandardVehicles();
             case LUXURY -> priceConfig.getPriceForLuxuryVehicles();
             case VAN -> priceConfig.getPriceForVans();
             default -> throw new IllegalArgumentException("Unknown vehicle type");
         };
-        return basePrice + distanceKm * priceConfig.getPricePerKm();
+        return Math.round(basePrice + distanceKm * priceConfig.getPricePerKm());
     }
 }

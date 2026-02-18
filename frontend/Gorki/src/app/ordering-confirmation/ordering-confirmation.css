@@ -39,11 +39,11 @@
 .cost-buttons{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
 }
 
-.yes{
-    width: 180px;
+.proceed{
+    width: 240px;
     height: 60px;
     border-radius: 25px;
     border: none;
@@ -57,36 +57,12 @@
     margin: auto;
 }
 
-.yes:hover{
+.proceed:hover{
     background-color: #4b448b;
     transform: scale(1.01);
 }
 
-.yes:active{
-    background-color: #5951a5;
-}
-
-.no{
-    width: 180px;
-    height: 60px;
-    border-radius: 25px;
-    border: none;
-    font-family: 'Sofia Sans Condensed';
-    font-size: 32px;
-    font-weight: bold;
-    background-color: #362D88;
-    color: white;
-    box-shadow: 0 6px 15px rgb(0, 0, 0, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    margin: auto;
-}
-
-.no:hover{
-    background-color: #4b448b;
-    transform: scale(1.01);
-}
-
-.no:active{
+.proceed:active{
     background-color: #5951a5;
 }
 

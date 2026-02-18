@@ -1,24 +1,30 @@
 <div class="next-ride-card">
     <div class="next-ride-header">Next scheduled ride</div>
     <div class="separator3"></div>
-    <div class="starting-point-loc">
-        <img class="img1" src="/starting-point-pic.png">
-        <div class="starting-point-text">{{ride.route.startingPoint}}</div>
-    </div>
-    <div class="destination-loc">
-        <img class="img1" src="/destination-pic.png">
-        <div class="destination-text">{{ride.route.destination}}</div>
-    </div>
-    <div class="scheduled-arrival">
-        <img class="img2" src="/clock-pic.png">
-        <div class="scheduled-arrival-text">Scheduled time - {{ride.scheduledTime}}</div>
-    </div>
-    <div class="price">Price - {{ride.price}}$</div>
-    <div class="separator3"></div>
-    <button class="view-passengers" (click)="openModal()">View passengers</button>
-    <button class="start-ride">Start</button>
+    @if(ride == null){
+        <div class="no-scheduled-rides">
+            There are currently no scheduled rides.
+        </div>
+    } @else {
+        <div class="starting-point-loc">
+            <img class="img1" src="/starting-point-pic.png">
+            <div class="starting-point-text">{{ride.route.locations.at(0)?.address}}</div>
+        </div>
+        <div class="destination-loc">
+            <img class="img1" src="/destination-pic.png">
+            <div class="destination-text">{{ride.route.locations.at(ride.route.locations.length - 1)?.address}}</div>
+        </div>
+        <div class="scheduled-arrival">
+            <img class="img2" src="/clock-pic.png">
+            <div class="scheduled-arrival-text">Scheduled time - {{ride.scheduledTime}}</div>
+        </div>
+        <div class="price">Price - {{ride.price}} dinars</div>
+        <div class="separator3"></div>
+        <button class="view-passengers" (click)="openModal()">View passengers</button>
+        <button class="start-ride" (click)="start()">Start</button>
+    }
 </div>
-@if(isModalOpen){
+@if(isModalOpen && ride){
     <div class="backdrop">
         <div class="modal">
             <h2>Passengers</h2>
@@ -35,17 +41,17 @@
 
             <tbody>
                 <tr>
-                    <td class="creator">{{ride.creator.email}}</td>
-                    <td class="creator">{{ride.creator.firstName}}</td>
-                    <td class="creator">{{ride.creator.lastName}}</td>
-                    <td class="creator">{{ride.creator.phoneNumber}}</td>
+                    <td class="creator">{{ride.creator.user.email}}</td>
+                    <td class="creator">{{ride.creator.user.firstName}}</td>
+                    <td class="creator">{{ride.creator.user.lastName}}</td>
+                    <td class="creator">{{ride.creator.user.phoneNumber}}</td>
                 </tr>
                 @for(user of ride.linkedPassengers; track user){
                     <tr>
-                        <td>{{user.email}}</td>
-                        <td>{{user.firstName}}</td>
-                        <td>{{user.lastName}}</td>
-                        <td>{{user.phoneNumber}}</td>
+                        <td>{{user.user.email}}</td>
+                        <td>{{user.user.firstName}}</td>
+                        <td>{{user.user.lastName}}</td>
+                        <td>{{user.user.phoneNumber}}</td>
                     </tr>
                 }
             </tbody>
