@@ -90,4 +90,11 @@
         app:popUpTo="@id/homeFragment"
         android:label="Ride Monitor"
         tools:layout="@layout/fragment_admin_ride_monitor"/>
+
+    <fragment
+        android:id="@+id/rideInProgressPassengerFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.RideInProgressPassengerFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Track Ride" />
+
 </navigation>

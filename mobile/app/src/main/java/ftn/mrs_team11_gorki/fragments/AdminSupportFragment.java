@@ -47,7 +47,7 @@ public class AdminSupportFragment extends Fragment {
     // WS: admin listens here (backend must broadcast)
     private static final String SUBSCRIBE_DEST = "/topic/support";
     private static final String SEND_DEST = "/app/support.adminSend";
-    private static final String WS_URL = "ws://10.0.2.2:8080/ws/websocket"; // ili /ws-native ako dodaš
+    private static final String WS_URL = "ws://192.168.1.84:8080/ws/websocket"; // ili /ws-native ako dodaš
 
     private AdminSupportService adminSupportService;
 

@@ -42,7 +42,7 @@ public class SupportChatDialogFragment extends DialogFragment {
 
     private static final String SUBSCRIBE_DEST = "/user/queue/support";
     private static final String SEND_DEST = "/app/support.send";
-    private static final String WS_URL = "ws://10.0.2.2:8080/ws/websocket";
+    private static final String WS_URL = "ws://192.168.1.84:8080/ws/websocket";
 
     private StompClient stompClient;
     private final CompositeDisposable disposables = new CompositeDisposable();
