@@ -6,13 +6,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sofia_sans_condensed_semibold">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minLines="3"
-            android:fontFamily="SofiaSansCondensed"
             android:hint="Enter report message." />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
