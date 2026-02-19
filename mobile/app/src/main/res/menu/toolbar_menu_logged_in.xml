@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_notifications"
+        android:title="Notifications"
+        android:icon="@drawable/outline_circle_notifications_24"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/action_track_ride"
         android:title="Track"
         android:icon="@drawable/ic_track"
@@ -13,5 +19,6 @@
         android:title="Support"
         android:icon="@drawable/baseline_support_agent_24"
         app:showAsAction="always" />
+
 
 </menu>
