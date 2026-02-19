@@ -533,7 +533,7 @@ public class RideService {
         }
 
         if (ride.getPanicActivated()) {
-            throw new RuntimeException("Ride already has panic activated");
+        //    throw new RuntimeException("Ride already has panic activated");
         }
 
         ride.setPanicActivated(true);

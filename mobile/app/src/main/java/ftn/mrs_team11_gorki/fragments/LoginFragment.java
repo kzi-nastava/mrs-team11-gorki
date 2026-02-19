@@ -153,7 +153,7 @@ public class LoginFragment extends DialogFragment {
 
                     if (response.isSuccessful()) {
                         Toast.makeText(requireContext(),
-                                "Reset link generated. Check the support mailbox (fixedMail).",
+                                "Reset link generated. Check email.",
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
