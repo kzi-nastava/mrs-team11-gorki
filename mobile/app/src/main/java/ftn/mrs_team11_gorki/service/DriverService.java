@@ -4,6 +4,8 @@ import ftn.mrs_team11_gorki.dto.DriverRideHistoryDTO;
 
 import java.util.List;
 
+import ftn.mrs_team11_gorki.dto.FinishRideDTO;
+import ftn.mrs_team11_gorki.dto.FinishedRideDTO;
 import ftn.mrs_team11_gorki.dto.GetVehicleDTO;
 import ftn.mrs_team11_gorki.dto.UpdateVehicleDTO;
 import ftn.mrs_team11_gorki.dto.UpdatedVehicleDTO;
@@ -30,4 +32,14 @@ public interface DriverService {
 
     @PUT("api/drivers/{id}/vehicle")
     Call<UpdatedVehicleDTO> updateVehicle(@Path("id") Long id, @Body UpdateVehicleDTO dto);
+
+
+    //End ride
+    @GET("/api/drivers/{id}/ride/active")
+    Call<DriverRideHistoryDTO> getActiveRideForEnd(@Path("id") long driverId);
+
+    @PUT("/api/drivers/{driverId}/rides/finish")
+    Call<FinishedRideDTO> finishRide(@Path("driverId") long driverId,
+                                     @Body FinishRideDTO dto);
+
 }

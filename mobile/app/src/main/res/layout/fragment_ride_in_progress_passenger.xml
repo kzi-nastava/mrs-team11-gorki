@@ -22,21 +22,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Start point: -"
-            android:fontFamily="SofiaSansCondensed"
+            android:fontFamily="@font/sofia_sans_condensed_regular"
             android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvEnd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="SofiaSansCondensed"
+            android:fontFamily="@font/sofia_sans_condensed_regular"
             android:text="Destination: -" />
 
         <TextView
             android:id="@+id/tvEta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="SofiaSansCondensed"
+            android:fontFamily="@font/sofia_sans_condensed_regular"
             android:text="@string/eta" />
 
         <LinearLayout
@@ -50,7 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="SofiaSansCondensed"
+                android:fontFamily="@font/sofia_sans_condensed_semibold"
                 android:text="@string/inconsistency" />
 
             <com.google.android.material.button.MaterialButton
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="10dp"
-                android:fontFamily="SofiaSansCondensed"
+                android:fontFamily="@font/sofia_sans_condensed_semibold"
                 android:text="@string/panic" />
         </LinearLayout>
     </LinearLayout>
