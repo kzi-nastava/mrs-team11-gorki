@@ -218,3 +218,46 @@ a{
   border-radius: 18px !important;
   overflow: hidden;
 }
+
+.navAction{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  border-radius: 20px;
+
+  cursor: pointer;
+  user-select: none;
+
+  background: transparent;
+  color: white;
+
+    font-size: 25px;
+  font-weight: bolder;
+
+  
+}
+
+.navAction mat-icon{
+  /* Angular Material ikone umeju da budu “off” po baseline-u */
+
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* minimalni nudge da bude centrirano */
+  transform: translateY(-1px);
+}
+
+.navAction:hover{
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+
+.navAction:active{
+  transform: translateY(0px) scale(0.97);
+}

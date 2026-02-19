@@ -124,6 +124,9 @@ public class RideService {
     	ride.setCreator(creator);
     	ride.setDriver(driverAssignmentService.selectDriver(dto.getBabyTransport(), dto.getPetFriendly(), VehicleType.valueOf(dto.getVehicleType()), route, dto.getScheduledTime()));
     	if(ride.getDriver() == null) {
+        	//Notifikacija kreatoru voznje
+        	String content3 = "Ride ordering failed, no eligible drivers.";
+        	notificationService.createAndSend(ride.getCreator().getEmail(),ride.getId(), "RIDE_FAILED", content3);
     		throw new NoEligibleDriverException("There are no eligible drivers currently.");
     	}
     	ride.setStatus(RideStatus.ACCEPTED);
@@ -141,6 +144,14 @@ public class RideService {
     	    System.out.println("MAIL STATUS to " + p.getEmail());
     	}
     	
+    	//Notifikacija kreatoru voznje
+    	String content2 = "You ride is successfully created.";
+    	notificationService.createAndSend(ride.getCreator().getEmail(),ride.getId(), "RIDE_CREATED", content2); 
+    	
+    	
+    	//Notifikacija driveru
+    	String content3 = "You have new ride.";
+    	notificationService.createAndSend(ride.getDriver().getEmail(),ride.getId(), "NEW_RIDE", content3); 
     	return mapToCreatedRideDTO(ride);
     }
     

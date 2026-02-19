@@ -67,8 +67,7 @@
             },
             "development": {
               "buildTarget": "Gorki:build:development"
-            },
-            "proxyConfig": "proxy.conf.json"
+            }
           },
           "defaultConfiguration": "development"
         },

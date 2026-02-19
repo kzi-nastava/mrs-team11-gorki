@@ -53,22 +53,12 @@ export class RideInProgressDriver implements OnInit {
   }
 
   async geocode(address: string): Promise<[number, number]> {
-    const url =
-      'https://nominatim.openstreetmap.org/search?' +
-      new URLSearchParams({
-        q: address,
-        format: 'json',
-        limit: '1',
-      });
 
-    const res = await fetch(url);
+    const res = await fetch(
+      `http://localhost:8080/api/geocode?q=${encodeURIComponent(address)}`
+    );
     const data = await res.json();
-
-    if (!data.length) {
-      throw new Error('Address not found');
-    }
-
-    return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+    return [data.lat, data.lon];
   }
 
   handleShowOnMap(event: {

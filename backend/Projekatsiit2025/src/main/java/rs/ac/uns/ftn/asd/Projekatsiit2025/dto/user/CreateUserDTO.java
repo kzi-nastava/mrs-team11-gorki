@@ -10,8 +10,6 @@ public class CreateUserDTO {
 	@Size(max = 500, message = "Email too long")
 	private String email;
 
-	@NotBlank(message = "Password is required")
-	@Size(min = 3, max = 100, message = "Password must be between 8 and 100 characters")
 	private String password;
 
 	@NotBlank(message = "First name is required")

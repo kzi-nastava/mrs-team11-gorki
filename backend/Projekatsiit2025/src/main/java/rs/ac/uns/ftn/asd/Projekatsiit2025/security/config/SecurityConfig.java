@@ -56,6 +56,7 @@ public class SecurityConfig {
             .requestMatchers("/api/auth/activate").permitAll()
             .requestMatchers("/favicon.ico").permitAll()
             .requestMatchers("/ws/**").permitAll()
+            .requestMatchers("/api/geocode").permitAll()
             .requestMatchers("/api/auth/forgot-password").permitAll()
             .requestMatchers(
                     "/swagger-ui/**",

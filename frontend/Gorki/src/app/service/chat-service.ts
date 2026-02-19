@@ -62,7 +62,6 @@ export class SupportChatService {
         this.subNotif = client.subscribe('/user/queue/notifications', (m) =>
           this.zone.run(() => this.onIncomingNotification(m))
         );
-        console.log('SUBSCRIBED /user/queue/notifications');
       },
 
       onWebSocketClose: () => this.zone.run(() => this.connected$.next(false)),

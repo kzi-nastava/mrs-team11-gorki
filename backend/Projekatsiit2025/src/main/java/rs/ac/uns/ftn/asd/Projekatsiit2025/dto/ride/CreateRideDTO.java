@@ -18,9 +18,7 @@ public class CreateRideDTO {
 	@Valid
 	private CreateRouteDTO route;
 
-	@NotEmpty(message = "At least one passenger email is required")
 	private List<
-	    @NotBlank(message = "Passenger email must not be blank")
 	    String> linkedPassengersEmails;
 
 	@NotNull(message = "Creator id is required")
