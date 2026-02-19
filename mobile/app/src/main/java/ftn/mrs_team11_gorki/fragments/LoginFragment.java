@@ -32,6 +32,7 @@ public class LoginFragment extends DialogFragment {
     private LoginFormBinding formBinding;
     private AuthService authApi;
     private Call<LoginResponse> loginCall;
+    private Call<Void> forgotCall;
 
     @NonNull
     @Override
@@ -132,6 +133,51 @@ public class LoginFragment extends DialogFragment {
             });
         });
 
+        formBinding.txtForgotPassword.setOnClickListener(v -> {
+            String email = formBinding.emailInput.getText().toString().trim();
+
+            if (TextUtils.isEmpty(email)) {
+                formBinding.emailInput.setError("Enter your email first");
+                formBinding.emailInput.requestFocus();
+                return;
+            }
+
+            formBinding.txtForgotPassword.setEnabled(false);
+
+            forgotCall = authApi.forgotPassword(email);
+            forgotCall.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    if (!isAdded()) return;
+                    formBinding.txtForgotPassword.setEnabled(true);
+
+                    if (response.isSuccessful()) {
+                        Toast.makeText(requireContext(),
+                                "Reset link generated. Check the support mailbox (fixedMail).",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    if (response.code() == 404) {
+                        Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "HTTP error: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                    if (!isAdded()) return;
+                    formBinding.txtForgotPassword.setEnabled(true);
+                    if (call.isCanceled()) return;
+
+                    Toast.makeText(requireContext(),
+                            "Network error: " + t.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        });
+
         return dialog;
     }
 
@@ -142,6 +188,11 @@ public class LoginFragment extends DialogFragment {
         if (loginCall != null) {
             loginCall.cancel();
             loginCall = null;
+        }
+
+        if (forgotCall != null) {
+            forgotCall.cancel();
+            forgotCall = null;
         }
 
         dialogBinding = null;
