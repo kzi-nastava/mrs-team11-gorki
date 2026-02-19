@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ErrorResponse;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.EmailAlreadyExistsException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.NoEligibleDriverException;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.RouteAlreadyAddedException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.UserNotFoundException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.LinkedPassengerNotFoundException;
 
@@ -39,6 +40,16 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(NoEligibleDriverException.class)
 	public ResponseEntity<ErrorResponse> handleNoEligibleDriver(NoEligibleDriverException ex){
+		ErrorResponse error = new ErrorResponse(
+				ex.getMessage(),
+				HttpStatus.CONFLICT.value(),
+				LocalDateTime.now()
+			);
+		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(RouteAlreadyAddedException.class)
+	public ResponseEntity<ErrorResponse> handleRouteAlreadyAdded(RouteAlreadyAddedException ex){
 		ErrorResponse error = new ErrorResponse(
 				ex.getMessage(),
 				HttpStatus.CONFLICT.value(),

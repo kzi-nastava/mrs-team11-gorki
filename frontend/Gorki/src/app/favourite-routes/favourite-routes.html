@@ -8,7 +8,7 @@
 
   <div class="ride-list" #carousel>
     @for(route of routes; track route){
-        <app-favourite-route-card [route]="route"></app-favourite-route-card>
+        <app-favourite-route-card [route]="route" (remove)="onRemove($event)"></app-favourite-route-card>
     }
   </div>
   <button class="nav right" (click)="scrollRight()">›</button>
