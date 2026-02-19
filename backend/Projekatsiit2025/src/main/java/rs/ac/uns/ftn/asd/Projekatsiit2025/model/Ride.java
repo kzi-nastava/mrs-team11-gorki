@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,6 +37,24 @@ public class Ride {
 	private String cancelledBy;
 	private Boolean paid;
 	
+	@Column
+	private LocalDateTime lastReminderSentAt;
+
+	@Column(nullable = false)
+	private boolean reminderActive = true;
+	
+	public LocalDateTime getLastReminderSentAt() {
+		return lastReminderSentAt;
+	}
+	public void setLastReminderSentAt(LocalDateTime lastReminderSentAt) {
+		this.lastReminderSentAt = lastReminderSentAt;
+	}
+	public boolean isReminderActive() {
+		return reminderActive;
+	}
+	public void setReminderActive(boolean reminderActive) {
+		this.reminderActive = reminderActive;
+	}
 	public Boolean getPaid() {
 		return paid;
 	}
