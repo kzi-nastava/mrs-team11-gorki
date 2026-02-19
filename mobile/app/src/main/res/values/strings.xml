@@ -104,6 +104,9 @@
     <string name="btnLog">Login</string>
     <string name="Email">Email</string>
     <string name="Password">Password</string>
+    <string name="eta">ETA: -</string>
+    <string name="inconsistency">Inconsistency</string>
+    <string name="panic">PANIC</string>
 
 
 </resources>

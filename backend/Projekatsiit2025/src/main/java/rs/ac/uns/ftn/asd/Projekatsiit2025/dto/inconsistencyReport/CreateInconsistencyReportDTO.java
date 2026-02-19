@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class CreateInconsistencyReportDTO {
 	    
-		@NotNull(message = "Description is required")
+		//@NotNull(message = "Description is required")
 		private String description;
 		
 		public CreateInconsistencyReportDTO() {

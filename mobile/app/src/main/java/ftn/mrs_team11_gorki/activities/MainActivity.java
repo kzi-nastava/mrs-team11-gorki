@@ -20,6 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 import ftn.mrs_team11_gorki.R;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.databinding.ActivityMainBinding;
+import ftn.mrs_team11_gorki.fragments.AdminSupportFragment;
 import ftn.mrs_team11_gorki.fragments.LoginFragment;
 import ftn.mrs_team11_gorki.fragments.SupportChatDialogFragment;
 
@@ -92,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        TokenStorage ts = new TokenStorage(this);
+        String token = ts.getToken();
+        String role=ts.getRole();
 
         if (id == R.id.nav_login) {
             new LoginFragment().show(getSupportFragmentManager(), "loginDialog");
@@ -109,6 +113,16 @@ public class MainActivity extends AppCompatActivity {
 
         if(id == R.id.adminSupportFragment){
 
+        }
+
+        if (id == R.id.action_track_ride) {
+            if(role.equals("PASSENGER")) {
+                navController.navigate(R.id.rideInProgressPassengerFragment);
+                return true;
+            }else if(role.equals("DRIVER")){
+                //navController.navigate(R.id.rideInProgressDriver);
+                //            return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -158,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             if (menuExists(R.menu.drawer_passenger)) {
                 navView.inflateMenu(R.menu.drawer_passenger);
             } else {
-                // fallback (ako nemaš passenger)
+                // fallback (ako nemas passenger)
                 navView.inflateMenu(R.menu.drawer_driver);
             }
         }
