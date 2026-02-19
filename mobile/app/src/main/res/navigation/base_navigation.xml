@@ -80,7 +80,14 @@
     <fragment
         android:id="@+id/adminSupportFragment"
         android:name="ftn.mrs_team11_gorki.fragments.AdminSupportFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Support inbox"
         tools:layout="@layout/fragment_admin_support" />
 
-
+    <fragment
+        android:id="@+id/nav_admin_ride_monitor"
+        android:name="ftn.mrs_team11_gorki.fragments.AdminRideMonitorFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Ride Monitor"
+        tools:layout="@layout/fragment_admin_ride_monitor"/>
 </navigation>
