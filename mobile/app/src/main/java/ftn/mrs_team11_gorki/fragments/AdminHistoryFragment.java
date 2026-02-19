@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ftn.mrs_team11_gorki.R;
-import ftn.mrs_team11_gorki.adapter.PassengerRideHistoryRecyclerAdapter;
+import ftn.mrs_team11_gorki.adapter.AdminRideHistoryRecyclerAdapter;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.dto.LocationDTO;
 import ftn.mrs_team11_gorki.service.OsrmService;
@@ -83,7 +83,7 @@ public class AdminHistoryFragment extends Fragment {
         RecyclerView rvHistory = view.findViewById(R.id.rvHistory);
         rvHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        PassengerRideHistoryRecyclerAdapter adapter = new PassengerRideHistoryRecyclerAdapter();
+        AdminRideHistoryRecyclerAdapter adapter = new AdminRideHistoryRecyclerAdapter();
         rvHistory.setAdapter(adapter);
         adapter.setOnMapClickListener(this::openRideMapDialog);
 
