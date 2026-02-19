@@ -1,5 +1,8 @@
 <div class="ride-card">
-  <h1>Route No. {{ route.id }}</h1>
+  <div class="header">
+    <h1>Route No. {{ route.id }}</h1>
+    <button class="more-info" type="button" (click)="removeRoute()">REMOVE FROM FAVOURITES</button>
+  </div>
   <hr/>
   <ul>
     <li>

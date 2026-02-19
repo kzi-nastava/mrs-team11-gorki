@@ -42,9 +42,9 @@ public class PassengerController {
 	}
 	
 	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
-	@PostMapping(value = "/{id}/favourite-routes/{routeId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetRouteDTO> addFavouriteRoute(@PathVariable("id") Long id, @PathVariable("routeId") Long routeId) {
-	    GetRouteDTO route = passengerService.addToFavouriteRoutes(id, routeId);
+	@PostMapping(value = "/{id}/favourite-routes/{rideId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetRouteDTO> addFavouriteRoute(@PathVariable("id") Long id, @PathVariable("rideId") Long rideId) {
+	    GetRouteDTO route = passengerService.addToFavouriteRoutes(id, rideId);
 	    return new ResponseEntity<GetRouteDTO>(route, HttpStatus.CREATED);
 	}
 	
