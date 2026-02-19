@@ -4,10 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(scanBasePackages = "rs.ac.uns.ftn.asd.Projekatsiit2025")
 @EntityScan("rs.ac.uns.ftn.asd.Projekatsiit2025.model")
 @EnableJpaRepositories("rs.ac.uns.ftn.asd.Projekatsiit2025.repository")
+@EnableScheduling
 public class Projekatsiit2025Application {
 
 	public static void main(String[] args) {

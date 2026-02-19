@@ -106,4 +106,13 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 
     List<Ride> findAllByOrderByStartingTimeDesc();
 
+    @Query("""
+            select r from Ride r
+            where r.scheduledTime is not null
+              and r.reminderActive = true
+              and r.status = rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus.ACCEPTED
+              and r.scheduledTime > :now
+              and r.scheduledTime <= :nowPlus15
+        """)
+        List<Ride> findRidesForReminderWindow(LocalDateTime now, LocalDateTime nowPlus15);
 }
