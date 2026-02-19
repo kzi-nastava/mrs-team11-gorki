@@ -97,4 +97,11 @@
         app:popUpTo="@id/homeFragment"
         android:label="Track Ride" />
 
+    <fragment
+        android:id="@+id/end_ride_driver"
+        android:name="ftn.mrs_team11_gorki.fragments.EndRideDriverFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="End current ride"/>
+
+
 </navigation>

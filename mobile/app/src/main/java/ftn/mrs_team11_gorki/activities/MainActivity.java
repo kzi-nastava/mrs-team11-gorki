@@ -20,7 +20,6 @@ import com.google.android.material.navigation.NavigationView;
 import ftn.mrs_team11_gorki.R;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.databinding.ActivityMainBinding;
-import ftn.mrs_team11_gorki.fragments.AdminSupportFragment;
 import ftn.mrs_team11_gorki.fragments.LoginFragment;
 import ftn.mrs_team11_gorki.fragments.SupportChatDialogFragment;
 
@@ -123,6 +122,12 @@ public class MainActivity extends AppCompatActivity {
                 //navController.navigate(R.id.rideInProgressDriver);
                 //            return true;
             }
+        }
+
+        if (id == R.id.action_notifications) {
+            new ftn.mrs_team11_gorki.fragments.NotificationInboxDialogFragment()
+                    .show(getSupportFragmentManager(), "notif_inbox");
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
