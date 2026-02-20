@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import java.util.Collections;
 import java.util.List;
 
+import ftn.mrs_team11_gorki.BuildConfig;
 import ftn.mrs_team11_gorki.R;
 import ftn.mrs_team11_gorki.adapter.ChatAdapter;
 import ftn.mrs_team11_gorki.auth.ApiClient;
@@ -42,7 +43,7 @@ public class SupportChatDialogFragment extends DialogFragment {
 
     private static final String SUBSCRIBE_DEST = "/user/queue/support";
     private static final String SEND_DEST = "/app/support.send";
-    private static final String WS_URL = "ws://192.168.1.84:8080/ws/websocket";
+    private static final String WS_URL = "ws://" + BuildConfig.API_HOST + ":" + BuildConfig.API_PORT + "/ws/websocket";
 
     private StompClient stompClient;
     private final CompositeDisposable disposables = new CompositeDisposable();

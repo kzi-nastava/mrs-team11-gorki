@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 
 import java.time.LocalDateTime;
 
+import ftn.mrs_team11_gorki.BuildConfig;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -16,7 +17,7 @@ import ftn.mrs_team11_gorki.adapter.LocalDateTimeAdapter;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "http://192.168.1.84:8080/";
+    private static final String BASE_URL = BuildConfig.BASE_URL;
 
     private static Retrofit retrofitAuth;
     private static Retrofit retrofitPublic;
