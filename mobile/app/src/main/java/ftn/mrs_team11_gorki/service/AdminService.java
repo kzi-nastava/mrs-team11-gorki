@@ -5,6 +5,7 @@ import java.util.List;
 import ftn.mrs_team11_gorki.dto.AdminRideMonitorDTO;
 import ftn.mrs_team11_gorki.dto.DriverRideHistoryDTO;
 import ftn.mrs_team11_gorki.dto.GetDriverInfoDTO;
+import ftn.mrs_team11_gorki.dto.UserOptionDTO;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -32,4 +33,7 @@ public interface AdminService {
 
     @GET("/api/admin/drivers/{driverId}/ride/active")
     Call<AdminRideMonitorDTO> getActiveRide(@Path("driverId") long driverId);
+
+    @GET("api/admin/users")
+    Call<List<UserOptionDTO>> getAllUsers(@Header("Authorization") String bearerToken);
 }

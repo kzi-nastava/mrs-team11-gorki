@@ -6,6 +6,15 @@
     android:padding="16dp"
     style="@style/bcGround">
 
+    <AutoCompleteTextView
+        android:id="@+id/actUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search user (First name Last name)"
+        android:completionThreshold="2"
+        style="@style/dateFilters"
+        android:fontFamily="SofiaSansCondensed"/>
+
     <!-- DATE FILTER -->
     <LinearLayout
         android:layout_width="match_parent"
