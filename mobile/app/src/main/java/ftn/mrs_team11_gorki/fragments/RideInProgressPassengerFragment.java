@@ -40,6 +40,7 @@ import ftn.mrs_team11_gorki.dto.DriverRideHistoryDTO;
 import ftn.mrs_team11_gorki.dto.InconsistencyRequestDTO;
 import ftn.mrs_team11_gorki.dto.LocationDTO;
 import ftn.mrs_team11_gorki.dto.OsrmRouteResponse;
+import ftn.mrs_team11_gorki.service.DriverService;
 import ftn.mrs_team11_gorki.service.OsrmService;
 import ftn.mrs_team11_gorki.service.PassengerService;
 import okhttp3.OkHttpClient;
@@ -50,6 +51,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 public class RideInProgressPassengerFragment extends Fragment {
 
@@ -60,9 +62,17 @@ public class RideInProgressPassengerFragment extends Fragment {
     private TextView tvStart, tvEnd, tvEta;
     private MaterialButton btnInconsistency, btnPanic;
 
+    // ====== PANIC ANIMATION (CAR MARKER) ======
+    private final Handler panicUi = new Handler(Looper.getMainLooper());
+    private Runnable panicAnim;
+    private boolean panicAnimating = false;
+
+    private org.osmdroid.views.overlay.Polygon panicRing; // opcionalno "glow" oko auta
+
     // ====== API ======
     private PassengerService passengerApi;
     private OsrmService osrmService;
+    private DriverService driverApi;
 
     // ====== MAP OVERLAYS ======
     private Polyline routeLine;
@@ -130,12 +140,16 @@ public class RideInProgressPassengerFragment extends Fragment {
 
         // Auth retrofit
         passengerApi = ApiClient.getRetrofit(requireContext()).create(PassengerService.class);
+        driverApi = ApiClient.getRetrofit(requireContext()).create(DriverService.class);
 
         setupMapPadding();
         setupMap();
 
         btnInconsistency.setOnClickListener(x -> openInconsistencyDialog());
-        btnPanic.setOnClickListener(x -> toast("Panic not implemented."));
+        btnPanic.setOnClickListener(view -> {
+            animateCarMarkerOnPanic();
+            sendPanic();
+        });
 
         loadActiveRide();
 
@@ -591,5 +605,184 @@ public class RideInProgressPassengerFragment extends Fragment {
             poly.add(new GeoPoint(lat / factor, lon / factor));
         }
         return poly;
+    }
+
+    private void animateCarMarkerOnPanic() {
+        if (!isAdded() || map == null) return;
+
+        // Ako PANIC klikne pre nego što se auto marker kreira
+        if (carMarker == null || carMarker.getPosition() == null) {
+            toast("Car position not ready yet");
+            return;
+        }
+
+        stopCarMarkerPanicAnim(); // u slučaju da je već u toku
+
+        panicAnimating = true;
+
+        // Par "frame"-ova (nemoj 60 frame-ova jer ćeš stalno praviti bitmap)
+        int[] sizesDp = new int[] { CAR_ICON_W_DP, 52, 64, 52, CAR_ICON_W_DP };
+
+        final List<Drawable> frames = new ArrayList<>();
+        for (int s : sizesDp) {
+            Drawable d = getScaledDrawable(R.drawable.ic_car_marker, s, s);
+            frames.add(d);
+        }
+
+        createOrResetPanicRing(); // ako nećeš krug, obriši ovaj poziv
+
+        final long TICK = 90L;   // brzina animacije
+        final int LOOPS = 5;     // koliko puta da “pulsira”
+
+        panicAnim = new Runnable() {
+            int i = 0;
+            int total = frames.size() * LOOPS;
+
+            @Override
+            public void run() {
+                if (!panicAnimating || !isAdded() || map == null || carMarker == null) {
+                    stopCarMarkerPanicAnim();
+                    return;
+                }
+
+                int frameIdx = i % frames.size();
+                Drawable icon = frames.get(frameIdx);
+                if (icon != null) carMarker.setIcon(icon);
+
+                // mali "shake" / rotacija
+                float rot = (frameIdx % 2 == 0) ? 10f : -10f;
+                try { carMarker.setRotation(rot); } catch (Exception ignore) {}
+
+                // update krug (opciono)
+                updatePanicRing(i, total);
+
+                map.invalidate();
+
+                i++;
+                if (i <= total) {
+                    panicUi.postDelayed(this, TICK);
+                } else {
+                    stopCarMarkerPanicAnim();
+                }
+            }
+        };
+
+        panicUi.post(panicAnim);
+    }
+
+    private void stopCarMarkerPanicAnim() {
+        panicAnimating = false;
+        if (panicAnim != null) panicUi.removeCallbacks(panicAnim);
+        panicAnim = null;
+
+        // vrati ikonu na normalnu veličinu
+        if (carMarker != null) {
+            Drawable normal = getScaledDrawable(R.drawable.ic_car_marker, 60, 60);
+            if (normal != null) carMarker.setIcon(normal);
+            try { carMarker.setRotation(0f); } catch (Exception ignore) {}
+        }
+
+        // skloni krug
+        if (map != null && panicRing != null) {
+            map.getOverlays().remove(panicRing);
+            panicRing = null;
+            map.invalidate();
+        }
+    }
+
+// ====== PANIC RING (opciono) ======
+
+    private void createOrResetPanicRing() {
+        if (map == null || carMarker == null || carMarker.getPosition() == null) return;
+
+        if (panicRing != null) {
+            map.getOverlays().remove(panicRing);
+        }
+
+        panicRing = new org.osmdroid.views.overlay.Polygon(map);
+        panicRing.setStrokeWidth(6f);
+
+        // boje: crveni stroke + poluprovidan fill
+        panicRing.setStrokeColor(android.graphics.Color.argb(220, 255, 0, 0));
+        panicRing.setFillColor(android.graphics.Color.argb(60, 255, 0, 0));
+
+        map.getOverlays().add(panicRing);
+    }
+
+    private void updatePanicRing(int step, int totalSteps) {
+        if (panicRing == null || carMarker == null || carMarker.getPosition() == null) return;
+
+        GeoPoint c = carMarker.getPosition();
+
+        // radius ide od 20m do 140m
+        double t = (double) step / Math.max(1, totalSteps);
+        double radius = 20.0 + 120.0 * t;
+
+        // fade out (stroke i fill)
+        int strokeA = (int) (220 * (1.0 - t));
+        int fillA = (int) (60 * (1.0 - t));
+        strokeA = Math.max(0, Math.min(255, strokeA));
+        fillA = Math.max(0, Math.min(255, fillA));
+
+        panicRing.setStrokeColor(android.graphics.Color.argb(strokeA, 255, 0, 0));
+        panicRing.setFillColor(android.graphics.Color.argb(fillA, 255, 0, 0));
+
+        panicRing.setPoints(buildCirclePoints(c, radius, 36));
+    }
+
+    private List<GeoPoint> buildCirclePoints(GeoPoint center, double radiusMeters, int points) {
+        // aproksimacija: dovoljno dobra za “glow”
+        final double R = 6378137.0; // Earth radius in meters
+        double lat = Math.toRadians(center.getLatitude());
+        double lon = Math.toRadians(center.getLongitude());
+        double d = radiusMeters / R;
+
+        List<GeoPoint> out = new ArrayList<>(points + 1);
+        for (int i = 0; i <= points; i++) {
+            double brng = 2.0 * Math.PI * i / points;
+            double lat2 = Math.asin(Math.sin(lat) * Math.cos(d) + Math.cos(lat) * Math.sin(d) * Math.cos(brng));
+            double lon2 = lon + Math.atan2(Math.sin(brng) * Math.sin(d) * Math.cos(lat),
+                    Math.cos(d) - Math.sin(lat) * Math.sin(lat2));
+
+            out.add(new GeoPoint(Math.toDegrees(lat2), Math.toDegrees(lon2)));
+        }
+        return out;
+    }
+
+    // ====== PANIC ======
+
+    private void sendPanic() {
+        if (!isAdded()) return;
+        if (currentRideId == null) {
+            toast("RideId missing");
+            return;
+        }
+
+        btnPanic.setEnabled(false);
+
+        driverApi.panicRide(currentRideId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> res) {
+                if (!isAdded()) return;
+
+                if (res.isSuccessful()) {
+                    toast("Panic sent");
+                    // opcionalno: ostavi disabled da ne spamuje
+                    btnPanic.setEnabled(false);
+                } else {
+                    btnPanic.setEnabled(true);
+                    toast("Panic error: " + res.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                if (!isAdded()) return;
+                btnPanic.setEnabled(true);
+                if (call.isCanceled()) return;
+                toast("Network: " + t.getMessage());
+                android.util.Log.e("TRACK", "panic failure", t);
+            }
+        });
     }
 }
