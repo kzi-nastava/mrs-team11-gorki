@@ -21,6 +21,8 @@ import ftn.mrs_team11_gorki.adapter.DriverRideHistoryRecyclerAdapter;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.view.AdminPanicViewModel;
 import ftn.mrs_team11_gorki.view.SimpleItemSelectedListener;
+import ftn.mrs_team11_gorki.BuildConfig;
+import ftn.mrs_team11_gorki.service.WsManager;
 
 public class AdminPanicListFragment extends Fragment {
 
@@ -163,5 +165,67 @@ public class AdminPanicListFragment extends Fragment {
     private int dpToPx(int dp) {
         float density = requireContext().getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
+    }
+
+    private WsManager ws;
+    private android.media.MediaPlayer player;
+
+    @Override
+    public void onStart() {
+        if (!isAdded()) return;
+        super.onStart();
+
+        TokenStorage ts = new TokenStorage(requireContext());
+        String token = ts.getToken();
+
+        ws = new WsManager("ws://" + BuildConfig.API_HOST + ":" + BuildConfig.API_PORT + "/ws-native");
+
+        ws.connect(token, new WsManager.PanicListener() {
+            @Override
+            public void onPanicEvent(String payloadJson) {
+                requireActivity().runOnUiThread(() -> {
+                    playSound();
+                    showAlert(payloadJson); // ili samo "PANIC!" ako ne parsiraš JSON
+                    loadNow(); // refresh lista
+                });
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                requireActivity().runOnUiThread(() ->
+                        txtStatus.setText("WS error: " + t.getMessage())
+                );
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (ws != null) ws.disconnect();
+        ws = null;
+        stopSound();
+    }
+
+    private void playSound() {
+        stopSound();
+        player = android.media.MediaPlayer.create(requireContext(), R.raw.panic_sound);
+        player.start();
+    }
+
+    private void stopSound() {
+        if (player != null) {
+            try { player.stop(); } catch (Exception ignored) {}
+            try { player.release(); } catch (Exception ignored) {}
+            player = null;
+        }
+    }
+
+    private void showAlert(String payloadJson) {
+        new android.app.AlertDialog.Builder(requireContext())
+                .setTitle("PANIC")
+                .setMessage("Stigao je panic event!\n\n")
+                .setPositiveButton("OK", null)
+                .show();
     }
 }
