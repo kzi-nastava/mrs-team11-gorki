@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import ftn.mrs_team11_gorki.BuildConfig;
 import ftn.mrs_team11_gorki.R;
 import ftn.mrs_team11_gorki.adapter.AdminMessageAdapter;
 import ftn.mrs_team11_gorki.adapter.SupportInboxAdapter;
@@ -47,7 +48,7 @@ public class AdminSupportFragment extends Fragment {
     // WS: admin listens here (backend must broadcast)
     private static final String SUBSCRIBE_DEST = "/topic/support";
     private static final String SEND_DEST = "/app/support.adminSend";
-    private static final String WS_URL = "ws://192.168.1.84:8080/ws/websocket"; // ili /ws-native ako dodaš
+    private static final String WS_URL = "ws://" + BuildConfig.API_HOST + ":" + BuildConfig.API_PORT + "/ws/websocket"; // ili /ws-native ako dodaš
 
     private AdminSupportService adminSupportService;
 

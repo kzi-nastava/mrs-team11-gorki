@@ -42,7 +42,6 @@ export class RidesListAdmin {
       next: (rides) => {
         this.rides = [...rides];
         this.allRides = [...rides];
-        this.filteredRides = [...rides];
       },
       error: (err) => console.error('Ne mogu da dohvatim admin voznje', err),
     });
@@ -69,7 +68,7 @@ export class RidesListAdmin {
   sortRides(event: {criteria: string, order: 'asc' | 'desc'}) {
   const { criteria, order } = event;
 
-  this.filteredRides.sort((a, b) => {
+  this.rides.sort((a, b) => {
     let comparison = 0;
 
     switch(criteria) {
@@ -90,13 +89,14 @@ export class RidesListAdmin {
 
   filterByDate(event: { from: Date | null; to: Date | null }) {
     const { from, to } = event;
-    this.filteredRides = [...this.allRides]; // reset
+    this.rides = [...this.allRides]; // reset
 
     if (!from && !to) {
+      this.filteredRides = [...this.rides];
       return;
     }
 
-    this.filteredRides = this.filteredRides.filter(ride => {
+    this.rides = this.rides.filter(ride => {
       const rideDate = new Date(ride.date);
 
       if (from && to) return rideDate >= from && rideDate <= to;
@@ -111,13 +111,13 @@ export class RidesListAdmin {
     const { personEmail } = event;
 
     if (!personEmail) {
-      this.filteredRides = [...this.allRides];
+      this.rides = [...this.allRides];
       return;
     }
 
     const email = personEmail.toLowerCase();
 
-    this.filteredRides = this.allRides.filter(ride =>
+    this.rides = this.allRides.filter(ride =>
       ride.passengers?.some(p => (p.email ?? '').toLowerCase() === email)
     );
   }
