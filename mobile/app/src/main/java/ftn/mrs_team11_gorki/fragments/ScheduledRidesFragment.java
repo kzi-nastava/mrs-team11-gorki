@@ -1,5 +1,6 @@
 package ftn.mrs_team11_gorki.fragments;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +83,8 @@ public class ScheduledRidesFragment extends Fragment {
         adapter.setOnCancelClickListener(ride -> openCancelDialog(ride.getRideId()));
         rvHistory.setAdapter(adapter);
         rvHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvHistory.setClipToPadding(false);
+        rvHistory.addItemDecoration(new SpaceItemDecoration(dpToPx(10), dpToPx(12)));
 
         txtStatus = view.findViewById(R.id.txtStatus);
         spinnerSort = view.findViewById(R.id.spinnerSort);
@@ -232,5 +235,33 @@ public class ScheduledRidesFragment extends Fragment {
             }
         } catch (Exception ignored) {}
         return "PASSENGER";
+    }
+
+    private static class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+        private final int vSpace;
+        private final int hSpace;
+
+        SpaceItemDecoration(int verticalSpacePx, int horizontalSpacePx) {
+            this.vSpace = verticalSpacePx;
+            this.hSpace = horizontalSpacePx;
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                                   @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            int pos = parent.getChildAdapterPosition(view);
+
+            outRect.left = hSpace;
+            outRect.right = hSpace;
+
+            // spacing izmedju itema
+            outRect.top = (pos == 0) ? vSpace : vSpace / 2;
+            outRect.bottom = vSpace / 2;
+        }
+    }
+
+    private int dpToPx(int dp) {
+        float density = requireContext().getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
     }
 }

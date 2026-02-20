@@ -3,6 +3,7 @@ package ftn.mrs_team11_gorki.fragments;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -82,6 +83,8 @@ public class AdminHistoryFragment extends Fragment {
 
         RecyclerView rvHistory = view.findViewById(R.id.rvHistory);
         rvHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvHistory.setClipToPadding(false);
+        rvHistory.addItemDecoration(new SpaceItemDecoration(dpToPx(10), dpToPx(12)));
 
         AdminRideHistoryRecyclerAdapter adapter = new AdminRideHistoryRecyclerAdapter();
         rvHistory.setAdapter(adapter);
@@ -366,5 +369,28 @@ public class AdminHistoryFragment extends Fragment {
     private int dpToPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
+    }
+
+    private static class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+        private final int vSpace;
+        private final int hSpace;
+
+        SpaceItemDecoration(int verticalSpacePx, int horizontalSpacePx) {
+            this.vSpace = verticalSpacePx;
+            this.hSpace = horizontalSpacePx;
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                                   @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            int pos = parent.getChildAdapterPosition(view);
+
+            outRect.left = hSpace;
+            outRect.right = hSpace;
+
+            // spacing izmedju itema
+            outRect.top = (pos == 0) ? vSpace : vSpace / 2;
+            outRect.bottom = vSpace / 2;
+        }
     }
 }
