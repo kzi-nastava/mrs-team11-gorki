@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,7 @@ import ftn.mrs_team11_gorki.R;
 import ftn.mrs_team11_gorki.adapter.AdminRideHistoryRecyclerAdapter;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.dto.LocationDTO;
+import ftn.mrs_team11_gorki.dto.UserOptionDTO;
 import ftn.mrs_team11_gorki.service.OsrmService;
 import ftn.mrs_team11_gorki.view.AdminHistoryViewModel;
 import ftn.mrs_team11_gorki.view.SimpleItemSelectedListener;
@@ -43,13 +45,12 @@ public class AdminHistoryFragment extends Fragment {
     private EditText edtToDate;
     private Button btnRefresh;
     private Button btnClear;
-
     private AdminHistoryViewModel viewModel;
+    private OsrmService osrmService;
 
     public AdminHistoryFragment() {
         super(R.layout.fragment_history_admin);
     }
-    private OsrmService osrmService;
 
     private void openDatePicker(boolean isFrom) {
         java.util.Calendar cal = java.util.Calendar.getInstance();
@@ -126,9 +127,107 @@ public class AdminHistoryFragment extends Fragment {
             if (Boolean.TRUE.equals(loading)) txtStatus.setText("Učitavam...");
         });
 
+        AutoCompleteTextView actUser = view.findViewById(R.id.actUser);
+
+        ArrayAdapter<String> userAdapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                new ArrayList<>()
+        );
+        actUser.setAdapter(userAdapter);
+
+        final List<UserOptionDTO>[] last = new List[]{ new ArrayList<>() };
+
+        viewModel.getUserSuggestions().observe(getViewLifecycleOwner(), users -> {
+            last[0] = (users == null) ? new ArrayList<>() : users;
+
+            List<String> labels = new ArrayList<>();
+            for (UserOptionDTO u : last[0]) {
+                labels.add(u.firstName() + " " + u.lastName() + " (" + u.email() + ")");
+            }
+
+            userAdapter.clear();
+            userAdapter.addAll(labels);
+            userAdapter.notifyDataSetChanged();
+
+            if (!labels.isEmpty()) actUser.showDropDown();
+        });
+
+        android.os.Handler h = new android.os.Handler(android.os.Looper.getMainLooper());
+        final Runnable[] pending = new Runnable[1];
+
+        actUser.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                String q = s.toString();
+
+                if (q.trim().isEmpty()) {
+                    viewModel.setSelectedUser(null); // tek kad obriše sve
+                }
+
+                if (pending[0] != null) h.removeCallbacks(pending[0]);
+
+                pending[0] = () -> viewModel.setUserQuery(q);
+                h.postDelayed(pending[0], 250);
+            }
+        });
+
+        actUser.setOnItemClickListener((parent, v, pos, id) -> {
+            if (pos >= 0 && pos < last[0].size()) {
+                UserOptionDTO u = last[0].get(pos);
+                viewModel.setSelectedUser(u);
+                actUser.setText(u.firstName() + " " + u.lastName() + " (" + u.email() + ")", false);
+            }
+        });
+
+        TokenStorage ts = new TokenStorage(requireContext());
+        String token = ts.getToken();
+        viewModel.loadAllUsers(token);
+
         spinnerSort.setOnItemSelectedListener(new SimpleItemSelectedListener(viewModel::setSortOption));
 
-        btnRefresh.setOnClickListener(v -> loadNow());
+        btnRefresh.setOnClickListener(v -> {
+            String typed = actUser.getText() == null ? "" : actUser.getText().toString().trim();
+
+            // 1) pokušaj prvo iz last suggestions (dropdown lista)
+            UserOptionDTO chosen = null;
+            String typedEmail = extractEmail(typed).toLowerCase();
+
+            if (!typedEmail.isEmpty()) {
+                for (UserOptionDTO u : last[0]) {
+                    if (u != null && u.email() != null && u.email().equalsIgnoreCase(typedEmail)) {
+                        chosen = u;
+                        break;
+                    }
+                }
+            }
+
+            // 2) ako nije u suggestions, traži u svim userima koje si učitao
+            if (chosen == null && !typedEmail.isEmpty()) {
+                for (UserOptionDTO u : viewModel.getAllUsersValue()) {
+                    if (u != null && u.email() != null && u.email().equalsIgnoreCase(typedEmail)) {
+                        chosen = u;
+                        break;
+                    }
+                }
+            }
+
+            // 3) setuj selekciju (ili očisti ako je prazno)
+            if (chosen != null) {
+                viewModel.setSelectedUser(chosen); // setuje selectedUserEmail i refiltrira
+            } else if (typed.isEmpty()) {
+                viewModel.setSelectedUser(null);
+            } else {
+                // nije pronađen match -> nema filtriranja po useru
+                viewModel.setSelectedUser(null);
+            }
+
+            // 4) sad tek primeni date filter sa servera
+            loadNow();
+        });
 
         btnClear.setOnClickListener(v -> {
             edtFromDate.setText("");
@@ -138,6 +237,9 @@ public class AdminHistoryFragment extends Fragment {
             viewModel.setFromDate(null);
             viewModel.setToDate(null);
             viewModel.setSortOption(0);
+            actUser.setText("", false);
+            viewModel.setSelectedUser(null);
+            viewModel.setUserQuery("");
 
             loadNow();
         });
@@ -392,5 +494,13 @@ public class AdminHistoryFragment extends Fragment {
             outRect.top = (pos == 0) ? vSpace : vSpace / 2;
             outRect.bottom = vSpace / 2;
         }
+    }
+
+    private static String extractEmail(String s) {
+        if (s == null) return "";
+        int l = s.indexOf('(');
+        int r = s.indexOf(')');
+        if (l >= 0 && r > l) return s.substring(l + 1, r).trim();
+        return s.trim();
     }
 }
