@@ -2,7 +2,6 @@ package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
 
 public class CreateRatingDTO {
 	

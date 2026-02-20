@@ -119,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
                 navController.navigate(R.id.rideInProgressPassengerFragment);
                 return true;
             }else if(role.equals("DRIVER")){
-                //navController.navigate(R.id.rideInProgressDriver);
-                //            return true;
+                navController.navigate(R.id.rideInProgressDriverFragment);
+                            return true;
             }
         }
 

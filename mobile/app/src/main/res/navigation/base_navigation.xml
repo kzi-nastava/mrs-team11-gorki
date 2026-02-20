@@ -3,20 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/base_navigation"
+    android:label="Home"
     app:startDestination="@id/unuserHomeFragment">
     <fragment
         android:id="@+id/unuserHomeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.UnuserHomeFragment"
+        android:label="Home"
         tools:layout="@layout/fragment_unuser_home" />
     <fragment
         android:id="@+id/passengerRegistrationFragment"
         android:name="ftn.mrs_team11_gorki.fragments.PassengerRegisterFragment"
         app:popUpTo="@id/unuserHomeFragment"
+        android:label="Registration"
         tools:layout="@layout/fragment_passenger_registration" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.HomeFragment"
         app:popUpTo="@id/unuserHomeFragment"
+        android:label="Home"
         tools:layout="@layout/fragment_home"/>
     <!--app:popUpToInclusive="true"-->
     <fragment
@@ -105,7 +109,13 @@
         android:id="@+id/rideInProgressPassengerFragment"
         android:name="ftn.mrs_team11_gorki.fragments.RideInProgressPassengerFragment"
         app:popUpTo="@id/homeFragment"
-        android:label="Track Ride" />
+        android:label="Track Ride (User)" />
+
+    <fragment
+        android:id="@+id/rideInProgressDriverFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.RideInProgressDriverFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Track Ride (Driver)" />
 
     <fragment
         android:id="@+id/end_ride_driver"
