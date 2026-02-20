@@ -14,7 +14,6 @@ public class CreateRatingDTO {
 	@DecimalMax(value = "5.0", message = "Vehicle rating must be at most 5")
 	private double vehicleRating;
 	
-	@NotNull(message = "Comment is required")
     private String comment;
     
 	public CreateRatingDTO() {
