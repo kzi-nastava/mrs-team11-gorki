@@ -16,6 +16,7 @@ import retrofit2.http.Header;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.POST;
 
 public interface DriverService {
 
@@ -41,5 +42,16 @@ public interface DriverService {
     @PUT("/api/drivers/{driverId}/rides/finish")
     Call<FinishedRideDTO> finishRide(@Path("driverId") long driverId,
                                      @Body FinishRideDTO dto);
+
+    // STOP RIDE (Driver)
+    @POST("api/rides/{id}/stop")
+    Call<ftn.mrs_team11_gorki.dto.RideStopResponseDTO> stopRide(
+            @Path("id") long rideId,
+            @Body ftn.mrs_team11_gorki.dto.RideStopRequestDTO dto
+    );
+
+    // PANIC
+    @PUT("api/rides/{id}/panic")
+    Call<Void> panicRide(@Path("id") long rideId);
 
 }
