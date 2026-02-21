@@ -134,5 +134,10 @@
         app:popUpTo="@id/homeFragment"
         android:label="End current ride"/>
 
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.ResetPasswordFragment"
+        android:label="Reset Password" />
+
 
 </navigation>

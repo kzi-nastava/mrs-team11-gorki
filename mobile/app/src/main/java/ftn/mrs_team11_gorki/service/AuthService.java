@@ -1,5 +1,6 @@
 package ftn.mrs_team11_gorki.service;
 import ftn.mrs_team11_gorki.dto.PassengerRegisterRequest;
+import ftn.mrs_team11_gorki.dto.ResetPasswordDTO;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -16,4 +17,7 @@ public interface AuthService {
 
     @POST("api/auth/forgot-password")
     Call<Void> forgotPassword(@Query("email") String email);
+
+    @POST("api/auth/reset-password")
+    Call<Void> resetPassword(@Body ResetPasswordDTO body);
 }

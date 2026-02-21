@@ -1,6 +1,8 @@
 package ftn.mrs_team11_gorki.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         if (icon != null) {
             icon.setTint(getColor(R.color.white));
         }
+
+        handleResetLink(getIntent());
     }
 
     @Override
@@ -245,5 +249,27 @@ public class MainActivity extends AppCompatActivity {
 
         Drawable icon = binding.toolbar.getNavigationIcon();
         if (icon != null) icon.setTint(getColor(R.color.white));
+    }
+
+    private void handleResetLink(Intent intent) {
+        Uri data = intent.getData();
+        if (data == null) return;
+
+        String path = data.getPath();
+        if (!"/api/auth/reset".equals(path)) return;
+
+        String token = data.getQueryParameter("token");
+        if (token == null || token.isEmpty()) return;
+
+        Bundle b = new Bundle();
+        b.putString("resetToken", token);
+        navController.navigate(R.id.resetPasswordFragment, b);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleResetLink(intent);
     }
 }

@@ -110,8 +110,9 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendResetLinkToFixedEmail(String resetToken, String email) {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
-        String link = "http://localhost:4200/reset?token=" + resetToken;
+        String link = "http://localhost:8080/api/auth/reset?token=" + resetToken;
         //Za mobilne: localhost se menja u IP adresu racunara npr.
+        // (omoguciti u Settings->Apps->mrs-team11-Gorki-Projekat->Set as default->Open supported links na true i u Supported web addresses ip adresa na true)
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
