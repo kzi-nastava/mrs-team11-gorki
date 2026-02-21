@@ -57,7 +57,7 @@
         android:id="@+id/nav_passenger_ride_history"
         android:name="ftn.mrs_team11_gorki.fragments.PassengerHistoryFragment"
         app:popUpTo="@id/homeFragment"
-        android:label="Ride history (Passenger)"
+        android:label="Ride history (User)"
         tools:layout="@layout/fragment_history_passenger"/>
     <fragment
         android:id="@+id/nav_admin_panic_list"
@@ -73,12 +73,6 @@
         tools:layout="@layout/fragment_scheduled_rides" />
     <fragment
         android:id="@+id/nav_passenger_scheduled_rides"
-        android:name="ftn.mrs_team11_gorki.fragments.ScheduledRidesFragment"
-        app:popUpTo="@id/homeFragment"
-        android:label="Scheduled rides"
-        tools:layout="@layout/fragment_scheduled_rides" />
-    <fragment
-        android:id="@+id/nav_admin_scheduled_rides"
         android:name="ftn.mrs_team11_gorki.fragments.ScheduledRidesFragment"
         app:popUpTo="@id/homeFragment"
         android:label="Scheduled rides"
