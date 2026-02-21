@@ -21,12 +21,14 @@
         android:name="ftn.mrs_team11_gorki.fragments.PassengerHomeFragment"
         app:popUpTo="@id/unuserHomeFragment"
         app:popUpToInclusive="true"
+        android:label="021Ride"
         tools:layout="@layout/fragment_passenger_home"/>
     <fragment
         android:id="@+id/driverHomeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.DriverHomeFragment"
         app:popUpTo="@id/unuserHomeFragment"
         app:popUpToInclusive="true"
+        android:label="021Ride"
         tools:layout="@layout/fragment_driver_home"/>
     <fragment
         android:id="@+id/homeFragment"
@@ -39,11 +41,13 @@
         android:id="@+id/rideOrderingFragment"
         android:name="ftn.mrs_team11_gorki.fragments.RideOrderingFragment"
         app:popUpTo="@id/passengerHomeFragment"
+        android:label="Ride ordering"
         tools:layout="@layout/fragment_ride_ordering"/>
     <fragment
         android:id="@+id/favouriteRouteFragment"
         android:name="ftn.mrs_team11_gorki.fragments.FavouriteRouteFragment"
         app:popUpTo="@id/rideOrderingFragment"
+        android:label="Favourite routes"
         tools:layout="@layout/fragment_favourite_route"/>
     <fragment
         android:id="@+id/profileInfoFragment"
@@ -63,6 +67,18 @@
         app:popUpTo="@id/homeFragment"
         android:label="Vehicle info"
         tools:layout="@layout/fragment_vehicle_info"/>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.ReportFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Report for past rides"
+        tools:layout="@layout/fragment_report"/>
+    <fragment
+        android:id="@+id/reportAdminFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.ReportAdminFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Report for past rides"
+        tools:layout="@layout/fragment_report_admin"/>
     <fragment
         android:id="@+id/nav_driver_ride_history"
         android:name="ftn.mrs_team11_gorki.fragments.HistoryFragment"

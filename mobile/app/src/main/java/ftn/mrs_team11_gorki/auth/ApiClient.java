@@ -5,8 +5,10 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import ftn.mrs_team11_gorki.adapter.LocalDateAdapter;
 import ftn.mrs_team11_gorki.adapter.LocalDateTimeAdapter;
 import ftn.mrs_team11_gorki.BuildConfig;
 import okhttp3.OkHttpClient;
@@ -33,6 +35,7 @@ public class ApiClient {
         if (retrofitAuth == null) {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                     .setLenient()
                     .create();
 
@@ -58,6 +61,7 @@ public class ApiClient {
         if (retrofitPublic == null) {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                     .setLenient()
                     .create();
 
