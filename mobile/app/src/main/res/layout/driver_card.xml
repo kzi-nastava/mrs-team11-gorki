@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     style="@style/cardStyle">
     <TextView
         android:id="@+id/txtTitle"
@@ -54,7 +55,7 @@
         android:layout_height="wrap_content"
         android:text="@string/startingTime"
         style="@style/cardLabel"
-        android:fontFamily="SofiaSansCondensed"/>
+        android:fontFamily="@font/sofia_sans_condensed_regular"/>
 
     <TextView
         android:id="@+id/txtEndingTime"
@@ -62,7 +63,7 @@
         android:layout_height="wrap_content"
         android:text="@string/endingTime"
         style="@style/cardLabel"
-        android:fontFamily="SofiaSansCondensed"/>
+        android:fontFamily="@font/sofia_sans_condensed_regular"/>
 
     <TextView
         android:id="@+id/txtStartingPoint"
@@ -70,7 +71,7 @@
         android:layout_height="wrap_content"
         android:text="@string/startingPoint"
         style="@style/cardLabel"
-        android:fontFamily="SofiaSansCondensed"/>
+        android:fontFamily="@font/sofia_sans_condensed_regular"/>
 
     <TextView
         android:id="@+id/txtDestination"
@@ -78,7 +79,7 @@
         android:layout_height="wrap_content"
         android:text="@string/destination"
         style="@style/cardLabel"
-        android:fontFamily="SofiaSansCondensed"/>
+        android:fontFamily="@font/sofia_sans_condensed_regular"/>
 
     <View
         android:layout_width="320dp"
@@ -92,7 +93,7 @@
         android:layout_height="wrap_content"
         android:text="@string/price"
         style="@style/cardLabel"
-        android:fontFamily="SofiaSansCondensed"/>
+        android:fontFamily="@font/sofia_sans_condensed_regular"/>
 
     <TextView
         android:id="@+id/txtCancelled"
@@ -100,7 +101,7 @@
         android:layout_height="wrap_content"
         android:text="@string/cancelled"
         style="@style/cardLabel"
-        android:fontFamily="SofiaSansCondensed"/>
+        android:fontFamily="@font/sofia_sans_condensed_regular"/>
 
     <TextView
         android:id="@+id/txtPanic"
@@ -108,7 +109,7 @@
         android:layout_height="wrap_content"
         android:text="@string/panicActivated"
         style="@style/cardLabel"
-        android:fontFamily="SofiaSansCondensed"/>
+        android:fontFamily="@font/sofia_sans_condensed_regular"/>
 
     <Button
         android:id="@+id/btnMoreInfo"
@@ -116,6 +117,6 @@
         android:layout_height="48dp"
         android:text="@string/moreInfo"
         style="@style/cardButton"
-        android:fontFamily="SofiaSansCondensed"/>
+        android:fontFamily="@font/sofia_sans_condensed_regular"/>
 
 </LinearLayout>

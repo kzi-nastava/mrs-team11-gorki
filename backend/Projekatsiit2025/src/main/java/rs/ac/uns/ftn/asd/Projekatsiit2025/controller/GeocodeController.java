@@ -20,7 +20,7 @@ public class GeocodeController {
     public Map<String, Double> geocode(@RequestParam String q) {
 
         @SuppressWarnings("unchecked")
-		List<Map> response = webClient.get()
+                List<Map<String, Object>> response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/search")
                         .queryParam("q", q)
@@ -35,7 +35,7 @@ public class GeocodeController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Address not found");
         }
 
-        Map first = response.get(0);
+        Map<String, Object> first = response.get(0);
 
         double lat = Double.parseDouble(first.get("lat").toString());
         double lon = Double.parseDouble(first.get("lon").toString());

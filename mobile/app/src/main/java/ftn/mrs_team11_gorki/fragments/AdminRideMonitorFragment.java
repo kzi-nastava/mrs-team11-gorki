@@ -178,7 +178,7 @@ public class AdminRideMonitorFragment extends Fragment {
         tvDriverVehicle.setText(vehicleText);
 
         double activity = d.activityLast24h;
-        tvDriverActivity.setText("Activity (last 24h): " + activity);
+        tvDriverActivity.setText("Activity (last 24h): " + activity+" hours");
     }
 
     @SuppressLint("SetTextI18n")
@@ -190,13 +190,12 @@ public class AdminRideMonitorFragment extends Fragment {
             chipStatus.setText(safe(dto.ride.getStatus()));
 
             tvTimes.setText(
-                    "Scheduled: " + safe(dto.ride.getScheduledTime().toString()) +
                             "\nStart: " + safe(dto.ride.getStartingTime().toString()) +
                             "\nEnd: " + safe(dto.ride.getEndingTime().toString())
             );
 
-            tvPrice.setText("Price: " + (dto.ride.getPrice() != null ? dto.ride.getPrice() : 0));
-            tvPanic.setText("Panic: " + (dto.ride.getPanicActivated() != null && dto.ride.getPanicActivated() ? "YES" : "NO"));
+            tvPrice.setText("Price: " + (dto.ride.getPrice() != null ? dto.ride.getPrice() : 0) + " RSD");
+            tvPanic.setText("Panic: " + (dto.ride.getPanicActivated() != null && dto.ride.getPanicActivated() ? "ACTIVATED" : "NOT ACTIVATED"));
 
             // route
             if (dto.ride.getRoute() != null) {
@@ -213,7 +212,7 @@ public class AdminRideMonitorFragment extends Fragment {
                 tvEnd.setText("End: " + endAddr);
 
                 double dist = dto.ride.getRoute().getDistance();
-                tvDistanceEta.setText("Distance: " + dist + " km" + "\nETA: ");
+                tvDistanceEta.setText(String.format("Distance: %.2f km", dist));
             }
         }
 
@@ -228,6 +227,7 @@ public class AdminRideMonitorFragment extends Fragment {
     private String safe(String s) {
         return s == null ? "-" : s;
     }
+
 
     private void toast(String msg) {
         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();

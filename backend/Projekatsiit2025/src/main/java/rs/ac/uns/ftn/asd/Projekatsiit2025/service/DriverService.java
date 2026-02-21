@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.CreateDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.CreatedDriverDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.location.LocationDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.CreatedVehicleDTO;

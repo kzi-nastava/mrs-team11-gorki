@@ -1,5 +1,6 @@
 package ftn.mrs_team11_gorki.fragments;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,8 @@ import ftn.mrs_team11_gorki.adapter.DriverRideHistoryRecyclerAdapter;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.view.AdminPanicViewModel;
 import ftn.mrs_team11_gorki.view.SimpleItemSelectedListener;
+import ftn.mrs_team11_gorki.BuildConfig;
+import ftn.mrs_team11_gorki.service.WsManager;
 
 public class AdminPanicListFragment extends Fragment {
 
@@ -72,6 +75,8 @@ public class AdminPanicListFragment extends Fragment {
         adapter = new DriverRideHistoryRecyclerAdapter();
         rvHistory.setAdapter(adapter);
         rvHistory.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvHistory.setClipToPadding(false);
+        rvHistory.addItemDecoration(new SpaceItemDecoration(dpToPx(10), dpToPx(12)));
 
         txtStatus = view.findViewById(R.id.txtStatus);
         spinnerSort = view.findViewById(R.id.spinnerSort);
@@ -132,5 +137,95 @@ public class AdminPanicListFragment extends Fragment {
         TokenStorage ts = new TokenStorage(requireContext());
         String token = ts.getToken();
         viewModel.loadPanicRides(token, viewModel.getFromDate(), viewModel.getToDate());
+    }
+
+    private static class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+        private final int vSpace;
+        private final int hSpace;
+
+        SpaceItemDecoration(int verticalSpacePx, int horizontalSpacePx) {
+            this.vSpace = verticalSpacePx;
+            this.hSpace = horizontalSpacePx;
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                                   @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            int pos = parent.getChildAdapterPosition(view);
+
+            outRect.left = hSpace;
+            outRect.right = hSpace;
+
+            // spacing izmedju itema
+            outRect.top = (pos == 0) ? vSpace : vSpace / 2;
+            outRect.bottom = vSpace / 2;
+        }
+    }
+
+    private int dpToPx(int dp) {
+        float density = requireContext().getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
+    }
+
+    private WsManager ws;
+    private android.media.MediaPlayer player;
+
+    @Override
+    public void onStart() {
+        if (!isAdded()) return;
+        super.onStart();
+
+        TokenStorage ts = new TokenStorage(requireContext());
+        String token = ts.getToken();
+
+        ws = new WsManager("ws://" + BuildConfig.API_HOST + ":" + BuildConfig.API_PORT + "/ws-native");
+
+        ws.connect(token, new WsManager.PanicListener() {
+            @Override
+            public void onPanicEvent(String payloadJson) {
+                requireActivity().runOnUiThread(() -> {
+                    playSound();
+                    showAlert(payloadJson); // ili samo "PANIC!" ako ne parsiraš JSON
+                    loadNow(); // refresh lista
+                });
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                requireActivity().runOnUiThread(() ->
+                        txtStatus.setText("WS error: " + t.getMessage())
+                );
+            }
+        });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (ws != null) ws.disconnect();
+        ws = null;
+        stopSound();
+    }
+
+    private void playSound() {
+        stopSound();
+        player = android.media.MediaPlayer.create(requireContext(), R.raw.panic_sound);
+        player.start();
+    }
+
+    private void stopSound() {
+        if (player != null) {
+            try { player.stop(); } catch (Exception ignored) {}
+            try { player.release(); } catch (Exception ignored) {}
+            player = null;
+        }
+    }
+
+    private void showAlert(String payloadJson) {
+        new android.app.AlertDialog.Builder(requireContext())
+                .setTitle("PANIC")
+                .setMessage("Stigao je panic event!\n\n")
+                .setPositiveButton("OK", null)
+                .show();
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/passengerHomeFragment"
         android:title="Home"
         android:icon="@drawable/ic_home"/>
 
@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/nav_passenger_ride_history"
-        android:title="Ride history (Passenger)"
+        android:title="Ride history (User)"
         android:icon="@drawable/ic_ride_history"/>
 
     <item
@@ -29,4 +29,9 @@
         android:id="@+id/nav_logout"
         android:title="Logout"
         android:icon="@drawable/ic_logout"/>
+
+    <item
+        android:id="@+id/favouriteRouteFragment"
+        android:title="Favourite Routes"
+        android:icon="@drawable/ic_vehicle"/>
 </menu>

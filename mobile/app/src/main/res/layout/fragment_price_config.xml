@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:fontFamily="SofiaSansCondensed"
+                    android:fontFamily="@font/sofia_sans_condensed_regular"
                     style="@style/formInputPCFirst" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:fontFamily="SofiaSansCondensed"
+                    android:fontFamily="@font/sofia_sans_condensed_regular"
                     style="@style/formInputPC" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:fontFamily="SofiaSansCondensed"
+                    android:fontFamily="@font/sofia_sans_condensed_regular"
                     style="@style/formInputPC" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
-                    android:fontFamily="SofiaSansCondensed"
+                    android:fontFamily="@font/sofia_sans_condensed_regular"
                     style="@style/formInputPC" />
             </com.google.android.material.textfield.TextInputLayout>
 
