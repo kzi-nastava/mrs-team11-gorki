@@ -21,7 +21,27 @@
     <string name="moreInfo">MORE INFO</string>
     <string name="four">4</string>
     <string name="cancelRide">CANCEL</string>
-
+    <string name="startAddress">Start address</string>
+    <string name="endAddress">End address</string>
+    <string name="stoppingPoints">Stopping points</string>
+    <string name="linkedPassengers">Linked passengers</string>
+    <string name="scheduledTime">Scheduled time</string>
+    <string name="scheduledTimeHint">e.g. 2026–02–28T18:15</string>
+    <string name="link">Link</string>
+    <string name="add">Add</string>
+    <string name="orderYourRide">Order your ride</string>
+    <string name="nextScheduledRide">Next scheduled ride</string>
+    <string name="startRide">Start ride</string>
+    <string name="viewPassengers">View passengers</string>
+    <string name="nextScheduledRidePrice">Price - </string>
+    <string name="linkedPassengersLabel">Enter linked passenger email</string>
+    <string name="stoppingPointLabel">Enter stopping point</string>
+    <string name="noScheduledRides">There are currently no scheduled rides</string>
+    <string name="orderingFavourites">Select route to order from favourites</string>
+    <string name="stoppingPointsCard">• Stopping points:</string>
+    <string name="removeFromFav">REMOVE FROM FAVOURITES</string>
+    <string name="choose">CHOOSE</string>
+    <string name="routeCardTitle">Route No. </string>
 
     <string name="navbarMenuText">Menu</string>
     <string name="personalInfoText">Personal info</string>
@@ -47,6 +67,7 @@
     <string name="licensePlate">License plate</string>
     <string name="numberOfSeats">Number of seats</string>
     <string name="type">Type</string>
+    <string name="vehicleType">Vehicle type</string>
     <string name="babyTransport">Baby transport</string>
     <string name="petFriendly">Pet friendly</string>
     <string name="modelFIll">Ford Focus</string>

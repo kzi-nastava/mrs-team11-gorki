@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/container_bg">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/formStyleInScroll">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/question"
+            style="@style/formTitle" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/purple" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/chooseButton"
+            android:text="@string/orderingFavourites"
+            style="@style/formLabel" />
+
+        <Button
+            android:id="@+id/chooseButton"
+            android:layout_width="320dp"
+            android:layout_height="48dp"
+            android:text="@string/choseCriteria"
+            android:layout_marginVertical="8dp"
+            style="@style/orderingFormSmallButton" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="8dp"
+            android:background="@color/purple" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/startAddressInput"
+            android:text="@string/startAddress"
+            style="@style/formLabel"/>
+
+        <EditText
+            android:id="@+id/startAddressInput"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:inputType="text"
+            android:autofillHints="none"
+            style="@style/formInput" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:labelFor="@id/addStoppingPointsButton"
+                android:text="@string/stoppingPoints"
+                style="@style/formLabel"/>
+
+            <Button
+                android:id="@+id/addStoppingPointsButton"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:text="@string/add"
+                style="@style/orderingFormSmallButton" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/endAddressInput"
+            android:text="@string/endAddress"
+            style="@style/formLabel"/>
+
+        <EditText
+            android:id="@+id/endAddressInput"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:inputType="text"
+            android:autofillHints="none"
+            style="@style/formInput" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:labelFor="@id/linkOtherPassengersButton"
+                android:text="@string/linkedPassengers"
+                style="@style/formLabel"/>
+
+            <Button
+                android:id="@+id/linkOtherPassengersButton"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:text="@string/link"
+                style="@style/orderingFormSmallButton" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/scheduledTime"
+            style="@style/formLabel"/>
+
+        <EditText
+            android:id="@+id/scheduledTimeInput"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:inputType="text"
+            android:autofillHints="none"
+            android:hint="@string/scheduledTimeHint"
+            style="@style/formInput" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/vehicleTypeDropdown"
+            android:text="@string/vehicleType"
+            style="@style/formLabel"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/choseCriteria"
+            style="@style/formDropdownLayout">
+
+            <AutoCompleteTextView
+                android:id="@+id/vehicleTypeDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/babyTransport"
+            style="@style/formLabel"/>
+
+        <RadioGroup
+            android:id="@+id/babyTransport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/yesBabyTransport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yes"
+                style="@style/formRadioButton"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/noBabyTransport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no"
+                android:checked="true"
+                style="@style/formRadioButton"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/petFriendly"
+            style="@style/formLabel"/>
+
+        <RadioGroup
+            android:id="@+id/petFriendly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/yesPetFriendly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yes"
+                style="@style/formRadioButton"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/noPetFriendly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no"
+                android:checked="true"
+                style="@style/formRadioButton"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/orderButton"
+            android:layout_width="320dp"
+            android:layout_height="48dp"
+            android:text="@string/orderText"
+            style="@style/formButton" />
+
+    </LinearLayout>
+</ScrollView>

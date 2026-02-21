@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 
 import java.time.LocalDateTime;
 
+import ftn.mrs_team11_gorki.adapter.LocalDateTimeAdapter;
 import ftn.mrs_team11_gorki.BuildConfig;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -30,6 +31,12 @@ public class ApiClient {
     public static Retrofit getRetrofit(Context context) {
 
         if (retrofitAuth == null) {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                    .setLenient()
+                    .create();
+
+            TokenStorage tokenStorage = new TokenStorage(context.getApplicationContext());
 
             // Token storage za JWT
             TokenStorage tokenStorage =
@@ -53,6 +60,10 @@ public class ApiClient {
     public static Retrofit getPublicRetrofit() {
 
         if (retrofitPublic == null) {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                    .setLenient()
+                    .create();
 
             OkHttpClient okHttp = new OkHttpClient.Builder().build();
 
