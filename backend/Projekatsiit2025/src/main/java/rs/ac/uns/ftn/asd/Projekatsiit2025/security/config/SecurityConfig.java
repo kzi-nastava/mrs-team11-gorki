@@ -65,7 +65,7 @@ public class SecurityConfig {
                     "/v3/api-docs/**"
                 ).permitAll()
             .requestMatchers("/api/auth/reset-password").permitAll()
-            
+            .requestMatchers("/api/auth/activate/driver/mobile").permitAll()
             .anyRequest().authenticated()
       )
       .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

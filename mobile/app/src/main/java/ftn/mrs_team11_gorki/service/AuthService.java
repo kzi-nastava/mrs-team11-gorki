@@ -1,4 +1,5 @@
 package ftn.mrs_team11_gorki.service;
+import ftn.mrs_team11_gorki.dto.ActivateDriverDTO;
 import ftn.mrs_team11_gorki.dto.PassengerRegisterRequest;
 import ftn.mrs_team11_gorki.dto.ResetPasswordDTO;
 import retrofit2.Call;
@@ -20,4 +21,8 @@ public interface AuthService {
 
     @POST("api/auth/reset-password")
     Call<Void> resetPassword(@Body ResetPasswordDTO body);
+
+    @POST("api/auth/activate/driver")
+    Call<Void> activateDriver(@Body ActivateDriverDTO body);
+
 }

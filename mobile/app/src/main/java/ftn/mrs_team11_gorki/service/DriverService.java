@@ -1,5 +1,6 @@
 package ftn.mrs_team11_gorki.service;
 
+import ftn.mrs_team11_gorki.dto.CreateDriverDTO;
 import ftn.mrs_team11_gorki.dto.DriverRideHistoryDTO;
 
 import java.util.List;
@@ -53,5 +54,8 @@ public interface DriverService {
     // PANIC
     @PUT("api/rides/{id}/panic")
     Call<Void> panicRide(@Path("id") long rideId);
+
+    @POST("api/drivers")
+    Call<Void> register(@Body CreateDriverDTO body);
 
 }

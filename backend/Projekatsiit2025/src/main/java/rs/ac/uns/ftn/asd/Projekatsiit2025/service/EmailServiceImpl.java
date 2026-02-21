@@ -138,4 +138,19 @@ public class EmailServiceImpl implements EmailService {
         d.setMsgBody("Ride finished successfully.\nDetails: " + link);
         sendSimpleMail(d);
     }
+    
+    public void sendDriverActivationMobileDeepLink(String activationToken) {
+        String fixedEmail = "mrs.team11.gorki@gmail.com";
+
+        // Ovo je LINK KOJI ANDROID APP PRESRECE (deep link)
+        String link = "http://192.168.1.84:8080/api/auth/activate/driver/mobile?token=" + activationToken;
+        
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(fixedEmail);
+        mailMessage.setSubject("Driver account activation (mobile)");
+        mailMessage.setText("Open this link on your phone to set your password and activate your account (valid 24h):\n" + link);
+
+        javaMailSender.send(mailMessage);
+    }
 }

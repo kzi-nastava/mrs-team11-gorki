@@ -165,5 +165,13 @@
         android:name="ftn.mrs_team11_gorki.fragments.ResetPasswordFragment"
         android:label="Reset Password" />
 
+    <fragment
+        android:id="@+id/driverRegistrationFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.DriverRegistrationFragment"
+        android:label="Register driver" />
 
+    <fragment
+        android:id="@+id/driverPasswordActivationFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.DriverPasswordActivationFragment"
+        android:label="Activate driver" />
 </navigation>
