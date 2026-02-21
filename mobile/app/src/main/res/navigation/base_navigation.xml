@@ -41,6 +41,11 @@
         app:popUpTo="@id/passengerHomeFragment"
         tools:layout="@layout/fragment_ride_ordering"/>
     <fragment
+        android:id="@+id/favouriteRouteFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.FavouriteRouteFragment"
+        app:popUpTo="@id/rideOrderingFragment"
+        tools:layout="@layout/fragment_favourite_route"/>
+    <fragment
         android:id="@+id/profileInfoFragment"
         android:name="ftn.mrs_team11_gorki.fragments.ProfileInfoFragment"
         app:popUpTo="@id/homeFragment"

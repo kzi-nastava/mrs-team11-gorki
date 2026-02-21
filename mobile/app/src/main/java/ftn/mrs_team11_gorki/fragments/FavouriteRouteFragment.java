@@ -1,66 +1,115 @@
 package ftn.mrs_team11_gorki.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+
+import java.util.ArrayList;
 
 import ftn.mrs_team11_gorki.R;
+import ftn.mrs_team11_gorki.adapter.FavouriteRoutesAdapter;
+import ftn.mrs_team11_gorki.auth.ApiClient;
+import ftn.mrs_team11_gorki.auth.TokenStorage;
+import ftn.mrs_team11_gorki.dto.GetRouteDTO;
+import ftn.mrs_team11_gorki.dto.LocationDTO;
+import ftn.mrs_team11_gorki.service.PassengerService;
+import ftn.mrs_team11_gorki.view.FavouriteRouteViewModel;
+import ftn.mrs_team11_gorki.view.FavouriteRouteViewModelFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FavouriteRouteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FavouriteRouteFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FavouriteRouteViewModel viewModel;
+    private FavouriteRoutesAdapter adapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ListView favouriteRoutesList;
 
-    public FavouriteRouteFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FavouriteRouteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FavouriteRouteFragment newInstance(String param1, String param2) {
-        FavouriteRouteFragment fragment = new FavouriteRouteFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_favourite_route, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        favouriteRoutesList = view.findViewById(R.id.favouriteRoutesList);
+
+        // Service + ViewModel
+        PassengerService passengerService = ApiClient.getRetrofit(requireContext()).create(PassengerService.class);
+        FavouriteRouteViewModelFactory factory = new FavouriteRouteViewModelFactory(passengerService);
+        viewModel = new ViewModelProvider(this, factory).get(FavouriteRouteViewModel.class);
+
+        TokenStorage ts = new TokenStorage(requireContext());
+        long passengerId = ts.getUserId(); // <-- prilagodi ako se kod tebe drugačije zove
+
+        adapter = new FavouriteRoutesAdapter(requireContext(), new FavouriteRoutesAdapter.Listener() {
+            @Override
+            public void onRemoveClicked(@NonNull GetRouteDTO route) {
+                if (route.getId() == null) return;
+                viewModel.deleteFavouriteRoute(passengerId, route.getId());
+            }
+
+            @Override
+            public void onChooseClicked(@NonNull GetRouteDTO route) {
+                navigateToRideOrdering(route);
+            }
+        });
+
+        favouriteRoutesList.setAdapter(adapter);
+
+        // Observers
+        viewModel.getRoutes().observe(getViewLifecycleOwner(), routes -> {
+            if (routes != null) adapter.submitList(routes);
+        });
+
+        viewModel.getError().observe(getViewLifecycleOwner(), err -> {
+            if (err != null) Toast.makeText(requireContext(), err, Toast.LENGTH_SHORT).show();
+        });
+
+        // Load data
+        viewModel.loadFavouriteRoutes(passengerId);
+    }
+
+    private void navigateToRideOrdering(@NonNull GetRouteDTO route) {
+        // Extract addresses
+        String start = "";
+        String end = "";
+        ArrayList<String> stops = new ArrayList<>();
+
+        if (route.getLocations() != null && !route.getLocations().isEmpty()) {
+            start = safeAddress(route.getLocations().get(0));
+            end = safeAddress(route.getLocations().get(route.getLocations().size() - 1));
+
+            for (int i = 1; i < route.getLocations().size() - 1; i++) {
+                stops.add(safeAddress(route.getLocations().get(i)));
+            }
+        }
+
+        Bundle args = new Bundle();
+        args.putString("startAddress", start);
+        args.putString("endAddress", end);
+        args.putStringArrayList("stoppingPoints", stops);
+
+        NavController nav = NavHostFragment.findNavController(this);
+
+        nav.navigate(R.id.rideOrderingFragment, args);
+    }
+
+    private String safeAddress(LocationDTO loc) {
+        if (loc == null) return "";
+        String a = loc.getAddress();
+        return a != null ? a : "";
     }
 }

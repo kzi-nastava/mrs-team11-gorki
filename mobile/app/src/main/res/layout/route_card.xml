@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:layout_marginVertical="8dp"
     style="@style/cardStyle">
 
     <TextView
@@ -53,7 +53,6 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/txtPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stoppingPointsCard"
@@ -62,7 +61,9 @@
         <ListView
             android:id="@+id/stoppingPointsList"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:dividerHeight="0dp"
             tools:listitem="@layout/stopping_point_label" />
 
     </LinearLayout>
