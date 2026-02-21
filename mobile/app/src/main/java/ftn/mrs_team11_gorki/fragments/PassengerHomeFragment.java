@@ -48,7 +48,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AlertDialog;
 
+import android.widget.EditText;
+import ftn.mrs_team11_gorki.auth.TokenStorage;
+import ftn.mrs_team11_gorki.dto.GetUserDTO;
+import ftn.mrs_team11_gorki.service.UserService;
+
+
 public class PassengerHomeFragment extends Fragment {
+    private UserService userService;
+    private Long userId;
+    private boolean isBlocked = false;
+
     private MapView map;
     private VehicleService vehicleService;
     private final List<Marker> vehicleMarkers = new ArrayList<>();
@@ -66,6 +76,13 @@ public class PassengerHomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        TokenStorage ts = new TokenStorage(requireContext());
+        userId = ts.getUserId();
+
+        userService = ApiClient
+                .getRetrofit(requireContext())
+                .create(UserService.class);
 
         ratingService = ApiClient
                 .getRetrofit(requireContext())
@@ -130,8 +147,13 @@ public class PassengerHomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadPassengerBlockedInfo();
         checkPendingRatingAndShowModal();
         binding.rideOrderingView.orderYourRide.setOnClickListener(v -> {
+            if (isBlocked) {
+                Toast.makeText(requireContext(), "Your account is blocked.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             NavController navController = Navigation.findNavController(view);
             navController.navigate(R.id.rideOrderingFragment);
         });
@@ -359,6 +381,57 @@ public class PassengerHomeFragment extends Fragment {
     private void toast(String msg) {
         if (!isAdded()) return;
         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void loadPassengerBlockedInfo() {
+        if (userService == null || userId == null) return;
+
+        userService.getUser(userId).enqueue(new Callback<GetUserDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<GetUserDTO> call,
+                                   @NonNull Response<GetUserDTO> response) {
+                if (!response.isSuccessful() || response.body() == null) return;
+
+                GetUserDTO u = response.body();
+
+                // prilagodi ako ti je boolean getter drugačiji
+                boolean blocked = Boolean.TRUE.equals(u.getBlocked());
+                String role = u.getRole();
+
+                boolean isPassenger = "PASSENGER".equals(role) || "ROLE_PASSENGER".equals(role);
+
+                if (blocked && isPassenger) {
+                    isBlocked = true;
+
+                    // pokaži banner
+                    binding.blockInfoPassenger.getRoot().setVisibility(View.VISIBLE);
+
+                    // upiši razlog
+                    EditText et = binding.blockInfoPassenger.getRoot().findViewById(R.id.etBlockReason);
+                    String reason = u.getBlockReason() != null ? u.getBlockReason() : "";
+                    et.setText(reason);
+
+                    // (opciono) zabrani ordering dok je blokiran
+                    binding.rideOrderingView.getRoot().setAlpha(0.6f);
+                    binding.rideOrderingView.getRoot().setEnabled(false);
+                    // bonus: da i klikovi na decu ne prolaze
+                    binding.rideOrderingView.getRoot().setClickable(false);
+
+                } else {
+                    isBlocked = false;
+                    binding.blockInfoPassenger.getRoot().setVisibility(View.GONE);
+
+                    binding.rideOrderingView.getRoot().setAlpha(1f);
+                    binding.rideOrderingView.getRoot().setEnabled(true);
+                    binding.rideOrderingView.getRoot().setClickable(true);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GetUserDTO> call, @NonNull Throwable t) {
+                // ignoriši ili toast po želji
+            }
+        });
     }
 
 

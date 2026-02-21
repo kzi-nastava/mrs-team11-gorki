@@ -1,6 +1,5 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -10,7 +9,6 @@ public class BlockUserDTO {
 	@NotNull
 	private Long id;
 
-	@NotBlank(message = "Block reason is required")
 	@Size(max = 500, message = "Block reason too long")
 	private String blockReason;
 

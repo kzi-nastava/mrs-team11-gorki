@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="25dp"
+    app:cardCornerRadius="25dp"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/txtBlockedHeader1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your account is currently "
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#362D88" />
+
+            <TextView
+                android:id="@+id/txtBlockedHeader2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="blocked"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FF0000" />
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/someDivider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#362D88" />
+
+        <!-- Reason row -->
+        <LinearLayout
+            android:id="@+id/theReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/txtReasonLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reason:"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#362D88" />
+
+            <!-- Spacer (da bude space-between) -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Readonly "textarea" -->
+            <EditText
+                android:id="@+id/etBlockReason"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:minHeight="90dp"
+                android:background="#ECECEC"
+                android:textColor="#8480AA"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:enabled="false"
+                android:focusable="false"
+                android:clickable="false"
+                android:longClickable="false"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
