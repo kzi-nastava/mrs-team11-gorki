@@ -35,6 +35,13 @@ import ftn.mrs_team11_gorki.service.OsrmService;
 import ftn.mrs_team11_gorki.view.PassengerHistoryViewModel;
 import ftn.mrs_team11_gorki.view.SimpleItemSelectedListener;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.SystemClock;
+
 public class PassengerHistoryFragment extends Fragment {
 
     private TextView txtStatus;
@@ -50,6 +57,17 @@ public class PassengerHistoryFragment extends Fragment {
         super(R.layout.fragment_history_passenger);
     }
     private OsrmService osrmService;
+
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private SensorEventListener shakeListener;
+
+    private boolean shakeSortDesc = true;       // true -> sort desc, false -> asc
+    private long lastShakeMs = 0L;
+
+    // parametri za shake
+    private static final float SHAKE_THRESHOLD_G = 2.3f;   // probaj 2.0 - 2.7
+    private static final long SHAKE_COOLDOWN_MS = 700;     // debounce
 
     private void openDatePicker(boolean isFrom) {
         java.util.Calendar cal = java.util.Calendar.getInstance();
@@ -182,6 +200,54 @@ public class PassengerHistoryFragment extends Fragment {
                 .build();
 
         osrmService = osrmRetrofit.create(OsrmService.class);
+
+        sensorManager = (SensorManager) requireContext().getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager != null) {
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
+
+        shakeListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event == null || event.values == null || event.values.length < 3) return;
+
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+
+                // normalizacija na G (zemljina gravitacija)
+                float gX = x / SensorManager.GRAVITY_EARTH;
+                float gY = y / SensorManager.GRAVITY_EARTH;
+                float gZ = z / SensorManager.GRAVITY_EARTH;
+
+                float gForce = (float) Math.sqrt(gX * gX + gY * gY + gZ * gZ);
+
+                if (gForce > SHAKE_THRESHOLD_G) {
+                    long now = SystemClock.elapsedRealtime();
+                    if (now - lastShakeMs < SHAKE_COOLDOWN_MS) return;
+                    lastShakeMs = now;
+
+                    // toggle sort po datumu
+                    shakeSortDesc = !shakeSortDesc;
+
+                    // Bitno: viewModel je već napravljen u onViewCreated,
+                    // a listener radi tek kad se registruje u onResume,
+                    // tako da je ovde viewModel već spreman.
+                    if (viewModel != null) {
+                        int newSort = shakeSortDesc ? 1 : 2; // 1=start desc, 2=start asc (po tvom ViewModel-u)
+                        viewModel.setSortOption(newSort);
+
+                        // opciono: da i UI spinner prati promenu
+                        if (spinnerSort != null) spinnerSort.setSelection(newSort);
+                    }
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                // no-op
+            }
+        };
     }
 
     private void openRideMapDialog(ftn.mrs_team11_gorki.dto.DriverRideHistoryDTO ride) {
@@ -392,6 +458,22 @@ public class PassengerHistoryFragment extends Fragment {
             // spacing izmedju itema
             outRect.top = (pos == 0) ? vSpace : vSpace / 2;
             outRect.bottom = vSpace / 2;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (sensorManager != null && accelerometer != null && shakeListener != null) {
+            sensorManager.registerListener(shakeListener, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (sensorManager != null && shakeListener != null) {
+            sensorManager.unregisterListener(shakeListener);
         }
     }
 }
