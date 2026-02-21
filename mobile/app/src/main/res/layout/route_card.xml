@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    style="@style/cardStyle">
+
+    <TextView
+        android:id="@+id/routeNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/routeCardTitle"
+        style="@style/formTitle" />
+
+    <Button
+        android:id="@+id/btnRemoveFromFav"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/removeFromFav"
+        style="@style/orderingFormSmallButton"/>
+
+    <View
+        android:layout_width="320dp"
+        android:layout_height="2dp"
+        android:layout_marginVertical="16dp"
+        android:background="@color/purple" />
+
+    <TextView
+        android:id="@+id/startingPointLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/startingPoint"
+        style="@style/cardLabel"/>
+
+    <TextView
+        android:id="@+id/destinationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/destination"
+        style="@style/cardLabel"/>
+
+    <View
+        android:layout_width="320dp"
+        android:layout_height="2dp"
+        android:layout_marginVertical="16dp"
+        android:background="@color/purple" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/txtPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stoppingPointsCard"
+            style="@style/cardLabel"/>
+
+        <ListView
+            android:id="@+id/stoppingPointsList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/stopping_point_label" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnChoose"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/choseCriteria"
+        style="@style/cardButton"/>
+
+</LinearLayout>

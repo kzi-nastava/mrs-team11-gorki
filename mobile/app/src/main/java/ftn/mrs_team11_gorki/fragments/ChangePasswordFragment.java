@@ -9,21 +9,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import ftn.mrs_team11_gorki.auth.ApiClient;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.databinding.FragmentChangePasswordBinding;
 import ftn.mrs_team11_gorki.dto.UpdatePasswordDTO;
-import ftn.mrs_team11_gorki.dto.UpdatedUserDTO;
 import ftn.mrs_team11_gorki.service.UserService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import ftn.mrs_team11_gorki.view.ChangePasswordViewModel;
+import ftn.mrs_team11_gorki.view.ChangePasswordViewModelFactory;
 
 public class ChangePasswordFragment extends Fragment {
 
     private FragmentChangePasswordBinding binding;
-    private UserService userService;
+    private ChangePasswordViewModel viewModel;
+
     private Long userId;
 
     @Override
@@ -42,9 +42,34 @@ public class ChangePasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userService = ApiClient.getRetrofit(requireContext()).create(UserService.class);
+        UserService userService = ApiClient.getRetrofit(requireContext()).create(UserService.class);
+
+        ChangePasswordViewModelFactory factory = new ChangePasswordViewModelFactory(userService, userId);
+        viewModel = new ViewModelProvider(this, factory).get(ChangePasswordViewModel.class);
+
+        observeViewModel();
 
         binding.changePassword.doneButton.setOnClickListener(v -> onDoneClicked());
+    }
+
+    private void observeViewModel() {
+        viewModel.isLoading().observe(getViewLifecycleOwner(), loading ->
+                setLoading(Boolean.TRUE.equals(loading))
+        );
+
+        viewModel.getMessage().observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null) {
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                viewModel.clearMessage();
+            }
+        });
+
+        viewModel.getSuccess().observe(getViewLifecycleOwner(), success -> {
+            if (Boolean.TRUE.equals(success)) {
+                clearInputs();
+                viewModel.clearSuccess();
+            }
+        });
     }
 
     private void onDoneClicked() {
@@ -66,34 +91,13 @@ public class ChangePasswordFragment extends Fragment {
         dto.setNewPassword(newPass);
         dto.setNewPasswordConfirmed(confirm);
 
-        setLoading(true);
+        viewModel.changePassword(dto);
+    }
 
-        userService.changePassword(userId, dto).enqueue(new Callback<UpdatedUserDTO>() {
-            @Override
-            public void onResponse(@NonNull Call<UpdatedUserDTO> call,
-                                   @NonNull Response<UpdatedUserDTO> response) {
-                setLoading(false);
-
-                if (response.isSuccessful()) {
-                    Toast.makeText(requireContext(), "Lozinka promenjena", Toast.LENGTH_SHORT).show();
-                    binding.changePassword.currentPasswordInput.setText("");
-                    binding.changePassword.newPasswordInput.setText("");
-                    binding.changePassword.confirmNewPasswordInput.setText("");
-                } else {
-                    Toast.makeText(requireContext(),
-                            "Neuspešno (" + response.code() + ")",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UpdatedUserDTO> call, @NonNull Throwable t) {
-                setLoading(false);
-                Toast.makeText(requireContext(),
-                        "Greška: " + t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void clearInputs() {
+        binding.changePassword.currentPasswordInput.setText("");
+        binding.changePassword.newPasswordInput.setText("");
+        binding.changePassword.confirmNewPasswordInput.setText("");
     }
 
     private void setLoading(boolean loading) {
