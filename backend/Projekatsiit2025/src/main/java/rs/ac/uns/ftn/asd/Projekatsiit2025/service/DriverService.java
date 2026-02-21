@@ -64,7 +64,8 @@ public class DriverService {
         driver.setVehicle(vehicle);
         Driver saved = driverRepository.save(driver);
         String activationToken = util.generateActivationToken(driver.getEmail());
-        emailService.sendActivationLinkToDriverMail(activationToken);
+        //emailService.sendActivationLinkToDriverMail(activationToken);
+        emailService.sendDriverActivationMobileDeepLink(activationToken);
         return mapToCreatedDriverDTO(saved);
 	}
 	

@@ -17,4 +17,6 @@ public interface EmailService {
     void sendRideAcceptedMail(String to, String link);
     
     public void sendRideFinishedMail(String to, String link);
+
+    public void sendDriverActivationMobileDeepLink(String activationToken);
 }

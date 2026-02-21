@@ -266,10 +266,27 @@ public class MainActivity extends AppCompatActivity {
         navController.navigate(R.id.resetPasswordFragment, b);
     }
 
+
+    private void handleDriverActivateLinl(Intent intent){
+        Uri data = intent.getData();
+        if (data == null) return;
+
+        String path = data.getPath();
+        if (!"/api/auth/activate/driver/mobile".equals(path)) return;
+
+        String token = data.getQueryParameter("token");
+        if (token == null || token.isEmpty()) return;
+
+        Bundle b = new Bundle();
+        b.putString("activateDriverToken", token);
+        navController.navigate(R.id.driverPasswordActivationFragment, b);
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         handleResetLink(intent);
+        handleDriverActivateLinl(intent);
     }
 }

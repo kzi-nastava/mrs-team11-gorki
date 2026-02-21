@@ -241,9 +241,15 @@ public class AuthController {
 	    return ResponseEntity.ok().build();
 	}
 
+	@GetMapping("/activate/driver/mobile")
+	public ResponseEntity<Void> activateDriverMobileRedirect(@RequestParam String token) {
+	    // Fallback ako se link ne otvori u aplikaciji (npr. desktop browser):
+	    URI uri = URI.create("http://localhost:4200/activate-driver?token=" + token);
+	    return ResponseEntity.status(HttpStatus.FOUND).location(uri).build();
+	}
+	
 	@GetMapping("/reset")
 	public ResponseEntity<Void> resetRedirect(@RequestParam String token) {
-		// Angular reset ruta (zameni IP po potrebi)
 		URI uri = URI.create("http://localhost:4200/reset?token=" + token);
 		return ResponseEntity.status(HttpStatus.FOUND).location(uri).build();
 	}
