@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import ftn.mrs_team11_gorki.R;
 import ftn.mrs_team11_gorki.auth.ApiClient;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.databinding.FragmentProfileInfoBinding;
@@ -85,6 +87,24 @@ public class ProfileInfoFragment extends Fragment {
         binding.profileInfo.homeAddressInput.setText(u.getAddress());
         binding.profileInfo.phoneInput.setText(String.valueOf(u.getPhoneNumber()));
         binding.profileInfo.emailInput.setText(u.getEmail());
+
+        // ==== Blocked banner (only if blocked AND DRIVER) ====
+        boolean isBlocked = Boolean.TRUE.equals(u.getBlocked()); // ili u.isBlocked() ako ti je boolean
+        String role = u.getRole(); // očekujem "DRIVER" ili "ROLE_DRIVER"
+
+        boolean isDriver = "DRIVER".equals(role) || "ROLE_DRIVER".equals(role);
+
+        if (isBlocked && isDriver) {
+            binding.blockInfoDriver.getRoot().setVisibility(View.VISIBLE);
+
+            // etBlockReason je unutar included layout-a
+            EditText etReason = binding.blockInfoDriver.getRoot().findViewById(R.id.etBlockReason);
+            String reason = u.getBlockReason() != null ? u.getBlockReason() : "";
+            etReason.setText(reason);
+        } else {
+            binding.blockInfoDriver.getRoot().setVisibility(View.GONE);
+        }
+
     }
 
     @Nullable

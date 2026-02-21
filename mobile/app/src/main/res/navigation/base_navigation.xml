@@ -80,6 +80,11 @@
         android:label="Report for past rides"
         tools:layout="@layout/fragment_report_admin"/>
     <fragment
+        android:id="@+id/adminBlockUserFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.AdminBlockUserFragment"
+        android:label="Block users"
+        tools:layout="@layout/fragment_admin_block_user" />
+    <fragment
         android:id="@+id/nav_driver_ride_history"
         android:name="ftn.mrs_team11_gorki.fragments.HistoryFragment"
         app:popUpTo="@id/homeFragment"
