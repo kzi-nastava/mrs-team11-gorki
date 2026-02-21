@@ -14,11 +14,28 @@
         app:popUpTo="@id/unuserHomeFragment"
         tools:layout="@layout/fragment_passenger_registration" />
     <fragment
+        android:id="@+id/passengerHomeFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.PassengerHomeFragment"
+        app:popUpTo="@id/unuserHomeFragment"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_passenger_home"/>
+    <fragment
+        android:id="@+id/driverHomeFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.DriverHomeFragment"
+        app:popUpTo="@id/unuserHomeFragment"
+        app:popUpToInclusive="true"
+        tools:layout="@layout/fragment_driver_home"/>
+    <fragment
         android:id="@+id/homeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.HomeFragment"
         app:popUpTo="@id/unuserHomeFragment"
+        app:popUpToInclusive="true"
         tools:layout="@layout/fragment_home"/>
-    <!--app:popUpToInclusive="true"-->
+    <fragment
+        android:id="@+id/rideOrderingFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.RideOrderingFragment"
+        app:popUpTo="@id/passengerHomeFragment"
+        tools:layout="@layout/fragment_ride_ordering"/>
     <fragment
         android:id="@+id/profileInfoFragment"
         android:name="ftn.mrs_team11_gorki.fragments.ProfileInfoFragment"

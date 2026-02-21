@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
 
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.unuserHomeFragment, R.id.homeFragment
+                R.id.unuserHomeFragment, R.id.homeFragment, R.id.passengerHomeFragment, R.id.driverHomeFragment
         ).setOpenableLayout(drawer).build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

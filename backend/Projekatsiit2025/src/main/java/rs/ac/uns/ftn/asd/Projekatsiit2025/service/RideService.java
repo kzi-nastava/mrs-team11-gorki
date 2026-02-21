@@ -102,7 +102,11 @@ public class RideService {
     @Transactional
     public CreatedRideDTO createRide(CreateRideDTO dto) {
     	Ride ride = new Ride();
-    	ride.setScheduledTime(dto.getScheduledTime());
+    	if(dto.getScheduledTime() == null) {
+    		ride.setScheduledTime(LocalDateTime.now().plusMinutes(30));
+    	} else {
+    		ride.setScheduledTime(dto.getScheduledTime());
+    	}
     	Route route = new Route();
     	List<Location> locations = new ArrayList<Location>();
     	for(LocationDTO loc : dto.getRoute().getLocations()) {
@@ -122,7 +126,7 @@ public class RideService {
     	ride.setLinkedPassengers(linkedPassengers);
     	Passenger creator = passengerRepository.findById(dto.getCreatorId()).get();
     	ride.setCreator(creator);
-    	ride.setDriver(driverAssignmentService.selectDriver(dto.getBabyTransport(), dto.getPetFriendly(), VehicleType.valueOf(dto.getVehicleType()), route, dto.getScheduledTime()));
+    	ride.setDriver(driverAssignmentService.selectDriver(dto.getBabyTransport(), dto.getPetFriendly(), VehicleType.valueOf(dto.getVehicleType()), route, ride.getScheduledTime()));
     	if(ride.getDriver() == null) {
         	//Notifikacija kreatoru voznje
         	String content3 = "Ride ordering failed, no eligible drivers.";
