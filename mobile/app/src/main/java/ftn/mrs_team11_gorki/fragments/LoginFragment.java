@@ -96,8 +96,13 @@ public class LoginFragment extends DialogFragment {
                             NavOptions navOptions = new NavOptions.Builder()
                                     .setPopUpTo(R.id.unuserHomeFragment, true)
                                     .build();
-
-                            navController.navigate(R.id.homeFragment, null, navOptions);
+                            if(res.getRole().equals("PASSENGER")){
+                                navController.navigate(R.id.passengerHomeFragment, null, navOptions);
+                            } else if(res.getRole().equals("DRIVER")){
+                                navController.navigate(R.id.driverHomeFragment, null, navOptions);
+                            } else{
+                                navController.navigate(R.id.homeFragment, null, navOptions);
+                            }
                         } else {
                             Toast.makeText(requireContext(),
                                     "Invalid credentials!",
