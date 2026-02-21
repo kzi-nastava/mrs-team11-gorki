@@ -1,5 +1,8 @@
 package ftn.mrs_team11_gorki.service;
 
+import java.util.Collection;
+
+import ftn.mrs_team11_gorki.dto.BlockUserDTO;
 import ftn.mrs_team11_gorki.dto.GetUserDTO;
 import ftn.mrs_team11_gorki.dto.UpdatePasswordDTO;
 import ftn.mrs_team11_gorki.dto.UpdateUserDTO;
@@ -19,4 +22,10 @@ public interface UserService {
 
     @PUT("api/users/{id}/change-password")
     Call<UpdatedUserDTO> changePassword(@Path("id") Long id, @Body UpdatePasswordDTO dto);
+
+    @GET("api/users")
+    Call<Collection<GetUserDTO>> getAllUsers();
+
+    @PUT("api/users/block")
+    Call<GetUserDTO> blockUser(@Body BlockUserDTO dto);
 }
