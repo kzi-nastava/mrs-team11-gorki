@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,19 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
         navController = Navigation.findNavController(this, R.id.fragment_nav_content_main);
 
-        appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.unuserHomeFragment, R.id.homeFragment
-        ).setOpenableLayout(drawer).build();
-
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-
         refreshAuthStateFromStorage();
+        setupAppBarForAuthState();
 
         applyDrawerMenuByRole();
-
         setupDrawerNavigationListener();
-
         updateDrawerLock();
 
         Drawable icon = binding.toolbar.getNavigationIcon();
@@ -141,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAuthChanged() {
         refreshAuthStateFromStorage();
+        setupAppBarForAuthState();
         invalidateOptionsMenu();
         applyDrawerMenuByRole();
         updateDrawerLock();
@@ -156,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         drawer.setDrawerLockMode(
                 loggedIn ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED
         );
+        binding.navigationView.setVisibility(loggedIn ? View.VISIBLE : View.GONE);
     }
 
     private void applyDrawerMenuByRole() {
@@ -211,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         new TokenStorage(this).clear();
 
         refreshAuthStateFromStorage();
+        setupAppBarForAuthState();
         invalidateOptionsMenu();
 
         applyDrawerMenuByRole();
@@ -223,5 +219,23 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         navController.navigate(R.id.unuserHomeFragment, null, navOptions);
+    }
+
+    private void setupAppBarForAuthState() {
+        if (loggedIn) {
+            appBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.unuserHomeFragment, R.id.homeFragment
+            ).setOpenableLayout(drawer).build();
+        } else {
+            // bez drawer-a => nema hamburgera (biće back strelica kad treba)
+            appBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.unuserHomeFragment
+            ).build();
+        }
+
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        Drawable icon = binding.toolbar.getNavigationIcon();
+        if (icon != null) icon.setTint(getColor(R.color.white));
     }
 }
