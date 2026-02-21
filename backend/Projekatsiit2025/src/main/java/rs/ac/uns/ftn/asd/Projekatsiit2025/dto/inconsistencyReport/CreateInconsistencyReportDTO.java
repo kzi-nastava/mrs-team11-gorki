@@ -1,10 +1,8 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.inconsistencyReport;
 
-import jakarta.validation.constraints.NotNull;
-
 public class CreateInconsistencyReportDTO {
 	    
-		@NotNull(message = "Description is required")
+		//@NotNull(message = "Description is required")
 		private String description;
 		
 		public CreateInconsistencyReportDTO() {

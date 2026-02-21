@@ -1,6 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
 }
+
+val localProps = Properties()
+val localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localPropsFile.inputStream().use { localProps.load(it) }
+}
+
+val apiScheme = localProps.getProperty("API_SCHEME") ?: "http"
+val apiHost   = localProps.getProperty("API_HOST") ?: "10.0.2.2"
+val apiPort   = localProps.getProperty("API_PORT") ?: "8080"
 
 android {
     namespace = "ftn.mrs_team11_gorki"
@@ -16,6 +28,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_SCHEME", "\"$apiScheme\"")
+        buildConfigField("String", "API_HOST", "\"$apiHost\"")
+        buildConfigField("String", "API_PORT", "\"$apiPort\"")
+        buildConfigField("String", "BASE_URL", "\"$apiScheme://$apiHost:$apiPort/\"")
     }
 
     buildTypes {
@@ -30,6 +47,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 
     compileOptions {

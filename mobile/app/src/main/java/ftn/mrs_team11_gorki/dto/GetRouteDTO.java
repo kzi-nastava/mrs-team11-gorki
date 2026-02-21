@@ -1,13 +1,12 @@
 package ftn.mrs_team11_gorki.dto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class GetRouteDTO {
     private Long id;
     private List<LocationDTO> locations;
     private double distance;
-    private LocalDateTime estimatedTime;
+    private String estimatedTime;
 
     public Long getId() {
         return id;
@@ -18,7 +17,7 @@ public class GetRouteDTO {
     public double getDistance() {
         return distance;
     }
-    public LocalDateTime getEstimatedTime() {
+    public String getEstimatedTime() {
         return estimatedTime;
     }
 }

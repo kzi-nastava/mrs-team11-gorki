@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         refreshAuthStateFromStorage();
+        setupAppBarForAuthState();
 
         applyDrawerMenuByRole();
-
         setupDrawerNavigationListener();
-
         updateDrawerLock();
 
         Drawable icon = binding.toolbar.getNavigationIcon();
@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        TokenStorage ts = new TokenStorage(this);
+        String token = ts.getToken();
+        String role=ts.getRole();
 
         if (id == R.id.nav_login) {
             new LoginFragment().show(getSupportFragmentManager(), "loginDialog");
@@ -111,6 +114,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        if (id == R.id.action_track_ride) {
+            if(role.equals("PASSENGER")) {
+                navController.navigate(R.id.rideInProgressPassengerFragment);
+                return true;
+            }else if(role.equals("DRIVER")){
+                navController.navigate(R.id.rideInProgressDriverFragment);
+                            return true;
+            }
+        }
+
+        if (id == R.id.action_notifications) {
+            new ftn.mrs_team11_gorki.fragments.NotificationInboxDialogFragment()
+                    .show(getSupportFragmentManager(), "notif_inbox");
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -122,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAuthChanged() {
         refreshAuthStateFromStorage();
+        setupAppBarForAuthState();
         invalidateOptionsMenu();
         applyDrawerMenuByRole();
         updateDrawerLock();
@@ -137,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         drawer.setDrawerLockMode(
                 loggedIn ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED
         );
+        binding.navigationView.setVisibility(loggedIn ? View.VISIBLE : View.GONE);
     }
 
     private void applyDrawerMenuByRole() {
@@ -158,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             if (menuExists(R.menu.drawer_passenger)) {
                 navView.inflateMenu(R.menu.drawer_passenger);
             } else {
-                // fallback (ako nemaš passenger)
+                // fallback (ako nemas passenger)
                 navView.inflateMenu(R.menu.drawer_driver);
             }
         }
@@ -192,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         new TokenStorage(this).clear();
 
         refreshAuthStateFromStorage();
+        setupAppBarForAuthState();
         invalidateOptionsMenu();
 
         applyDrawerMenuByRole();
@@ -204,5 +226,23 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         navController.navigate(R.id.unuserHomeFragment, null, navOptions);
+    }
+
+    private void setupAppBarForAuthState() {
+        if (loggedIn) {
+            appBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.unuserHomeFragment, R.id.homeFragment
+            ).setOpenableLayout(drawer).build();
+        } else {
+            // bez drawer-a => nema hamburgera (biće back strelica kad treba)
+            appBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.unuserHomeFragment
+            ).build();
+        }
+
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        Drawable icon = binding.toolbar.getNavigationIcon();
+        if (icon != null) icon.setTint(getColor(R.color.white));
     }
 }

@@ -731,7 +731,7 @@ public class RideService {
             Long userId,
             LocalDate from,
             LocalDate to) {
-
+        System.out.println("User id"+userId);
         LocalDateTime fromDateTime = (from != null)
                 ? from.atTime(0, 0, 1)
                 : LocalDate.of(2000, 1, 1).atStartOfDay();  // SAFE MIN
@@ -740,41 +740,23 @@ public class RideService {
                 ? to.atTime(23, 59, 59)
                 : LocalDate.of(2100, 1, 1).atStartOfDay();  // SAFE MAX
 
-        List<Ride> acceptedRides = rideRepository.findByCreator_IdAndStatusAndStartingTimeBetween(
+        List<Ride> acceptedRides = rideRepository.findByCreator_IdAndStatusAndScheduledTimeBetween(
                 userId,
                 RideStatus.ACCEPTED,
                 fromDateTime,
                 toDateTime
         );
-        
-        List<Ride> requestedRides = rideRepository.findByCreator_IdAndStatusAndStartingTimeBetween(
-                userId,
-                RideStatus.REQUESTED,
-                fromDateTime,
-                toDateTime
-        );
-        
         List<Ride> rides = new ArrayList<>(acceptedRides);
-        rides.addAll(requestedRides);
 
 
         if(rides.isEmpty()){
-            List<Ride> acceptedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
+            List<Ride> acceptedRidesDriver = rideRepository.findByDriver_IdAndStatusAndScheduledTimeBetween(
                 userId,
                 RideStatus.ACCEPTED,
                 fromDateTime,
                 toDateTime
             );
-        
-            List<Ride> requestedRidesDriver = rideRepository.findByDriverIdAndStatusAndStartingTimeBetween(
-                userId,
-                RideStatus.REQUESTED,
-                fromDateTime,
-                toDateTime
-            );
-
             rides = new ArrayList<>(acceptedRidesDriver);
-            rides.addAll(requestedRidesDriver);
         }
 
         return rides.stream().map(this::mapScheduledRideToDTO).toList();

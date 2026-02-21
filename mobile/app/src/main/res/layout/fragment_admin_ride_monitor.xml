@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/gradient_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+>
 
         <!-- SEARCH CARD -->
         <com.google.android.material.card.MaterialCardView
@@ -30,6 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ride monitor"
+                    android:fontFamily="SofiaSansCondensed"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:layout_marginBottom="10dp"/>
@@ -47,7 +50,8 @@
                         android:id="@+id/etQuery"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Ime i prezime (npr. Marko Marković)"
+                        android:hint="Enter driver full name"
+                        android:fontFamily="SofiaSansCondensed"
                         android:inputType="textPersonName"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,6 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Find driver"
+                        android:fontFamily="SofiaSansCondensed"
                         app:icon="@drawable/baseline_attribution_24"
                         app:iconPadding="8dp"/>
 
@@ -73,6 +78,7 @@
                         android:layout_weight="1"
                         android:layout_marginStart="10dp"
                         android:text="Active ride"
+                        android:fontFamily="SofiaSansCondensed"
                         app:icon="@drawable/outline_assistant_direction_24"
                         app:iconPadding="8dp"/>
                 </LinearLayout>
@@ -106,6 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Driver"
+                    android:fontFamily="SofiaSansCondensed"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:layout_marginBottom="10dp"/>
@@ -115,17 +122,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
+                    android:fontFamily="SofiaSansCondensed"
                     android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tvDriverEmail"
                     android:layout_width="match_parent"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"/>
 
                 <TextView
                     android:id="@+id/tvDriverVehicle"
                     android:layout_width="match_parent"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"/>
 
@@ -133,6 +143,7 @@
                     android:id="@+id/tvDriverActivity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_marginTop="4dp"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -165,6 +176,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Ride"
+                        android:fontFamily="SofiaSansCondensed"
                         android:textStyle="bold"
                         android:textSize="16sp"/>
 
@@ -172,6 +184,7 @@
                         android:id="@+id/chipStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="SofiaSansCondensed"
                         android:text="STATUS"/>
                 </LinearLayout>
 
@@ -179,17 +192,20 @@
                     android:id="@+id/tvTimes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_marginTop="10dp"/>
 
                 <TextView
                     android:id="@+id/tvPrice"
                     android:layout_width="match_parent"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"/>
 
                 <TextView
                     android:id="@+id/tvPanic"
                     android:layout_width="match_parent"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"/>
             </LinearLayout>
@@ -214,6 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Route"
+                    android:fontFamily="SofiaSansCondensed"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:layout_marginBottom="10dp"/>
@@ -221,24 +238,28 @@
                 <TextView
                     android:id="@+id/tvStart"
                     android:layout_width="match_parent"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/tvEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_marginTop="6dp"/>
 
                 <TextView
                     android:id="@+id/tvDistanceEta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_marginTop="10dp"/>
 
                 <TextView
                     android:id="@+id/tvCurrentLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="SofiaSansCondensed"
                     android:layout_marginTop="10dp"
                     android:textStyle="bold"/>
             </LinearLayout>

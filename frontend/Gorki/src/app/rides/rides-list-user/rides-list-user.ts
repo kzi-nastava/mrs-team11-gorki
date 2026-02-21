@@ -96,11 +96,11 @@ export class RidesListUser {
   }
 
   filterByDate(event: { from: Date | null; to: Date | null }) {
-    this.filteredRides=[...this.allRides];
+    this.rides=[...this.allRides];
     const { from, to } = event;
    
     if (!from && !to) {
-      this.filteredRides = [...this.filteredRides];
+      this.filteredRides = [...this.rides];
       return;
     }
 

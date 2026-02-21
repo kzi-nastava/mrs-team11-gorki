@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/nav_passenger_ride_history"
-        android:title="Ride history (Passenger)"
+        android:title="Ride history (User)"
         android:icon="@drawable/ic_ride_history"/>
 
     <item
