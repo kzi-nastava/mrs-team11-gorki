@@ -80,6 +80,8 @@ public class EmailServiceImpl implements EmailService {
     public void sendActivationLinkToMail(String activationToken) {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
         String link = "http://localhost:8080/api/auth/activate?token=" + activationToken;
+        //Za mobilne: localhost se menja u IP adresu racunara npr.
+
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
@@ -95,6 +97,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendActivationLinkToDriverMail(String activationToken) {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
         String link = "http://localhost:8080/api/auth/redirect?token=" + activationToken;
+        //Za mobilne: localhost se menja u IP adresu racunara npr.
       
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
@@ -108,6 +111,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendResetLinkToFixedEmail(String resetToken, String email) {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
         String link = "http://localhost:4200/reset?token=" + resetToken;
+        //Za mobilne: localhost se menja u IP adresu racunara npr.
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
