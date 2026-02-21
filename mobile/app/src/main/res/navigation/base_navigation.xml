@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/base_navigation"
-    android:label="Home"
+    android:label="021Ride"
     app:startDestination="@id/unuserHomeFragment">
     <fragment
         android:id="@+id/unuserHomeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.UnuserHomeFragment"
-        android:label="Home"
+        android:label="021Ride"
         tools:layout="@layout/fragment_unuser_home" />
     <fragment
         android:id="@+id/passengerRegistrationFragment"
@@ -20,7 +20,7 @@
         android:id="@+id/homeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.HomeFragment"
         app:popUpTo="@id/unuserHomeFragment"
-        android:label="Home"
+        android:label="021Ride"
         tools:layout="@layout/fragment_home"/>
     <!--app:popUpToInclusive="true"-->
     <fragment

@@ -106,6 +106,19 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 
     List<Ride> findAllByOrderByStartingTimeDesc();
 
+    List<Ride> findByDriver_IdAndStatusAndScheduledTimeBetween(
+            Long driverId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+
+    List<Ride> findByCreator_IdAndStatusAndScheduledTimeBetween(
+            Long creatorId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to);
+
     @Query("""
             select r from Ride r
             where r.scheduledTime is not null
