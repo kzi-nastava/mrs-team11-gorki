@@ -123,7 +123,6 @@
         <item name="android:padding">16dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/container_bg</item>
-        <item name="android:layout_marginVertical">16dp</item>
     </style>
     <style name="cardLabel">
         <item name="android:textSize">18sp</item>

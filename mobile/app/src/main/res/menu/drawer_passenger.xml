@@ -30,8 +30,4 @@
         android:title="Logout"
         android:icon="@drawable/ic_logout"/>
 
-    <item
-        android:id="@+id/favouriteRouteFragment"
-        android:title="Favourite Routes"
-        android:icon="@drawable/ic_vehicle"/>
 </menu>

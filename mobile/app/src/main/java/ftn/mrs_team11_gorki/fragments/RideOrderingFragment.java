@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class RideOrderingFragment extends Fragment {
     private EditText scheduledTimeInput;
     private AutoCompleteTextView vehicleTypeDropdown;
     private RadioButton yesBabyTransport, yesPetFriendly;
-    private Button addStoppingPointsButton, linkOtherPassengersButton, orderButton;
+    private Button chooseFromFavButton, addStoppingPointsButton, linkOtherPassengersButton, orderButton;
 
     // stopping_points_form views
     private EditText firstStop, secondStop, thirdStop, fourthStop, fifthStop, sixthStop;
@@ -79,10 +80,32 @@ public class RideOrderingFragment extends Fragment {
         bindStoppingPointsForm(binding.stoppingPointsForm.getRoot());
         bindLinkedPassengersForm(binding.linkedPassengersForm.getRoot());
 
+        applyRouteArgsIfPresent();
+
         // Vehicle type dropdown (prilagodi vrednosti kako backend očekuje)
         String[] vehicleTypes = new String[]{"STANDARD", "LUXURY", "VAN"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, vehicleTypes);
         vehicleTypeDropdown.setAdapter(adapter);
+
+        chooseFromFavButton.setOnClickListener(v -> {
+            // (Opcionalno) prosledi trenutno popunjena polja, da se ne izgube kad se vratiš
+            Bundle args = new Bundle();
+            args.putString("startAddress", text(startAddressInput));
+            args.putString("endAddress", text(endAddressInput));
+
+            ArrayList<String> currentStops = new ArrayList<>();
+            currentStops.add(text(firstStop));
+            currentStops.add(text(secondStop));
+            currentStops.add(text(thirdStop));
+            currentStops.add(text(fourthStop));
+            currentStops.add(text(fifthStop));
+            currentStops.add(text(sixthStop));
+            args.putStringArrayList("stoppingPoints", currentStops);
+
+            // PROMENI ID na tvoj pravi favourite routes fragment u nav_graph.xml
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.favouriteRouteFragment, args);
+        });
 
         // Form switching
         addStoppingPointsButton.setOnClickListener(v -> showStoppingPointsForm());
@@ -118,6 +141,50 @@ public class RideOrderingFragment extends Fragment {
         // Start state
         showMainForm();
     }
+
+    private void applyRouteArgsIfPresent() {
+        Bundle args = getArguments();
+        if (args == null) return;
+
+        String start = args.getString("startAddress", "");
+        String end = args.getString("endAddress", "");
+        ArrayList<String> stops = args.getStringArrayList("stoppingPoints");
+
+        if (startAddressInput != null && start != null && !start.isEmpty()) {
+            startAddressInput.setText(start);
+        }
+        if (endAddressInput != null && end != null && !end.isEmpty()) {
+            endAddressInput.setText(end);
+        }
+
+        // Popuni stop inpute redom (max 6)
+        if (stops != null) {
+            setStopText(firstStop,  stops, 0);
+            setStopText(secondStop, stops, 1);
+            setStopText(thirdStop,  stops, 2);
+            setStopText(fourthStop, stops, 3);
+            setStopText(fifthStop,  stops, 4);
+            setStopText(sixthStop,  stops, 5);
+
+            // Ako ima stopova, opciono: pokaži stopping points form automatski
+            // (ako ti je UX bolji da user odmah vidi da su popunjeni)
+            // if (!stops.isEmpty()) showStoppingPointsForm();
+        }
+
+        // (Opcionalno) Ako hoćeš da se args ne koriste opet kad se vratiš na fragment:
+        // setArguments(null);
+    }
+
+    private void setStopText(EditText et, ArrayList<String> stops, int index) {
+        if (et == null) return;
+        if (stops.size() > index) {
+            String v = stops.get(index);
+            et.setText(v != null ? v : "");
+        } else {
+            et.setText("");
+        }
+    }
+
 
     private void onOrderClicked() {
         TokenStorage ts = new TokenStorage(requireContext());
@@ -177,6 +244,7 @@ public class RideOrderingFragment extends Fragment {
         yesBabyTransport = root.findViewById(R.id.yesBabyTransport);
         yesPetFriendly = root.findViewById(R.id.yesPetFriendly);
 
+        chooseFromFavButton = root.findViewById(R.id.chooseButton);
         addStoppingPointsButton = root.findViewById(R.id.addStoppingPointsButton);
         linkOtherPassengersButton = root.findViewById(R.id.linkOtherPassengersButton);
         orderButton = root.findViewById(R.id.orderButton);
