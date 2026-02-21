@@ -240,4 +240,11 @@ public class AuthController {
 
 	    return ResponseEntity.ok().build();
 	}
+
+	@GetMapping("/reset")
+	public ResponseEntity<Void> resetRedirect(@RequestParam String token) {
+		// Angular reset ruta (zameni IP po potrebi)
+		URI uri = URI.create("http://localhost:4200/reset?token=" + token);
+		return ResponseEntity.status(HttpStatus.FOUND).location(uri).build();
+	}
 }

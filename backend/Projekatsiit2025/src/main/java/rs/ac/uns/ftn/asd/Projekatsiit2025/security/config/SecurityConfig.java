@@ -58,6 +58,7 @@ public class SecurityConfig {
             .requestMatchers("/ws/**").permitAll()
             .requestMatchers("/api/geocode").permitAll()
             .requestMatchers("/api/auth/forgot-password").permitAll()
+            .requestMatchers("/api/auth/reset").permitAll()
             .requestMatchers(
                     "/swagger-ui/**",
                     "/swagger-ui.html",
@@ -85,7 +86,7 @@ public class SecurityConfig {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration configuration = new CorsConfiguration();
-      configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+      configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://192.168.*.*:4200"));
       configuration.setAllowedMethods(Arrays.asList("POST", "PUT", "GET", "OPTIONS", "DELETE", "PATCH")); // or simply "*"
       configuration.setAllowedHeaders(Arrays.asList("*"));
       configuration.setAllowCredentials(true);
