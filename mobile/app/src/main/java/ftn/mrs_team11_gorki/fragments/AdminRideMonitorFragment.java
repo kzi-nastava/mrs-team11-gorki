@@ -187,32 +187,32 @@ public class AdminRideMonitorFragment extends Fragment {
 
         if (dto.ride != null) {
             cardRide.setVisibility(View.VISIBLE);
-            chipStatus.setText(safe(dto.ride.status));
+            chipStatus.setText(safe(dto.ride.getStatus()));
 
             tvTimes.setText(
-                    "Scheduled: " + safe(dto.ride.scheduledTime) +
-                            "\nStart: " + safe(dto.ride.startingTime) +
-                            "\nEnd: " + safe(dto.ride.endingTime)
+                    "Scheduled: " + safe(dto.ride.getScheduledTime().toString()) +
+                            "\nStart: " + safe(dto.ride.getStartingTime().toString()) +
+                            "\nEnd: " + safe(dto.ride.getEndingTime().toString())
             );
 
-            tvPrice.setText("Price: " + (dto.ride.price != null ? dto.ride.price : 0));
-            tvPanic.setText("Panic: " + (dto.ride.panicActivated != null && dto.ride.panicActivated ? "YES" : "NO"));
+            tvPrice.setText("Price: " + (dto.ride.getPrice() != null ? dto.ride.getPrice() : 0));
+            tvPanic.setText("Panic: " + (dto.ride.getPanicActivated() != null && dto.ride.getPanicActivated() ? "YES" : "NO"));
 
             // route
-            if (dto.ride.route != null) {
+            if (dto.ride.getRoute() != null) {
                 cardRoute.setVisibility(View.VISIBLE);
 
                 String startAddr = "-";
                 String endAddr = "-";
-                if (dto.ride.route.getLocations() != null && !dto.ride.route.getLocations().isEmpty()) {
-                    startAddr = safe(dto.ride.route.getLocations().get(0).getAddress());
-                    endAddr = safe(dto.ride.route.getLocations().get(dto.ride.route.getLocations().size() - 1).getAddress());
+                if (dto.ride.getRoute().getLocations() != null && !dto.ride.getRoute().getLocations().isEmpty()) {
+                    startAddr = safe(dto.ride.getRoute().getLocations().get(0).getAddress());
+                    endAddr = safe(dto.ride.getRoute().getLocations().get(dto.ride.getRoute().getLocations().size() - 1).getAddress());
                 }
 
                 tvStart.setText("Start: " + startAddr);
                 tvEnd.setText("End: " + endAddr);
 
-                double dist = dto.ride.route.getDistance();
+                double dist = dto.ride.getRoute().getDistance();
                 tvDistanceEta.setText("Distance: " + dist + " km" + "\nETA: ");
             }
         }
