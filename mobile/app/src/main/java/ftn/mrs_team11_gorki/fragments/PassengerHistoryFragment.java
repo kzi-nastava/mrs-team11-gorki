@@ -29,9 +29,13 @@ import java.util.List;
 
 import ftn.mrs_team11_gorki.R;
 import ftn.mrs_team11_gorki.adapter.PassengerRideHistoryRecyclerAdapter;
+import ftn.mrs_team11_gorki.auth.ApiClient;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
+import ftn.mrs_team11_gorki.dto.GetRouteDTO;
 import ftn.mrs_team11_gorki.dto.LocationDTO;
+import ftn.mrs_team11_gorki.service.ClientUtils;
 import ftn.mrs_team11_gorki.service.OsrmService;
+import ftn.mrs_team11_gorki.service.PassengerService;
 import ftn.mrs_team11_gorki.view.PassengerHistoryViewModel;
 import ftn.mrs_team11_gorki.view.SimpleItemSelectedListener;
 
@@ -269,6 +273,87 @@ public class PassengerHistoryFragment extends Fragment {
                 .create();
 
         btnClose.setOnClickListener(v -> dlg.dismiss());
+        Button btnFav = dv.findViewById(R.id.btnAddToFav);
+
+        PassengerService passengerService =
+                ApiClient.getRetrofit(requireContext()).create(PassengerService.class);
+
+        btnFav.setEnabled(false);
+        btnFav.setText("CHECKING...");
+
+        Long passengerId0 = new TokenStorage(requireContext()).getUserId();
+        Long routeId0 = ride.getRoute().getId(); // BITNO: routeId, ne rideId
+
+        passengerService.getFavouriteRoutes(passengerId0)
+                .enqueue(new retrofit2.Callback<java.util.Collection<GetRouteDTO>>() {
+                    @Override
+                    public void onResponse(@NonNull retrofit2.Call<java.util.Collection<GetRouteDTO>> call,
+                                           @NonNull retrofit2.Response<java.util.Collection<GetRouteDTO>> resp) {
+                        if (!resp.isSuccessful() || resp.body() == null) {
+                            // ako failuje, samo omogući da user proba da doda
+                            setFavButtonState(btnFav, false);
+                            return;
+                        }
+
+                        boolean exists = false;
+                        for (GetRouteDTO r : resp.body()) {
+                            if (r != null && r.getId() != null && r.getId().equals(routeId0)) {
+                                exists = true;
+                                break;
+                            }
+                        }
+                        setFavButtonState(btnFav, exists);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull retrofit2.Call<java.util.Collection<GetRouteDTO>> call,
+                                          @NonNull Throwable t) {
+                        setFavButtonState(btnFav, false);
+                    }
+                });
+
+
+        btnFav.setOnClickListener(v -> {
+            TokenStorage ts = new TokenStorage(requireContext());
+            String token = ts.getToken();
+            Long passengerId = ts.getUserId();
+
+            Long rideId = ride.getRideId(); // kod tebe u adapteru koristiš getRideId()
+
+            if (token == null || token.isEmpty() || passengerId == null || rideId == null) {
+                android.widget.Toast.makeText(requireContext(),
+                        "Missing token / passengerId / rideId", android.widget.Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            btnFav.setEnabled(false);
+
+            passengerService.addFavouriteRoute(passengerId, rideId)
+                    .enqueue(new retrofit2.Callback<GetRouteDTO>() {
+                        @Override
+                        public void onResponse(@NonNull retrofit2.Call<GetRouteDTO> call,
+                                               @NonNull retrofit2.Response<GetRouteDTO> resp) {
+                            if (resp.isSuccessful()) {
+                                android.widget.Toast.makeText(requireContext(),
+                                        "Added to favourites!",
+                                        android.widget.Toast.LENGTH_SHORT).show();
+                                setFavButtonState(btnFav, true);
+                            } else {
+                                setFavButtonState(btnFav, false); // ili btnFav.setEnabled(true)
+                                android.widget.Toast.makeText(requireContext(),
+                                        "Failed: " + resp.code(), android.widget.Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull retrofit2.Call<GetRouteDTO> call,
+                                              @NonNull Throwable t) {
+                            btnFav.setEnabled(true);
+                            android.widget.Toast.makeText(requireContext(),
+                                    "Error: " + t.getMessage(), android.widget.Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        });
 
         dlg.setOnShowListener(x -> {
             // map init
@@ -474,6 +559,18 @@ public class PassengerHistoryFragment extends Fragment {
         super.onPause();
         if (sensorManager != null && shakeListener != null) {
             sensorManager.unregisterListener(shakeListener);
+        }
+    }
+
+    private void setFavButtonState(Button btnFav, boolean inFav) {
+        if (inFav) {
+            btnFav.setText("IN FAVOURITES");
+            btnFav.setEnabled(false);
+            btnFav.setAlpha(0.7f); // opcionalno
+        } else {
+            btnFav.setText("ADD ROUTE TO FAVOURITES");
+            btnFav.setEnabled(true);
+            btnFav.setAlpha(1f);
         }
     }
 }
