@@ -38,10 +38,6 @@ public class ApiClient {
 
             TokenStorage tokenStorage = new TokenStorage(context.getApplicationContext());
 
-            // Token storage za JWT
-            TokenStorage tokenStorage =
-                    new TokenStorage(context.getApplicationContext());
-
             // OkHttp client sa interceptorom
             OkHttpClient okHttp = new OkHttpClient.Builder()
                     .addInterceptor(new AuthInterceptor(tokenStorage))

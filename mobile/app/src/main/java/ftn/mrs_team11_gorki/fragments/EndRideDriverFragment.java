@@ -360,7 +360,7 @@ public class EndRideDriverFragment extends Fragment {
     private void goHome() {
         if (!isAdded()) return;
         try {
-            NavHostFragment.findNavController(this).navigate(R.id.homeFragment);
+            NavHostFragment.findNavController(this).navigate(R.id.driverHomeFragment);
         } catch (Exception e) {
             android.util.Log.e("END_RIDE", "Nav error", e);
         }

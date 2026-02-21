@@ -1,8 +1,6 @@
 package ftn.mrs_team11_gorki.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,17 +14,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
 
 import ftn.mrs_team11_gorki.R;
-import androidx.appcompat.app.AlertDialog;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -34,7 +25,6 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +33,6 @@ import ftn.mrs_team11_gorki.auth.ApiClient;
 import ftn.mrs_team11_gorki.dto.GetVehicleHomeDTO;
 import ftn.mrs_team11_gorki.service.NominatimService;
 import ftn.mrs_team11_gorki.service.OsrmService;
-import ftn.mrs_team11_gorki.service.RatingService;
-import ftn.mrs_team11_gorki.dto.CreateRatingDTO;
-import ftn.mrs_team11_gorki.dto.CreatedRatingDTO;
 
 import ftn.mrs_team11_gorki.service.VehicleService;
 import okhttp3.OkHttpClient;
@@ -65,28 +52,11 @@ public class HomeFragment extends Fragment {
 
     private interface Done { void run(); }
 
-    /*
-    //================== OVO ===================
-    private static final String SP_NAME = "rating";
-    private static final String SP_LAST_PROMPT_RIDE_ID = "last_prompt_ride_id";
-
-    private RatingService ratingService;
-    //================== OVO ===================*/
-
-
-
     public HomeFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*
-        //================== OVO ===================
-        ratingService = ApiClient
-                .getRetrofit(requireContext())
-                .create(RatingService.class);
-        //================== OVO ===================*/
 
         Configuration.getInstance().load(
                 requireContext().getApplicationContext(),
@@ -242,149 +212,4 @@ public class HomeFragment extends Fragment {
         return s == null ? "" : s.trim().toUpperCase();
     }
 
-
-
-    /*ODAVDE DO KRAJA
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-        //================== OVO ===================
-        checkPendingRatingAndShowModal();
-        //================== OVO ===================
-    }
-
-
-
-    //================== OVO ===================
-    private void checkPendingRatingAndShowModal() {
-        ratingService.getPendingLatestRideId().enqueue(new Callback<Long>() {
-            @Override
-            public void onResponse(@NonNull Call<Long> call, @NonNull Response<Long> response) {
-
-                Toast.makeText(requireContext(),
-                        "pending-latest code=" + response.code(),
-                        Toast.LENGTH_SHORT).show();
-
-                if (!response.isSuccessful()) {
-                    // 401/403 -> token / auth problem
-                    return;
-                }
-
-                Long rideId = response.body();
-
-                Toast.makeText(requireContext(),
-                        "pending-latest rideId=" + rideId,
-                        Toast.LENGTH_SHORT).show();
-
-                if (rideId == null) return;
-
-                if (alreadyShownForRide(rideId)) {
-                    Toast.makeText(requireContext(),
-                            "Already shown for rideId=" + rideId,
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                markShownForRide(rideId);
-                showRatePromptDialog(rideId);
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Long> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(),
-                        "pending-latest FAIL: " + t.getMessage(),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void showRatePromptDialog(long rideId) {
-        if (!isAdded()) return;
-
-        new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Ride finished")
-                .setMessage("Your ride has ended. Would you like to rate the driver and vehicle?")
-                .setNegativeButton("Later", (d, w) -> d.dismiss())
-                .setPositiveButton("Rate", (d, w) -> openRateDialog(rideId))
-                .show();
-    }
-
-    private void openRateDialog(long rideId) {
-        if (!isAdded()) return;
-
-        View v = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_rate_ride, null);
-
-        RatingBar rbDriver = v.findViewById(R.id.rbDriver);
-        RatingBar rbVehicle = v.findViewById(R.id.rbVehicle);
-        TextInputEditText etComment = v.findViewById(R.id.etComment);
-
-        rbDriver.setRating(5f);
-        rbVehicle.setRating(5f);
-
-        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Rate ride")
-                .setView(v)
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("Send", null)
-                .create();
-
-        dialog.setOnShowListener(di -> {
-            Button btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            btn.setOnClickListener(x -> {
-                String comment = (etComment.getText() != null) ? etComment.getText().toString().trim() : "";
-                double driver = rbDriver.getRating();
-                double vehicle = rbVehicle.getRating();
-
-                if (comment.isEmpty()) {
-                    etComment.setError("Comment is required");
-                    return;
-                }
-                if (driver < 1 || vehicle < 1) {
-                    toast("Rating must be from 1 to 5");
-                    return;
-                }
-
-                CreateRatingDTO dto = new CreateRatingDTO(driver, vehicle, comment);
-
-                ratingService.rateRide(rideId, dto).enqueue(new Callback<CreatedRatingDTO>() {
-                    @Override
-                    public void onResponse(@NonNull Call<CreatedRatingDTO> call,
-                                           @NonNull Response<CreatedRatingDTO> response) {
-                        if (response.isSuccessful()) {
-                            dialog.dismiss();
-                            toast("Thanks! Rating submitted.");
-                        } else {
-                            toast("Could not submit rating (" + response.code() + ")");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<CreatedRatingDTO> call, @NonNull Throwable t) {
-                        toast("Network error");
-                    }
-                });
-            });
-        });
-
-        dialog.show();
-    }
-
-
-    private boolean alreadyShownForRide(long rideId) {
-        SharedPreferences sp = requireContext().getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        return sp.getLong(SP_LAST_PROMPT_RIDE_ID, -1L) == rideId;
-    }
-
-    private void markShownForRide(long rideId) {
-        SharedPreferences sp = requireContext().getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
-        sp.edit().putLong(SP_LAST_PROMPT_RIDE_ID, rideId).apply();
-    }
-
-    private void toast(String msg) {
-        if (!isAdded()) return;
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-    //================== OVO ===================*/
 }
