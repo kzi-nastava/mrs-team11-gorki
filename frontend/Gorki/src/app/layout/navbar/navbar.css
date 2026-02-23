@@ -68,7 +68,36 @@ header {
     font-size: 32px;
     margin-right: 15px;
 }
+.support {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 
+  padding: 6px 12px;
+  border-radius: 20px;
+
+  cursor: pointer;
+  user-select: none;
+
+  background: #362D88;
+  color: white;
+
+  transition: all 0.2s ease;
+}
+
+.support mat-icon {
+  font-size: 20px;
+  transform: translateX(-2px);
+}
+
+.support:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+
+.support:active {
+  transform: translateY(0px) scale(0.97);
+}
 .login{
     color: #362D88;
     font-family: 'Sofia Sans Condensed';
@@ -183,4 +212,52 @@ a{
     font-size: 32px;
     margin-left: 25px;
     margin-top: 9px;
+}
+
+.notifDialog .mat-mdc-dialog-surface {
+  border-radius: 18px !important;
+  overflow: hidden;
+}
+
+.navAction{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  border-radius: 20px;
+
+  cursor: pointer;
+  user-select: none;
+
+  background: transparent;
+  color: white;
+
+    font-size: 25px;
+  font-weight: bolder;
+
+  
+}
+
+.navAction mat-icon{
+  /* Angular Material ikone umeju da budu “off” po baseline-u */
+
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* minimalni nudge da bude centrirano */
+  transform: translateY(-1px);
+}
+
+.navAction:hover{
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+
+.navAction:active{
+  transform: translateY(0px) scale(0.97);
 }

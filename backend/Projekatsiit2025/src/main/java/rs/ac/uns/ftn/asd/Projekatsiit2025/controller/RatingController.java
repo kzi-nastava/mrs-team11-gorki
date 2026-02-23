@@ -1,18 +1,22 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.controller;
 
 
+import java.security.Principal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateRatingDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedRatingDTO;
+import jakarta.validation.Valid;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreateRatingDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.rating.CreatedRatingDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RatingService;
 
 @RestController
@@ -33,9 +37,17 @@ public class RatingController {
 	    )
 	    public ResponseEntity<CreatedRatingDTO> rateRide(
 	            @PathVariable Long id,
-	            @RequestBody CreateRatingDTO dto) {
+	            @Valid @RequestBody CreateRatingDTO dto) {
 
 			CreatedRatingDTO response=ratingService.createRating(id, dto);
 	        return new ResponseEntity<>(response, HttpStatus.CREATED);
 	    }
+	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
+    @GetMapping("/ratings/pending-latest")
+    public ResponseEntity<Long> pendingLatest(Principal principal) {
+		System.out.println("HIT pending-latest by " + (principal != null ? principal.getName() : "NULL"));
+	    Long rideId = ratingService.pendingLatestRideId(principal.getName());
+	    System.out.println("RETURN rideId=" + rideId);
+	    return ResponseEntity.ok(rideId);
+    }
 }

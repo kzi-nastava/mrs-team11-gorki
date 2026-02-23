@@ -32,6 +32,7 @@ public class LoginFragment extends DialogFragment {
     private LoginFormBinding formBinding;
     private AuthService authApi;
     private Call<LoginResponse> loginCall;
+    private Call<Void> forgotCall;
 
     @NonNull
     @Override
@@ -70,7 +71,7 @@ public class LoginFragment extends DialogFragment {
             loginCall = authApi.login(request);
             loginCall.enqueue(new Callback<LoginResponse>() {
                 @Override
-                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                     if (!isAdded()) return;
 
                     formBinding.loginButton.setEnabled(true);
@@ -81,22 +82,27 @@ public class LoginFragment extends DialogFragment {
                         if (res.getToken() != null && !res.getToken().isEmpty()) {
                             new TokenStorage(requireContext()).save(res);
 
+
+                            ((ftn.mrs_team11_gorki.activities.MainActivity) requireActivity()).onAuthChanged();
+
                             Toast.makeText(requireContext(),
                                     "Login success: " + res.getRole(),
                                     Toast.LENGTH_SHORT).show();
 
                             dismiss();
-
-                            // navigacija tek nakon dismiss (da ne puca zbog dialog lifecycle)
-
                             NavController navController =
                                     Navigation.findNavController(requireActivity(), R.id.fragment_nav_content_main);
 
                             NavOptions navOptions = new NavOptions.Builder()
-                                    .setPopUpTo(R.id.unuserHomeFragment, true) // izbriši guest iz back stack-a
+                                    .setPopUpTo(R.id.unuserHomeFragment, true)
                                     .build();
-
-                            navController.navigate(R.id.homeFragment, null, navOptions);
+                            if(res.getRole().equals("PASSENGER")){
+                                navController.navigate(R.id.passengerHomeFragment, null, navOptions);
+                            } else if(res.getRole().equals("DRIVER")){
+                                navController.navigate(R.id.driverHomeFragment, null, navOptions);
+                            } else{
+                                navController.navigate(R.id.homeFragment, null, navOptions);
+                            }
                         } else {
                             Toast.makeText(requireContext(),
                                     "Invalid credentials!",
@@ -132,6 +138,51 @@ public class LoginFragment extends DialogFragment {
             });
         });
 
+        formBinding.txtForgotPassword.setOnClickListener(v -> {
+            String email = formBinding.emailInput.getText().toString().trim();
+
+            if (TextUtils.isEmpty(email)) {
+                formBinding.emailInput.setError("Enter your email first");
+                formBinding.emailInput.requestFocus();
+                return;
+            }
+
+            formBinding.txtForgotPassword.setEnabled(false);
+
+            forgotCall = authApi.forgotPassword(email);
+            forgotCall.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    if (!isAdded()) return;
+                    formBinding.txtForgotPassword.setEnabled(true);
+
+                    if (response.isSuccessful()) {
+                        Toast.makeText(requireContext(),
+                                "Reset link generated. Check email.",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    if (response.code() == 404) {
+                        Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "HTTP error: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                    if (!isAdded()) return;
+                    formBinding.txtForgotPassword.setEnabled(true);
+                    if (call.isCanceled()) return;
+
+                    Toast.makeText(requireContext(),
+                            "Network error: " + t.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        });
+
         return dialog;
     }
 
@@ -142,6 +193,11 @@ public class LoginFragment extends DialogFragment {
         if (loginCall != null) {
             loginCall.cancel();
             loginCall = null;
+        }
+
+        if (forgotCall != null) {
+            forgotCall.cancel();
+            forgotCall = null;
         }
 
         dialogBinding = null;

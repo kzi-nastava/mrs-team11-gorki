@@ -47,12 +47,25 @@ public class SecurityConfig {
     		.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers("/api/auth/login").permitAll()
             .requestMatchers("/api/auth/register").permitAll()
+            .requestMatchers("/api/auth/redirect").permitAll()
+            .requestMatchers("/api/auth/activate/**").permitAll()
             .requestMatchers("/api/vehicles").permitAll()
             .requestMatchers("/api/rides/estimate").permitAll()
             .requestMatchers("/sendMail").permitAll()
             .requestMatchers("/sendMailWithAttachment").permitAll()
             .requestMatchers("/api/auth/activate").permitAll()
             .requestMatchers("/favicon.ico").permitAll()
+            .requestMatchers("/ws/**").permitAll()
+            .requestMatchers("/api/geocode").permitAll()
+            .requestMatchers("/api/auth/forgot-password").permitAll()
+            .requestMatchers("/api/auth/reset").permitAll()
+            .requestMatchers(
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**"
+                ).permitAll()
+            .requestMatchers("/api/auth/reset-password").permitAll()
+            .requestMatchers("/api/auth/activate/driver/mobile").permitAll()
             .anyRequest().authenticated()
       )
       .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -73,7 +86,7 @@ public class SecurityConfig {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration configuration = new CorsConfiguration();
-      configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+      configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://192.168.*.*:4200"));
       configuration.setAllowedMethods(Arrays.asList("POST", "PUT", "GET", "OPTIONS", "DELETE", "PATCH")); // or simply "*"
       configuration.setAllowedHeaders(Arrays.asList("*"));
       configuration.setAllowCredentials(true);

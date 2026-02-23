@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- okvir -->
+    <path
+        android:fillColor="?attr/colorOnSurface"
+        android:pathData="M3,3h18v18H3V3zm2,2v14h14V5H5z"/>
+
+    <!-- stubici -->
+    <path
+        android:fillColor="?attr/colorOnSurface"
+        android:pathData="M7,16h2V11H7v5zm4,0h2V8h-2v8zm4,0h2V13h-2v3z"/>
+</vector>

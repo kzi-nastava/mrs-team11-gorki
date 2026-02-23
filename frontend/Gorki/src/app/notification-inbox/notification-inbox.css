@@ -1,0 +1,229 @@
+.page{
+  display:flex;
+  height: calc(100vh - 70px); /* prilagodi ako ti navbar ima drugu visinu */
+  background:#fff;
+}
+
+.left{
+  width: 360px;
+  min-width: 320px;
+  border-right: 1px solid rgba(0,0,0,0.08);
+  padding: 18px 16px;
+  display:flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: 'Sofia Sans Condensed';
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+
+.title{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-size: 26px;
+  font-weight: 800;
+  font-family: 'Sofia Sans Condensed';
+}
+
+.titleIcon{
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  font-size: 14px;
+  opacity: .85;
+}
+
+.dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #35c759; /* green */
+}
+
+.refreshBtn{
+  border-radius: 999px !important;
+  height: 44px;
+    font-family: 'Sofia Sans Condensed';
+}
+
+.list{
+  overflow:auto;
+  padding-right: 4px;
+  display:flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loading{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+      font-family: 'Sofia Sans Condensed';
+  padding: 8px 4px;
+  opacity: .85;
+}
+
+.card{
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  cursor:pointer;
+  font-family: 'Sofia Sans Condensed';
+  transition: 120ms ease;
+  background:#fff;
+}
+
+.card:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 26px rgba(0,0,0,0.08);
+}
+
+.card.active{
+  border-color: rgba(128,0,255,0.45);
+  box-shadow: 0 10px 30px rgba(128,0,255,0.12);
+}
+
+.cardTop{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cardTitle{
+  font-family: 'Sofia Sans Condensed';
+  font-size: 22px;
+  font-weight: 800;
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+
+.unreadDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #7b2cff;
+}
+
+.badge{
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.15);
+  opacity: .9;
+}
+
+.badgeUnread{
+  border-color: rgba(123,44,255,0.45);
+}
+
+.meta{
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: .75;
+}
+
+.snippet{
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: .85;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+
+.emptyLeft{
+  padding: 12px 6px;
+  opacity: .7;
+}
+
+.right{
+  flex: 1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 18px;
+}
+
+.placeholder{
+  text-align:center;
+  font-family: 'Sofia Sans Condensed';
+  opacity: .75;
+  max-width: 420px;
+}
+
+.phIcon{
+  font-size: 42px;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 10px;
+}
+
+.preview{
+  width: min(760px, 95%);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.06);
+  font-family: 'Sofia Sans Condensed';
+}
+
+.previewHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  font-family: 'Sofia Sans Condensed';
+  margin-bottom: 12px;
+}
+
+.previewTitle{
+  display:flex;
+  align-items:flex-start;
+  font-family: 'Sofia Sans Condensed';
+  gap: 10px;
+}
+
+.previewTitle h2{
+  margin: 0;
+  font-family: 'Sofia Sans Condensed';
+  font-weight: 900;
+  font-size: 28px;
+}
+
+.previewTitle p{
+  margin: 2px 0 0 0;
+  opacity: .75;
+}
+
+.readPill{
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+.readPillUnread{
+  border-color: rgba(123,44,255,0.45);
+}
+
+.previewBody{
+  font-size: 16px;
+  line-height: 1.45;
+  opacity: .9;
+  white-space: pre-wrap;
+}

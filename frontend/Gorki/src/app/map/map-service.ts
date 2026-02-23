@@ -86,4 +86,13 @@ export class MapService {
   setDriverToPanic(){
     this.mapComponent?.setDriverToPanic();
   }
+
+  showDriverEndPosition(position:[number,number]){
+      if (!this.mapComponent) {
+      this.pendingAction = () => this.showDriverEndPosition(position);
+      return;
+    }
+
+    this.mapComponent.drawDriverEndPosition(position);
+  }
 }

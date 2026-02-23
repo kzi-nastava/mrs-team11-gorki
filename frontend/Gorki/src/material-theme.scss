@@ -229,7 +229,14 @@ app-home{
   ));
   @include mat.form-field-overrides((
     filled-focus-active-indicator-color: #362D88,
-    filled-active-indicator-color:#8480AA
+    filled-active-indicator-color:#8480AA,
+    container-text-font:'Sofia Sans Condensed',
+    container-text-size:20px,
+    container-text-weight:700,
+    filled-input-text-color: #8480AA
+  ));
+   @include mat.autocomplete-overrides((
+    background-color: #ECECEC,
   ));
 }
 

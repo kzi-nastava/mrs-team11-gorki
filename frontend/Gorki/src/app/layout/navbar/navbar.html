@@ -18,18 +18,23 @@
                 <button mat-menu-item [routerLink]="['/change-password']">Change Password</button>
                 @if(role == "DRIVER"){ 
                     <button mat-menu-item [routerLink]="['/vehicle-information']">Vehicle information</button>
-                    <button mat-menu-item [routerLink]="['/driver-registration']">Driver registration</button>
                     <button mat-menu-item [routerLink]="['/driver-pass-activation']">Driver password activation</button>
                     <button mat-menu-item [routerLink]="['/rides-list']">Ride history (Driver)</button>
+                    <button mat-menu-item [routerLink]="['/report']">Report for past rides</button>
                 }
                 @if(role == "ADMIN"){
                     <button mat-menu-item [routerLink]="['/panic-notifications']">Panic notifications</button>
                     <button mat-menu-item [routerLink]="['/scheduled-rides']">Scheduled rides</button>                    
                     <button mat-menu-item [routerLink]="['/rides-list-admin']">Ride history (Admin)</button>
+                    <button mat-menu-item [routerLink]="['/driver-registration']">Driver registration</button>
+                    <button mat-menu-item [routerLink]="['/block-users']">Block users</button>
+                    <button mat-menu-item [routerLink]="['/admin-ride-monitor']">Rides monitoring</button>
+                    <button mat-menu-item [routerLink]="['/report-admin']">Report for past rides</button>
                 }
                 @if(role=="PASSENGER"){
                     <button mat-menu-item [routerLink]="['/scheduled-rides']">Scheduled rides</button>
                     <button mat-menu-item [routerLink]="['/rides-list-user']">Ride history (User)</button>
+                    <button mat-menu-item [routerLink]="['/report']">Report for past rides</button>
                 }
             </mat-menu>
             @if(role == "PASSENGER"){
@@ -43,10 +48,21 @@
                 </mat-menu>
                 <div class="currentRide"><a routerLink="/ride-in-progress-driver">Track ride</a></div>
             }
+            @if(role=="ADMIN"){
+                <div class="home"><a routerLink="price-config">Price config</a></div>
+            }
         }
     </div>
     <div class="rightItems">
         @if(isLoggedIn){
+            <div class="navAction" (click)="openSupport()">
+                <mat-icon>support_agent</mat-icon>
+                Support
+            </div>
+            <div class="navAction" (click)="openNotifications()">
+                <mat-icon>notifications</mat-icon>
+                Notifications
+            </div>
             @if(role == "DRIVER"){
                 <mat-button-toggle-group class="activityLabelGroup" id="activeLabelGroup">
                     <mat-button-toggle style="background-color: green;" class="activityLabelButton" id="activeLabel" [value]="true" 
@@ -69,4 +85,6 @@
     </div>
 </header>
 <router-outlet/>
-
+@if(ratingDialogOpen){
+<app-rating-panel></app-rating-panel>
+}

@@ -42,11 +42,17 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('user') != null;
+    const helper = new JwtHelperService();
+    const token = localStorage.getItem('user');
+    return token != null && !helper.isTokenExpired(token);
   }
 
   setUser(): void {
     this.user$.next(this.getRole());
+  }
+
+  getToken(): string {
+   return localStorage.getItem('user') ?? '';
   }
 
 }

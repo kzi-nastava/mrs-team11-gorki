@@ -1,0 +1,75 @@
+<div class="report-page">
+  <div class="searchUser">
+    <app-date-filter #df></app-date-filter>
+    <button class="btn" (click)="generate()" [disabled]="loading">
+        {{ loading ? 'Loading...' : 'Generate report' }}
+    </button>
+  </div>
+  
+  <hr/>
+  <div class="searchUser">
+    <label class="searchLabel">Search for user</label>
+    <input class="searchInput" placeholder="Enter user email" [(ngModel)]="userEmail">
+    <button class="btnUser" (click)="generateForUser()" [disabled]="loading">{{loading ? 'Loading...' : 'Generate for user'}}</button>
+  </div>
+  <hr/>
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <div *ngIf="dto as r" class="content">
+    <div class="summary">
+      <div class="card">
+        <div class="title">Total rides</div>
+        <div class="value">{{ r.summary.totalRides }}</div>
+        <div class="sub">Avg/day: {{ r.summary.avgRidesPerDay | number:'1.0-2' }}</div>
+      </div>
+
+      <div class="card">
+        <div class="title">Total kilometers</div>
+        <div class="value">{{ r.summary.totalKilometers | number:'1.0-2' }}</div>
+        <div class="sub">Avg/day: {{ r.summary.avgKilometersPerDay | number:'1.0-2' }}</div>
+      </div>
+
+      <div class="card">
+        <div class="title">Total money</div>
+        <div class="value">{{ r.summary.totalMoney | number:'1.0-2' }}</div>
+        <div class="sub">Avg/day: {{ r.summary.avgMoneyPerDay | number:'1.0-2' }}</div>
+      </div>
+    </div>
+    <div class="bgChart">
+        <h2>Daily</h2>
+        <hr/>
+        <h3>Rides per day</h3>
+        <div class="chart-wrap" *ngIf="dailyRidesData.datasets.length">
+        <canvas baseChart [type]="dailyRidesType" [data]="dailyRidesData" [options]="dailyRidesOptions"></canvas>
+        </div>
+
+        <h3>Kilometers per day</h3>
+        <div class="chart-wrap" *ngIf="dailyKmData.datasets.length">
+        <canvas baseChart [type]="dailyKmType" [data]="dailyKmData" [options]="dailyKmOptions"></canvas>
+        </div>
+
+        <h3>Money per day</h3>
+        <div class="chart-wrap" *ngIf="dailyMoneyData.datasets.length">
+        <canvas baseChart [type]="dailyMoneyType" [data]="dailyMoneyData" [options]="dailyMoneyOptions"></canvas>
+        </div>
+    </div>
+    <div class="bgChart">
+        <h2>Cumulative</h2>
+        <hr/>
+        <h3>Cumulative rides</h3>
+        <div class="chart-wrap" *ngIf="cumRidesData.datasets.length">
+        <canvas baseChart [type]="cumRidesType" [data]="cumRidesData" [options]="cumRidesOptions"></canvas>
+        </div>
+
+        <h3>Cumulative kilometers</h3>
+        <div class="chart-wrap" *ngIf="cumKmData.datasets.length">
+        <canvas baseChart [type]="cumKmType" [data]="cumKmData" [options]="cumKmOptions"></canvas>
+        </div>
+
+        <h3>Cumulative money</h3>
+        <div class="chart-wrap" *ngIf="cumMoneyData.datasets.length">
+        <canvas baseChart [type]="cumMoneyType" [data]="cumMoneyData" [options]="cumMoneyOptions"></canvas>
+        </div>
+    </div>
+  </div>
+</div>

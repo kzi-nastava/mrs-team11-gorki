@@ -125,19 +125,16 @@
 .starting-point-text{
     font-size: 20px;
     font-weight: bold;
-    text-align: center;
 }
 
 .destination-text{
     font-size: 20px;
     font-weight: bold;
-    text-align: center;
 }
 
 .scheduled-arrival-text{
     font-size: 20px;
     font-weight: bold;
-    text-align: center;
 }
 
 .backdrop {
@@ -200,4 +197,14 @@ th {
 .creator{
     background-color: #362D88;
     color: white;
+}
+
+.no-scheduled-rides{
+    font-family: 'Sofia Sans Condensed';
+    font-weight: bold;
+    color: #362D88;
+    font-size: 20px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }

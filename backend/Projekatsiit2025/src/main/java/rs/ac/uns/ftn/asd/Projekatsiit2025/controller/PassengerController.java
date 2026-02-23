@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.DriverRideHistoryDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRouteDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.UserRideHistoryDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.DriverRideHistoryDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.UserRideHistoryDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.route.GetRouteDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.PassengerService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 
@@ -26,7 +26,8 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
 @RequestMapping("/api/passengers")
 public class PassengerController {
 	private final PassengerService passengerService;
-  private final RideService rideService;
+	private final RideService rideService;
+
 	
 	public PassengerController(PassengerService passengerService, RideService rideService) {
 		this.passengerService = passengerService;
@@ -41,9 +42,9 @@ public class PassengerController {
 	}
 	
 	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
-	@PostMapping(value = "/{id}/favourite-routes/{routeId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetRouteDTO> addFavouriteRoute(@PathVariable("id") Long id, @PathVariable("routeId") Long routeId) {
-	    GetRouteDTO route = passengerService.addToFavouriteRoutes(id, routeId);
+	@PostMapping(value = "/{id}/favourite-routes/{rideId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetRouteDTO> addFavouriteRoute(@PathVariable("id") Long id, @PathVariable("rideId") Long rideId) {
+	    GetRouteDTO route = passengerService.addToFavouriteRoutes(id, rideId);
 	    return new ResponseEntity<GetRouteDTO>(route, HttpStatus.CREATED);
 	}
 	

@@ -10,34 +10,30 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Arrays;
 import java.util.List;
-
 
 import ftn.mrs_team11_gorki.auth.ApiClient;
 import ftn.mrs_team11_gorki.auth.TokenStorage;
 import ftn.mrs_team11_gorki.databinding.FragmentVehicleInfoBinding;
 import ftn.mrs_team11_gorki.dto.GetVehicleDTO;
 import ftn.mrs_team11_gorki.dto.UpdateVehicleDTO;
-import ftn.mrs_team11_gorki.dto.UpdatedVehicleDTO;
 import ftn.mrs_team11_gorki.service.DriverService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import ftn.mrs_team11_gorki.view.VehicleInfoViewModel;
+import ftn.mrs_team11_gorki.view.VehicleInfoViewModelFactory;
 
 public class VehicleInfoFragment extends Fragment {
 
-    private FragmentVehicleInfoBinding binding; // binding za fragment_vehicle_info.xml
-    private DriverService driverService;
+    private FragmentVehicleInfoBinding binding;
+    private VehicleInfoViewModel viewModel;
 
     private Long driverId;
-    private GetVehicleDTO originalVehicle;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = FragmentVehicleInfoBinding.inflate(inflater, container, false);
 
         TokenStorage ts = new TokenStorage(requireContext());
@@ -50,13 +46,42 @@ public class VehicleInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        driverService = ApiClient.getRetrofit(requireContext()).create(DriverService.class);
+        DriverService driverService = ApiClient.getRetrofit(requireContext()).create(DriverService.class);
+
+        VehicleInfoViewModelFactory factory = new VehicleInfoViewModelFactory(driverService, driverId);
+        viewModel = new ViewModelProvider(this, factory).get(VehicleInfoViewModel.class);
 
         setupDropdown();
-        loadVehicle();
+        observeViewModel();
 
-        binding.vehicleInfo.saveChangesButton.setOnClickListener(v -> updateVehicle());
-        binding.vehicleInfo.revertChangesButton.setOnClickListener(v -> revertChanges());
+        viewModel.loadVehicle();
+
+        binding.vehicleInfo.saveChangesButton.setOnClickListener(v -> {
+            UpdateVehicleDTO dto = buildUpdateVehicleDtoFromForm();
+            if (dto == null) return;
+            viewModel.updateVehicle(dto);
+        });
+
+        binding.vehicleInfo.revertChangesButton.setOnClickListener(v -> viewModel.revert());
+    }
+
+    private void observeViewModel() {
+        viewModel.getVehicle().observe(getViewLifecycleOwner(), vehicle -> {
+            if (vehicle != null) {
+                fillForm(vehicle);
+            }
+        });
+
+        viewModel.isLoading().observe(getViewLifecycleOwner(), loading -> {
+            setLoading(Boolean.TRUE.equals(loading));
+        });
+
+        viewModel.getMessage().observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null) {
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                viewModel.clearMessage();
+            }
+        });
     }
 
     private void setupDropdown() {
@@ -74,49 +99,23 @@ public class VehicleInfoFragment extends Fragment {
         );
     }
 
-    private void loadVehicle() {
-        setLoading(true);
-
-        driverService.getVehicle(driverId).enqueue(new Callback<GetVehicleDTO>() {
-            @Override
-            public void onResponse(@NonNull Call<GetVehicleDTO> call,
-                                   @NonNull Response<GetVehicleDTO> response) {
-                setLoading(false);
-
-                if (response.isSuccessful() && response.body() != null) {
-                    originalVehicle = response.body();
-                    fillForm(originalVehicle);
-                } else {
-                    Toast.makeText(requireContext(),
-                            "Ne mogu da učitam vozilo (" + response.code() + ")",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<GetVehicleDTO> call, @NonNull Throwable t) {
-                setLoading(false);
-                Toast.makeText(requireContext(),
-                        "Greška: " + t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void fillForm(GetVehicleDTO v) {
+    private void fillForm(@NonNull GetVehicleDTO v) {
         binding.vehicleInfo.modelInput.setText(safe(v.getModel()));
         binding.vehicleInfo.licensePlateInput.setText(safe(v.getPlateNumber()));
         binding.vehicleInfo.seatsInput.setText(String.valueOf(v.getSeats()));
         binding.vehicleInfo.vehicleTypeDropdown.setText(safe(v.getType()), false);
+
         Boolean baby = v.getBabyTransport();
         if (baby != null && baby) binding.vehicleInfo.yesBabyTransport.setChecked(true);
         else binding.vehicleInfo.noBabyTransport.setChecked(true);
+
         Boolean pet = v.getPetFriendly();
         if (pet != null && pet) binding.vehicleInfo.yesPetFriendly.setChecked(true);
         else binding.vehicleInfo.noPetFriendly.setChecked(true);
     }
 
-    private void updateVehicle() {
+    @Nullable
+    private UpdateVehicleDTO buildUpdateVehicleDtoFromForm() {
         String model = binding.vehicleInfo.modelInput.getText().toString().trim();
         String plate = binding.vehicleInfo.licensePlateInput.getText().toString().trim();
         String seatsStr = binding.vehicleInfo.seatsInput.getText().toString().trim();
@@ -125,44 +124,23 @@ public class VehicleInfoFragment extends Fragment {
         boolean babyTransport = binding.vehicleInfo.yesBabyTransport.isChecked();
         boolean petFriendly = binding.vehicleInfo.yesPetFriendly.isChecked();
 
+        int seats;
+        try {
+            seats = Integer.parseInt(seatsStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(requireContext(), "Neispravan broj sedišta", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
         UpdateVehicleDTO dto = new UpdateVehicleDTO();
         dto.setModel(model);
         dto.setPlateNumber(plate);
-        dto.setSeats(Integer.parseInt(seatsStr));
+        dto.setSeats(seats);
         dto.setType(type);
         dto.setBabyTransport(babyTransport);
         dto.setPetFriendly(petFriendly);
 
-        setLoading(true);
-
-        driverService.updateVehicle(driverId, dto).enqueue(new Callback<UpdatedVehicleDTO>() {
-            @Override
-            public void onResponse(@NonNull Call<UpdatedVehicleDTO> call,
-                                   @NonNull Response<UpdatedVehicleDTO> response) {
-                setLoading(false);
-
-                if (response.isSuccessful()) {
-                    Toast.makeText(requireContext(), "Sačuvano", Toast.LENGTH_SHORT).show();
-                    loadVehicle();
-                } else {
-                    Toast.makeText(requireContext(),
-                            "Neuspešan update (" + response.code() + ")",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UpdatedVehicleDTO> call, @NonNull Throwable t) {
-                setLoading(false);
-                Toast.makeText(requireContext(),
-                        "Greška: " + t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void revertChanges() {
-        if (originalVehicle != null) fillForm(originalVehicle);
+        return dto;
     }
 
     private void setLoading(boolean loading) {

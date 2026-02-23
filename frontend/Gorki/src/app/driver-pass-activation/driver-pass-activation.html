@@ -1,4 +1,4 @@
-<form class="resetForm">
+<form class="resetForm" *ngIf="form" [formGroup]="form">
   <div class="credentialsResetBox">
       <div class="formElement">
         <label class="resetYourPasswordText">Password activation</label>
@@ -10,16 +10,16 @@
         <label class="newPassword">Enter your password:</label>
       </div>
       <div class="formElement">
-        <input class="newPasswordInput">
+        <input class="newPasswordInput" type="password" formControlName="newPassInput">
       </div>
       <div class="formElement">
         <label class="confirmNewPassword">Confirm your password:</label> 
       </div>
       <div class="formElement">
-        <input class="confirmNewPasswordInput">
+        <input class="confirmNewPasswordInput" type="password" formControlName="confirmNewPassInput">
       </div>
       <div class="formElement">
-        <button class="resetButton" routerLink="/home">Save</button>
+        <button class="resetButton" type="button" (click)="submit()">Save</button>
       </div>
   </div>
 </form>

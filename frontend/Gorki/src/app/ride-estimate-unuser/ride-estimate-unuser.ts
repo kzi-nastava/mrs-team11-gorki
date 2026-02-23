@@ -94,10 +94,17 @@ export class RideEstimateCardComponent {
       const pickupCoords = await this.geocode(this.pickup);
       const dropoffCoords = await this.geocode(this.dropoff);
       this.distance=this.haversineDistance(pickupCoords[0],pickupCoords[1],dropoffCoords[0],dropoffCoords[1]);
-      this.estimatedTime = ((this.distance / 40)*60).toFixed(2)+ ' min';
-      console.log('d:',this.distance);
-      console.log('et:',this.estimatedTime);
+      let speedKmH = 30;           // grad
+      if (this.distance > 8) speedKmH = 40;   // prigrad 
+      if (this.distance > 20) speedKmH = 60;   // otvoren put
 
+      // + circuity faktor
+      const factor = this.distance < 2 ? 1.25 : this.distance < 10 ? 1.35 : 1.45;
+
+      const minutes = (this.distance * factor / speedKmH) * 60;
+      this.estimatedTime =  Math.round(minutes) + ' min';;
+      console.log('d:',this.distance);
+      console.log('et:',this.estimatedTime); 
       this.showOnMap.emit({
         pickupCoords,
         dropoffCoords

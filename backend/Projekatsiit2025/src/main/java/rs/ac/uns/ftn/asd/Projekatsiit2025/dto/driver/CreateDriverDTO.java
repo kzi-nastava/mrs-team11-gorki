@@ -1,0 +1,39 @@
+package rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreateUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.CreateVehicleDTO;
+
+public class CreateDriverDTO {
+	@Valid
+	@NotNull(message = "User is required")
+	private CreateUserDTO user;
+	@Valid
+	@NotNull(message = "Vehicle is required")
+	private CreateVehicleDTO vehicle;
+	
+	public CreateDriverDTO() {
+		super();
+	}
+	
+	public CreateDriverDTO(CreateUserDTO user, CreateVehicleDTO vehicle) {
+		super();
+		this.user = user;
+		this.vehicle = vehicle;
+	}
+	
+	public CreateUserDTO getUser() {
+		return user;
+	}
+	public void setUser(CreateUserDTO user) {
+		this.user = user;
+	}
+	public CreateVehicleDTO getVehicle() {
+		return vehicle;
+	}
+	public void setVehicle(CreateVehicleDTO vehicle) {
+		this.vehicle = vehicle;
+	}
+	
+}

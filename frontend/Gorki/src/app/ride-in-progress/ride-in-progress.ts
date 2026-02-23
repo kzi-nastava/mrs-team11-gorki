@@ -3,6 +3,7 @@ import { MapComponent } from "../map/map";
 import { TrackRide } from '../rides/track-ride/track-ride';
 import { MapService } from '../map/map-service';
 import { RideInProgressService } from '../service/passenger-ride-in-progress';
+import { AuthService } from '../infrastructure/auth.service';
 
 @Component({
   selector: 'app-ride-in-progress',
@@ -18,14 +19,15 @@ export class RideInProgress implements OnInit {
 
   constructor(
     private mapService: MapService,
-    private rideService: RideInProgressService
+    private rideService: RideInProgressService,
+    private authService:AuthService
   ) {}
 
   async ngOnInit() {
     this.mapService.clearAll();
 
-    // Dohvati voznju u toku za putnika (primer id = 2)
-    this.rideService.getActiveRideAddresses(4).subscribe({
+    // Dohvati voznju u toku za putnika id->localstorage
+    this.rideService.getActiveRideAddresses(this.authService.getId()).subscribe({
       next: async ({ pickup, dropoff }) => {
         this.pickupAddress = pickup;
         this.dropoffAddress = dropoff;
@@ -51,22 +53,12 @@ export class RideInProgress implements OnInit {
   }
 
   async geocode(address: string): Promise<[number, number]> {
-    const url =
-      'https://nominatim.openstreetmap.org/search?' +
-      new URLSearchParams({
-        q: address,
-        format: 'json',
-        limit: '1',
-      });
 
-    const res = await fetch(url);
+    const res = await fetch(
+      `http://localhost:8080/api/geocode?q=${encodeURIComponent(address)}`
+    );
     const data = await res.json();
-
-    if (!data.length) {
-      throw new Error('Address not found');
-    }
-
-    return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+    return [data.lat, data.lon];
   }
 
   handleShowOnMap(event: {

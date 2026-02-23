@@ -2,12 +2,30 @@
     <form class="main-form" [formGroup]="mainForm" [ngClass]="{'hidden': activeForm !== 'main'}">
         <div class="question-title">Where would you like to go?</div>
         <div class="favourite-routes-p">You can <a routerLink="/favourite-routes-list">click here</a> to choose your favorite route or fill the route fields down below</div>
-        <input class="starting-point" formControlName="startAddress" placeholder="Enter your starting point address"/>
+        <mat-form-field>
+            <mat-label>Start address</mat-label>
+            <input matInput formControlName="startAddress" [matAutocomplete]="autoStart">
+
+            <mat-autocomplete #autoStart="matAutocomplete">
+                <mat-option *ngFor="let opt of (startOptions$ | async) ?? []" [value]="opt">
+                {{ opt }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
         <div class="stopping-points">
             <label class="stopping-points-label">Stopping points (optional):</label>
             <button class="add" type="button" (click)="openStoppingForm()">Add</button>
         </div>
-        <input class="ending-point" formControlName="endAddress" placeholder="Enter your ending point address">
+        <mat-form-field>
+            <mat-label>End address</mat-label>
+            <input matInput formControlName="endAddress" [matAutocomplete]="autoEnd">
+
+            <mat-autocomplete #autoEnd="matAutocomplete">
+                <mat-option *ngFor="let opt of (endOptions$ | async) ?? []" [value]="opt">
+                {{ opt }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
         <div class="link-other-passengers">
             <label class="link-other-passengers-label">Link other passengers:</label>
             <button class="link" type="button" (click)="openPassengersForm()">Link</button>
@@ -38,17 +56,22 @@
                 </mat-radio-group>
             </div>
         </div>
-        <button class="order" type="button" (click)="order()">Order</button>
+        <button class="order" type="button" [disabled]="isBlocked" (click)="order()">Order</button>
     </form>
     <form class="stopping-points-form" [ngClass]="{'hidden': activeForm !== 'stopping'}">
         <div class="stopping-points-header">Enter your stopping points</div>
         @for (point of points; track point) {
             <div class="stopping-points-input">
-                <input
-                class="stopping-point-input"
-                [formControl]="point"
-                placeholder="Enter your stopping point address"
-                />
+                <mat-form-field>
+                    <mat-label>Stopping point</mat-label>
+                    <input matInput [formControl]="point" [matAutocomplete]="autoStop">
+
+                    <mat-autocomplete #autoStop="matAutocomplete">
+                        <mat-option *ngFor="let opt of (stopOptions$[points.indexOf(point)] | async) ?? []" [value]="opt">
+                        {{ opt }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
                 <button class="minus" type="button" (click)="removeStoppingPoint(points.indexOf(point))">
                     <div class="minus-stroke"></div>
                 </button>
@@ -80,5 +103,5 @@
     </form>
 </div>
 @if(isModalOpen){
-        <app-ordering-confirmation (close)="isModalOpen=false" (confirm)="onConfirm()" [price]="createdPrice"></app-ordering-confirmation>
+        <app-ordering-confirmation (confirm)="onConfirm()" [price]="createdPrice"></app-ordering-confirmation>
 }

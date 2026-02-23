@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateInconsistencyReportDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedInconsistencyReportDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.inconsistencyReport.CreateInconsistencyReportDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.inconsistencyReport.CreatedInconsistencyReportDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.InconsistencyReport;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Ride;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.InconsistencyReportRepository;

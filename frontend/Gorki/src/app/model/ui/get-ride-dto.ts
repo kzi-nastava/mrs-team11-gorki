@@ -1,4 +1,4 @@
-import { CreatedRouteDTO } from "./created-route-dto";
+import { GetRouteDTO } from "./get-route-dto";
 import { GetDriverDTO } from "./get-driver-dto";
 import { GetPassengerDTO } from "./get-passenger-dto";
 
@@ -12,7 +12,7 @@ export interface GetRideDTO{
 	panicActivated:boolean;
 	cancellationReason:string;
 	driver: GetDriverDTO;
-	route:CreatedRouteDTO;
+	route:GetRouteDTO;
 	linkedPassengers:GetPassengerDTO[];
 	creator: GetPassengerDTO;
 }

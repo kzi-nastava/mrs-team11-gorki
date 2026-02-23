@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.RideOrderingFragment"
+    android:background="@drawable/gradient_background">
+
+    <include android:id="@+id/rideOrderingForm"
+        layout="@layout/ride_ordering_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:visibility="visible"/>
+
+    <include
+        android:id="@+id/stoppingPointsForm"
+        layout="@layout/stopping_points_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:visibility="invisible"/>
+
+    <include
+        android:id="@+id/linkedPassengersForm"
+        layout="@layout/linked_passengers_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:visibility="invisible"/>
+
+</FrameLayout>

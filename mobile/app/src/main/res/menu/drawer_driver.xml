@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/driverHomeFragment"
         android:title="Home"
         android:icon="@drawable/ic_home"/>
 
@@ -22,8 +22,23 @@
 
     <item
         android:id="@+id/nav_driver_ride_history"
-        android:title="Ride history"
+        android:title="Ride history (Driver)"
         android:icon="@drawable/ic_ride_history"/>
+
+    <item
+        android:id="@+id/nav_driver_scheduled_rides"
+        android:title="Scheduled rides"
+        android:icon="@drawable/ic_ride_history"/>
+
+    <item
+        android:id="@+id/end_ride_driver"
+        android:title="End current ride"
+        android:icon="@drawable/end_ride_icon"/>
+
+    <item
+        android:id="@+id/reportFragment"
+        android:title="Report for past rides"
+        android:icon="@drawable/ic_report"/>
 
     <item
         android:id="@+id/nav_logout"

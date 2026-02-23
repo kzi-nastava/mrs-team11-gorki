@@ -1,30 +1,37 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedUserDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedVehicleDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetDriverDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.CreateDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.CreatedDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.driver.GetDriverDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.CreatedUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.user.GetUserDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.vehicle.CreatedVehicleDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.exception.EmailAlreadyExistsException;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Driver;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Vehicle;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.DriverStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.UserRole;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.DriverRepository;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.repository.UserRepository;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.security.jwt.ActivationTokenUtil;
 
 @Service
 public class DriverService {
-	private final DriverRepository driverRepository;
-	private final UserRepository userRepository;
+	@Autowired private final DriverRepository driverRepository;
+	@Autowired private final UserRepository userRepository;
+	private final EmailService emailService;
+	@Autowired private final ActivationTokenUtil util;
 	
-	public DriverService(DriverRepository driverRepository, UserRepository userRepository) {
+	public DriverService(DriverRepository driverRepository, UserRepository userRepository, EmailService emailService, ActivationTokenUtil util) {
 		this.driverRepository = driverRepository;
 		this.userRepository = userRepository;
+		this.emailService = emailService;
+		this.util = util;
 	}
 	
 	@Transactional
@@ -38,8 +45,10 @@ public class DriverService {
         driver.setLastName(dto.getUser().getLastName());
         driver.setPhoneNumber(dto.getUser().getPhoneNumber());
         driver.setAddress(dto.getUser().getAddress());
+        driver.setProfileImage(dto.getUser().getProfileImage());
         driver.setRole(UserRole.DRIVER);
         driver.setActive(false);
+        driver.setBlocked(false);
         driver.setStatus(DriverStatus.ACTIVE);
         Vehicle vehicle = new Vehicle();
         vehicle.setModel(dto.getVehicle().getModel());
@@ -48,8 +57,15 @@ public class DriverService {
         vehicle.setSeats(dto.getVehicle().getSeats());
         vehicle.setBabyTransport(dto.getVehicle().getBabyTransport());
         vehicle.setPetFriendly(dto.getVehicle().getPetFriendly());
+        double randomLat = 45.2450 + Math.random() * (45.2700 - 45.2450);
+        double randomLon = 19.8150 + Math.random() * (19.8550 - 19.8150);
+        Location location=new Location(randomLat,randomLon,dto.getUser().getAddress());
+        vehicle.setCurrentLocation(location);
         driver.setVehicle(vehicle);
         Driver saved = driverRepository.save(driver);
+        String activationToken = util.generateActivationToken(driver.getEmail());
+        //emailService.sendActivationLinkToDriverMail(activationToken);
+        emailService.sendDriverActivationMobileDeepLink(activationToken);
         return mapToCreatedDriverDTO(saved);
 	}
 	

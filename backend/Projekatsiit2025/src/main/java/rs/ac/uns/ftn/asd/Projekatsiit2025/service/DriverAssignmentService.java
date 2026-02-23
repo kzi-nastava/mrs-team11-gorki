@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -29,10 +28,12 @@ public class DriverAssignmentService {
         this.rideRepository = rideRepository;
     }
 	 
-	public Driver selectDriver(Boolean babyTransport, Boolean petFriendly, VehicleType vehicleType,Route route, LocalDateTime scheduledTime) {
+	public Driver selectDriver(Boolean babyTransport, Boolean petFriendly, VehicleType vehicleType, Route route, LocalDateTime scheduledTime) {
         List<Driver> eligible = driverRepository.findAll().stream()
-            .filter(d -> d.getStatus() == DriverStatus.ACTIVE)
+            .filter(d -> d.getStatus() == DriverStatus.ACTIVE || d.getStatus() == DriverStatus.BUSY)
+            .filter(this::isNotBlocked)
             .filter(this::hasLessThan8HoursLast24h)
+            .filter(this::isNotBusyWithFutureRide)
             .filter(d -> d.getVehicle().getBabyTransport() == babyTransport)
             .filter(d -> d.getVehicle().getPetFriendly() == petFriendly)
             .filter(d -> d.getVehicle().getType() == vehicleType)
@@ -43,14 +44,14 @@ public class DriverAssignmentService {
         }
 
         List<Driver> freeDrivers = eligible.stream()
-            .filter(d -> isFreeAt(d, scheduledTime))
+            .filter(d -> isFreeAt(d, scheduledTime, route))
             .toList();
 
         if (!freeDrivers.isEmpty()) {
             return findNearestDriver(freeDrivers, route.getLocations().get(0));
         }
 
-        return findBestBusyDriver(eligible, route);
+        return findBestBusyDriver(eligible, route.getLocations().get(0));
     }
 	
 	private boolean hasLessThan8HoursLast24h(Driver driver) {
@@ -60,23 +61,36 @@ public class DriverAssignmentService {
 		return true;
 	}
 	
-	private boolean isFreeAt(Driver driver, LocalDateTime scheduledTime) {
-
-	    Optional<Ride> activeRideOpt =
-	        rideRepository.findFirstByDriverIdAndStatusInOrderByStartingTimeDesc(
-	            driver.getId(),
-	            List.of(RideStatus.STARTED, RideStatus.ACCEPTED)
-	        );
-
-	    // nema aktivnu ili zakazanu vožnju
-	    if (activeRideOpt.isEmpty()) {
+	private boolean isNotBlocked(Driver driver) {
+		return !driver.getBlocked();
+	}
+	
+	private boolean isNotBusyWithFutureRide(Driver driver) {
+		Ride activeRide = this.getActiveRide(driver);
+		List<Ride> scheduledRides = rideRepository.findAllByDriverIdAndStatus(driver.getId(), RideStatus.ACCEPTED);
+		boolean hasScheduledRideInFuture = false;
+		for(Ride ride : scheduledRides) {
+			if(ride.getScheduledTime().plusMinutes(ride.getRoute().getEstimatedTime().getHour() * 60 + ride.getRoute().getEstimatedTime().getMinute()).isAfter(LocalDateTime.now())) {
+				hasScheduledRideInFuture = true;
+				break;
+			}
+		}
+		return activeRide == null || !hasScheduledRideInFuture;
+	}
+	
+	private boolean isFreeAt(Driver driver, LocalDateTime scheduledTime, Route route) {
+	    List<Ride> scheduledRides = rideRepository.findAllByDriverIdAndStatus(driver.getId(), RideStatus.ACCEPTED);
+	    if (scheduledRides.isEmpty()) {
 	        return true;
 	    }
-
-	    Ride activeRide = activeRideOpt.get();
-
-	    // završava se pre nove vožnje
-	    return !activeRide.getEndingTime().isAfter(scheduledTime);
+	    LocalDateTime approximateEndingTime = scheduledTime.plusMinutes(route.getEstimatedTime().getHour() * 60 + route.getEstimatedTime().getMinute());
+	    for(Ride ride : scheduledRides) {
+	    	LocalDateTime acceptedRideApproximatedEndingTime = ride.getScheduledTime().plusMinutes(ride.getRoute().getEstimatedTime().getHour() * 60 + ride.getRoute().getEstimatedTime().getMinute()); 
+	    	if(scheduledTime.isBefore(acceptedRideApproximatedEndingTime) && ride.getScheduledTime().isBefore(approximateEndingTime)) {
+	    		return false;
+	    	}
+	    }
+	    return true;
 	}
 	
 	private Driver findNearestDriver(List<Driver> drivers, Location start) {
@@ -97,7 +111,7 @@ public class DriverAssignmentService {
 	        double lat1, double lon1,
 	        double lat2, double lon2
 	) {
-	    final double R = 6371; // km
+	    final double R = 6371;
 
 	    double dLat = Math.toRadians(lat2 - lat1);
 	    double dLon = Math.toRadians(lon2 - lon1);
@@ -111,12 +125,10 @@ public class DriverAssignmentService {
 	    return R * c;
 	}
 	
-	private Driver findBestBusyDriver(List<Driver> drivers, Route route) {
-	    Location start = route.getLocations().get(0);
-
+	private Driver findBestBusyDriver(List<Driver> drivers, Location start) {
 	    return drivers.stream()
+	    	.filter(driver -> getActiveRide(driver) != null)
 	        .map(driver -> Map.entry(driver, getActiveRide(driver)))
-	        .filter(entry -> entry.getValue() != null)
 	        .filter(entry -> finishesWithin10Minutes(entry.getValue()))
 	        .min(Comparator.comparingDouble(entry -> {
 
@@ -141,10 +153,7 @@ public class DriverAssignmentService {
 	}
 	
 	private boolean finishesWithin10Minutes(Ride ride) {
-	    return Duration.between(
-	            LocalDateTime.now(),
-	            ride.getEndingTime()
-	        ).toMinutes() <= 10;
+	    return Duration.between(LocalDateTime.now(), ride.getEndingTime()).toMinutes() <= 10;
 	}
 
 }

@@ -3,40 +3,175 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/base_navigation"
+    android:label="021Ride"
     app:startDestination="@id/unuserHomeFragment">
     <fragment
         android:id="@+id/unuserHomeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.UnuserHomeFragment"
+        android:label="021Ride"
         tools:layout="@layout/fragment_unuser_home" />
     <fragment
         android:id="@+id/passengerRegistrationFragment"
         android:name="ftn.mrs_team11_gorki.fragments.PassengerRegisterFragment"
         app:popUpTo="@id/unuserHomeFragment"
+        android:label="Registration"
         tools:layout="@layout/fragment_passenger_registration" />
+    <fragment
+        android:id="@+id/passengerHomeFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.PassengerHomeFragment"
+        app:popUpTo="@id/unuserHomeFragment"
+        app:popUpToInclusive="true"
+        android:label="021Ride"
+        tools:layout="@layout/fragment_passenger_home"/>
+    <fragment
+        android:id="@+id/driverHomeFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.DriverHomeFragment"
+        app:popUpTo="@id/unuserHomeFragment"
+        app:popUpToInclusive="true"
+        android:label="021Ride"
+        tools:layout="@layout/fragment_driver_home"/>
     <fragment
         android:id="@+id/homeFragment"
         android:name="ftn.mrs_team11_gorki.fragments.HomeFragment"
         app:popUpTo="@id/unuserHomeFragment"
+        app:popUpToInclusive="true"
+        android:label="021Ride"
         tools:layout="@layout/fragment_home"/>
-    <!--app:popUpToInclusive="true"-->
+    <fragment
+        android:id="@+id/rideOrderingFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.RideOrderingFragment"
+        app:popUpTo="@id/passengerHomeFragment"
+        android:label="Ride ordering"
+        tools:layout="@layout/fragment_ride_ordering"/>
+    <fragment
+        android:id="@+id/favouriteRouteFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.FavouriteRouteFragment"
+        app:popUpTo="@id/rideOrderingFragment"
+        android:label="Favourite routes"
+        tools:layout="@layout/fragment_favourite_route"/>
     <fragment
         android:id="@+id/profileInfoFragment"
         android:name="ftn.mrs_team11_gorki.fragments.ProfileInfoFragment"
         app:popUpTo="@id/homeFragment"
+        android:label="Profile"
         tools:layout="@layout/fragment_profile_info"/>
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="ftn.mrs_team11_gorki.fragments.ChangePasswordFragment"
         app:popUpTo="@id/homeFragment"
+        android:label="Change password"
         tools:layout="@layout/fragment_change_password"/>
     <fragment
         android:id="@+id/vehicleInfoFragment"
         android:name="ftn.mrs_team11_gorki.fragments.VehicleInfoFragment"
         app:popUpTo="@id/homeFragment"
+        android:label="Vehicle info"
         tools:layout="@layout/fragment_vehicle_info"/>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.ReportFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Report for past rides"
+        tools:layout="@layout/fragment_report"/>
+    <fragment
+        android:id="@+id/reportAdminFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.ReportAdminFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Report for past rides"
+        tools:layout="@layout/fragment_report_admin"/>
+    <fragment
+        android:id="@+id/adminBlockUserFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.AdminBlockUserFragment"
+        android:label="Block users"
+        tools:layout="@layout/fragment_admin_block_user" />
     <fragment
         android:id="@+id/nav_driver_ride_history"
         android:name="ftn.mrs_team11_gorki.fragments.HistoryFragment"
         app:popUpTo="@id/homeFragment"
+        android:label="Ride history (Driver)"
         tools:layout="@layout/fragment_history"/>
+    <fragment
+        android:id="@+id/nav_admin_ride_history"
+        android:name="ftn.mrs_team11_gorki.fragments.AdminHistoryFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Ride history (Admin)"
+        tools:layout="@layout/fragment_history_admin"/>
+    <fragment
+        android:id="@+id/nav_passenger_ride_history"
+        android:name="ftn.mrs_team11_gorki.fragments.PassengerHistoryFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Ride history (User)"
+        tools:layout="@layout/fragment_history_passenger"/>
+    <fragment
+        android:id="@+id/nav_admin_panic_list"
+        android:name="ftn.mrs_team11_gorki.fragments.AdminPanicListFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Panic rides"
+        tools:layout="@layout/fragment_admin_panic_list" />
+    <fragment
+        android:id="@+id/nav_driver_scheduled_rides"
+        android:name="ftn.mrs_team11_gorki.fragments.ScheduledRidesFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Scheduled rides"
+        tools:layout="@layout/fragment_scheduled_rides" />
+    <fragment
+        android:id="@+id/nav_passenger_scheduled_rides"
+        android:name="ftn.mrs_team11_gorki.fragments.ScheduledRidesFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Scheduled rides"
+        tools:layout="@layout/fragment_scheduled_rides" />
+
+    <fragment
+        android:id="@+id/nav_price_conf"
+        android:name="ftn.mrs_team11_gorki.fragments.PriceConfigFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Price configuration"
+        tools:layout="@layout/fragment_price_config"/>
+
+    <fragment
+        android:id="@+id/adminSupportFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.AdminSupportFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Support inbox"
+        tools:layout="@layout/fragment_admin_support" />
+
+    <fragment
+        android:id="@+id/nav_admin_ride_monitor"
+        android:name="ftn.mrs_team11_gorki.fragments.AdminRideMonitorFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Ride Monitor"
+        tools:layout="@layout/fragment_admin_ride_monitor"/>
+
+    <fragment
+        android:id="@+id/rideInProgressPassengerFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.RideInProgressPassengerFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Track Ride (User)" />
+
+    <fragment
+        android:id="@+id/rideInProgressDriverFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.RideInProgressDriverFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="Track Ride (Driver)" />
+
+    <fragment
+        android:id="@+id/end_ride_driver"
+        android:name="ftn.mrs_team11_gorki.fragments.EndRideDriverFragment"
+        app:popUpTo="@id/homeFragment"
+        android:label="End current ride"/>
+
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.ResetPasswordFragment"
+        android:label="Reset Password" />
+
+    <fragment
+        android:id="@+id/driverRegistrationFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.DriverRegistrationFragment"
+        android:label="Register driver" />
+
+    <fragment
+        android:id="@+id/driverPasswordActivationFragment"
+        android:name="ftn.mrs_team11_gorki.fragments.DriverPasswordActivationFragment"
+        android:label="Activate driver" />
 </navigation>

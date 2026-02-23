@@ -24,6 +24,20 @@
         <item name="android:padding">16dp</item>
         <item name="android:textAlignment">center</item>
     </style>
+    <style name="titleSmaller">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="noScheduledRide">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
     <style name="formTitleDivider">
         item name
     </style>
@@ -70,6 +84,14 @@
         <item name="android:gravity">center_vertical</item>
         <item name="backgroundTint">@color/purple</item>
     </style>
+    <style name="orderingFormSmallButton">
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/button_bg_purple</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:radius">24dp</item>
+        <item name="backgroundTint">@color/purple</item>
+    </style>
     <style name="forgotPasswordStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">italic</item>
@@ -101,13 +123,18 @@
         <item name="android:padding">16dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/container_bg</item>
-        <item name="android:layout_marginLeft">10dp</item>
     </style>
     <style name="cardLabel">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/purple</item>
         <item name="android:paddingHorizontal">16dp</item>
+    </style>
+    <style name="cardDataLabel">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/purple</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:layout_marginVertical">8dp</item>
     </style>
     <style name="cardButton">
         <item name="android:textSize">20sp</item>
@@ -135,5 +162,26 @@
 
     <style name="bcGround">
         <item name="android:background">@drawable/gradient_background</item>
+    </style>
+
+    <style name="formInputPC">
+        <item name="fontFamily">SofiaSansCondensed</item>
+        <item name="android:height">70dp</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+    <style name="btnSave">
+        <item name="android:fontFamily">SofiaSansCondensed</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:height">40dp</item>
+        <item name="android:backgroundTint">@color/purple</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="formInputPCFirst">
+        <item name="fontFamily">SofiaSansCondensed</item>
+        <item name="android:height">70dp</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:layout_marginTop">40dp</item>
     </style>
 </resources>

@@ -74,7 +74,7 @@ public class HistoryFragment extends Fragment {
         rvHistory.setAdapter(adapter);
 
         rvHistory.setLayoutManager(
-                new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         );
         txtStatus = view.findViewById(R.id.txtStatus);
         spinnerSort = view.findViewById(R.id.spinnerSort);

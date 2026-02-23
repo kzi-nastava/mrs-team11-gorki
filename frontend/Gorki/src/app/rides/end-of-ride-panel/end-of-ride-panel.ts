@@ -2,9 +2,13 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { DriverScheduledRide } from '../models/ride';
+import { DriverScheduledRide, Ride } from '../models/ride';
 import { FinishRideDto } from '../../model/ui/finish-ride-dto'; 
 import { EndRideService } from '../../service/end-ride-service';
+import { AuthService } from '../../infrastructure/auth.service';
+import { DriverRideInProgress} from '../../service/driver-ride-in-progress';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-end-of-ride-panel',
   imports: [FormsModule,CommonModule],
@@ -14,17 +18,36 @@ import { EndRideService } from '../../service/end-ride-service';
 export class EndOfRidePanel {
 
   isModalOpen = false;
+  driverId:number=0;
+  rideId:number=0;
+
+  ngOnInit(){
+    this.driverId = this.authService.getId();
+    this.driverService
+          .getActiveRide(this.authService.getId())
+          .subscribe({
+            next:(ride)=>{
+              this.rideId=ride.rideId;
+            },
+            error:(err)=>{
+              console.log(err);
+            }
+    });
+  }
 
   constructor(
     private router: Router,
-    private rideService: EndRideService
+    private rideService: EndRideService,
+    private authService:AuthService,
+    private driverService:DriverRideInProgress,
+    private cdr:ChangeDetectorRef
   ) {}
 
   newRides: DriverScheduledRide[] = [];
   loadNextRide(driverId: number) {
     this.rideService.getNextScheduledRide(driverId).subscribe({
       next: ride => {
-        this.newRides = [ride]; // ubaci u modal
+        this.newRides = [ride]; 
         this.openModal();
       },
       error: err => console.error(err)
@@ -32,19 +55,15 @@ export class EndOfRidePanel {
   }
 
   endRide() {
-    const driverId = 1;
-    const rideId = 6; 
     const payload: FinishRideDto = {
-      rideId: rideId,
+      rideId: this.rideId,
       paid: true
     };
 
-    this.rideService.finishRide(driverId, payload).subscribe({
+    this.rideService.finishRide(this.driverId, payload).subscribe({
       next: (res) => {
-        console.log('Ride finished', res);
-
         if (res.hasNextScheduledRide) {
-          this.loadNextRide(driverId);
+          this.loadNextRide(this.driverId);
         } else {
           this.newRides = [];
           this.openModal();
@@ -55,10 +74,11 @@ export class EndOfRidePanel {
   } 
 
   showMoreInfo(){
-
+    //dovrsiti
   }
   openModal() {
     this.isModalOpen = true;
+    this.cdr.detectChanges();
   }
 
   closeModal() {
@@ -68,12 +88,13 @@ export class EndOfRidePanel {
   startRide() {
     console.log('START RIDE');
     this.closeModal();
-    //ucitavanje novih podataka
+    this.router.navigateByUrl('HomePage');
+
   }
 
   goToScheduledRides() {
     console.log('GO TO SCHEDULED RIDES');
-    this.router.navigateByUrl('driver-sceduled-rides');
+    this.router.navigateByUrl('scheduled-rides');
     this.closeModal();
   }
   

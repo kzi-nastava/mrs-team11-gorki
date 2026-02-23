@@ -2,6 +2,7 @@ package ftn.mrs_team11_gorki.adapter;
 
 import ftn.mrs_team11_gorki.R;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class DriverRideHistoryRecyclerAdapter
 
     private final List<DriverRideHistoryDTO> data = new ArrayList<>();
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<DriverRideHistoryDTO> newData) {
         data.clear();
         if (newData != null) data.addAll(newData);
@@ -41,14 +43,15 @@ public class DriverRideHistoryRecyclerAdapter
         return new VH(v);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull VH h, int position) {
         DriverRideHistoryDTO r = data.get(position);
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("dd.MM.yyyy");
         h.txtTitle.setText("Ride No. "+safe(r.getRideId()));
-        h.txtStartingTime.setText("Starting time: " + safe(r.getStartingTime().format(formatter)));
-        h.txtEndingTime.setText("Ending time: " + safe(r.getEndingTime().format(formatter)));
+        h.txtStartingTime.setText("Starting time: " + (r.getStartingTime() != null ? r.getStartingTime().format(formatter) : "-"));
+        h.txtEndingTime.setText("Ending time: " + (r.getEndingTime() != null ? r.getEndingTime().format(formatter) : "-"));
         h.txtPrice.setText("Price: " + r.getPrice());
         h.txtCancelled.setText("Cancelled: " + r.isCanceled());
         h.txtPanic.setText("Panic activated: " + r.isPanicActivated());

@@ -1,10 +1,12 @@
 package rs.ac.uns.ftn.asd.Projekatsiit2025.repository;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +15,33 @@ import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 
 @Repository
 public interface RideRepository extends JpaRepository<Ride, Long> {
+	
+	List<Ride> findAllByDriverIdAndStatusAndStartingTimeBetween(
+            Long driverId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+	
+	List<Ride> findAllByLinkedPassengers_IdAndStatusAndStartingTimeBetween(
+            Long passengerId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+	
+	List<Ride> findAllByCreatorIdAndStatusAndStartingTimeBetween(
+            Long creatorId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+	
+	List<Ride> findAllByStatusAndStartingTimeBetween(
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
 	
     List<Ride> findByDriverIdAndStartingTimeBetween(
             @Param("driverId") Long driverId,
@@ -24,11 +53,17 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
             Long driverId,
             RideStatus status
         );
+    
+    Optional<Ride> findFirstByDriverIdAndStatusOrderByScheduledTimeAsc(
+    		Long driverId,
+    		RideStatus status
+    	);
+    
+    List<Ride> findAllByDriverIdAndStatus(
+    		Long driverId,
+    		RideStatus status
+    	);
 
-    Optional<Ride> findFirstByDriverIdAndStatusInOrderByStartingTimeDesc(
-        Long driverId,
-        List<RideStatus> statuses
-    );
 	List<Ride> findByDriverIdAndStatusAndStartingTimeBetween(
 	        Long driverId,
 	        RideStatus status,
@@ -54,4 +89,43 @@ public interface RideRepository extends JpaRepository<Ride, Long> {
 	        LocalDateTime to
 	);
 
+    //Funkc. 2.13. ride monitoring
+    // admin: preko query pronadji aktivnu voznju za driver-a
+    @Query("""
+		  select r from Ride r
+		  join fetch r.driver d
+		  join fetch r.route rt
+		  left join fetch rt.locations
+		  where d.id = :driverId and r.status = rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus.STARTED
+		""")
+	Optional<Ride> findActiveRideForDriver(@Param("driverId") Long driverId);
+
+    Collection<Ride> findAllByPanicActivatedTrue();
+  
+    Optional<Ride> findFirstByCreator_EmailAndStatusOrderByEndingTimeDesc(String email, RideStatus status);
+
+    List<Ride> findAllByOrderByStartingTimeDesc();
+
+    List<Ride> findByDriver_IdAndStatusAndScheduledTimeBetween(
+            Long driverId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to
+    );
+
+    List<Ride> findByCreator_IdAndStatusAndScheduledTimeBetween(
+            Long creatorId,
+            RideStatus status,
+            LocalDateTime from,
+            LocalDateTime to);
+
+    @Query("""
+            select r from Ride r
+            where r.scheduledTime is not null
+              and r.reminderActive = true
+              and r.status = rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus.ACCEPTED
+              and r.scheduledTime > :now
+              and r.scheduledTime <= :nowPlus15
+        """)
+        List<Ride> findRidesForReminderWindow(LocalDateTime now, LocalDateTime nowPlus15);
 }

@@ -3,6 +3,7 @@
     android:id="@+id/loginForm"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
     style="@style/formStyle">
 
     <TextView
@@ -51,9 +52,12 @@
             android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/txtForgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/forgot_password"
+            android:clickable="true"
+            android:focusable="true"
             style="@style/forgotPasswordStyle"/>
 
     </LinearLayout>

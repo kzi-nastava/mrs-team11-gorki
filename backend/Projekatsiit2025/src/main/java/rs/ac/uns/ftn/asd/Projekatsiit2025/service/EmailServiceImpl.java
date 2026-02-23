@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImpl implements EmailService {
 
+	//ip 172.20.10.7
+	
     @Autowired private JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}") private String sender;
@@ -80,15 +82,75 @@ public class EmailServiceImpl implements EmailService {
     public void sendActivationLinkToMail(String activationToken) {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
         String link = "http://localhost:8080/api/auth/activate?token=" + activationToken;
+ 
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
         mailMessage.setTo(fixedEmail);
-        mailMessage.setSubject("Aktivacija naloga");
-        mailMessage.setText("Klikni na link za aktivaciju (vazi 24h):\n" + link);
+        mailMessage.setSubject("Account activation");
+        mailMessage.setText("Click the activation link to activate your account (lasts 24h):\n" + link);
 
         javaMailSender.send(mailMessage);
         System.out.println("Sending activation link to: " + fixedEmail);
         System.out.println("LINK: " + link);
+    }
+    
+    public void sendActivationLinkToDriverMail(String activationToken) {
+        String fixedEmail = "mrs.team11.gorki@gmail.com";
+        String link = "http://localhost:8080/api/auth/redirect?token=" + activationToken;
+        //Za mobilne: localhost se menja u IP adresu racunara npr.
+      
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(fixedEmail);
+        mailMessage.setSubject("Account activation");
+        mailMessage.setText("Click the activation link to set up your password and activate your account (lasts 24h):\n" + link);
+
+        javaMailSender.send(mailMessage);
+    }
+
+    public void sendResetLinkToFixedEmail(String resetToken, String email) {
+        String fixedEmail = "mrs.team11.gorki@gmail.com";
+        String link = "http://localhost:8080/api/auth/reset?token=" + resetToken;
+        //Za mobilne: localhost se menja u IP adresu racunara npr.
+        //(omoguciti u Settings->Apps->mrs-team11-Gorki-Projekat->Set as default->Open supported links na true i u Supported web addresses ip adresa na true)
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(fixedEmail);
+        mailMessage.setSubject("Reset password");
+        mailMessage.setText("Click the reset link to reset your password " + email + ":\n" + link);
+
+        javaMailSender.send(mailMessage);
+    }
+    
+    public void sendRideAcceptedMail(String to, String link) {
+        EmailDetails d = new EmailDetails();
+        d.setRecipient(to);
+        d.setSubject("Ride accepted");
+        d.setMsgBody("You were added to a ride and a driver has been found.\nTrack: " + link);
+        sendSimpleMail(d);
+    }
+
+    public void sendRideFinishedMail(String to, String link) {
+        EmailDetails d = new EmailDetails();
+        d.setRecipient(to);
+        d.setSubject("Ride completed");
+        d.setMsgBody("Ride finished successfully.\nDetails: " + link);
+        sendSimpleMail(d);
+    }
+    
+    public void sendDriverActivationMobileDeepLink(String activationToken) {
+        String fixedEmail = "mrs.team11.gorki@gmail.com";
+
+        String link = "http://localhost:8080/api/auth/activate/driver/mobile?token=" + activationToken;
+        
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(sender);
+        mailMessage.setTo(fixedEmail);
+        mailMessage.setSubject("Driver account activation (mobile)");
+        mailMessage.setText("Open this link on your phone to set your password and activate your account (valid 24h):\n" + link);
+
+        javaMailSender.send(mailMessage);
     }
 }

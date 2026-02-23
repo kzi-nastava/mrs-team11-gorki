@@ -18,25 +18,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.GetRideDTO;
+import jakarta.validation.Valid;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.enums.RideStatus;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.InconsistencyReportService;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.service.RideService;
-
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelResponseDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideEstimateRequestDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideStopResponseDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ScheduledRideDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideHistoryResponseDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideStopRequestDTO;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Location;
 import rs.ac.uns.ftn.asd.Projekatsiit2025.model.Route;
 import org.springframework.web.bind.annotation.GetMapping;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreateInconsistencyReportDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.CreatedInconsistencyReportDTO;
-import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.RideCancelRequestDTO;
+
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.inconsistencyReport.CreateInconsistencyReportDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.inconsistencyReport.CreatedInconsistencyReportDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.CreateRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.CreatedRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.GetRideDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideCancelRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideCancelResponseDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideEstimateRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideHistoryResponseDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideStopRequestDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.RideStopResponseDTO;
+import rs.ac.uns.ftn.asd.Projekatsiit2025.dto.ride.ScheduledRideDTO;
 
 @RestController
 @RequestMapping("/api/rides")
@@ -51,9 +52,19 @@ public class RideController {
 	
 	@PreAuthorize("hasAuthority('ROLE_PASSENGER')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CreatedRideDTO> createRide(@RequestBody CreateRideDTO requestRide){
+	public ResponseEntity<CreatedRideDTO> createRide(@Valid @RequestBody CreateRideDTO requestRide){
 		CreatedRideDTO responseRide = rideService.createRide(requestRide);
 		return new ResponseEntity<CreatedRideDTO>(responseRide, HttpStatus.CREATED);
+	}
+	
+	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
+	@GetMapping(value = "/{id}/next-ride", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetRideDTO> getNextScheduledRide(@PathVariable("id") long id){
+		GetRideDTO dto = rideService.getNextScheduledRide(id);
+		if(dto == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<GetRideDTO>(dto, HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasAuthority('ROLE_DRIVER')")
@@ -65,7 +76,7 @@ public class RideController {
 	
 	
     @PostMapping(value = "/estimate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideHistoryResponseDTO> estimateRide(@RequestBody RideEstimateRequestDTO request) {
+    public ResponseEntity<RideHistoryResponseDTO> estimateRide(@Valid @RequestBody RideEstimateRequestDTO request) {
 
         List<Location> locations = List.of(
                 new Location(45.2671, 19.8335, request.getStartingAddress()),
@@ -91,7 +102,7 @@ public class RideController {
     @PostMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideCancelResponseDTO> cancelRide(
             @PathVariable Long id,
-            @RequestBody RideCancelRequestDTO request) {
+            @Valid @RequestBody RideCancelRequestDTO request) {
 
         RideCancelResponseDTO response = rideService.cancelRide(id, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -106,7 +117,7 @@ public class RideController {
     )
     public ResponseEntity<RideStopResponseDTO> stopRide(
             @PathVariable Long id,
-            @RequestBody RideStopRequestDTO req) {
+            @Valid @RequestBody RideStopRequestDTO req) {
 
         Location stopLocation = new Location(req.getLatitude(), req.getLongitude(), req.getAddress());
         RideStopResponseDTO dto = rideService.stopRide(id, stopLocation);
@@ -121,7 +132,7 @@ public class RideController {
 	)
 	public ResponseEntity<CreatedInconsistencyReportDTO> reportInconsistency(
 	        @PathVariable Long rideId,
-	        @RequestBody CreateInconsistencyReportDTO dto) {
+	        @Valid  @RequestBody CreateInconsistencyReportDTO dto) {
 
 	    CreatedInconsistencyReportDTO response = inconsistencyReportService.createReport(rideId, dto);
 	    return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -148,5 +159,6 @@ public class RideController {
 		            rideService.getScheduledRide(userId, from, to)
 		    );
 	}
+    
 
 }

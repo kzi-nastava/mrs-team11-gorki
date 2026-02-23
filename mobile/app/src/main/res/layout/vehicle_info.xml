@@ -69,13 +69,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:labelFor="@id/vehicleTypeDropdown"
             android:text="@string/type"
             style="@style/formLabel"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Choose"
+            android:hint="@string/choseCriteria"
             style="@style/formDropdownLayout">
 
             <AutoCompleteTextView

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../env/environment';
 
 export interface RideCancelRequestDTO {
   cancellationReason: string;
@@ -20,6 +21,6 @@ export class CancelRideService {
   constructor(private http: HttpClient) {}
 
   cancelRide(rideId: number, dto: RideCancelRequestDTO): Observable<RideCancelResponseDTO> {
-    return this.http.post<RideCancelResponseDTO>(`/api/rides/${rideId}/cancel`, dto);
+    return this.http.post<RideCancelResponseDTO>(`${environment.apiHost}/rides/${rideId}/cancel`, dto);
   }
 }
