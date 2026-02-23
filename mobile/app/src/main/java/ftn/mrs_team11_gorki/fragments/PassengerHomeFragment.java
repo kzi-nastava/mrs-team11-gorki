@@ -258,22 +258,22 @@ public class PassengerHomeFragment extends Fragment {
         ratingService.getPendingLatestRideId().enqueue(new Callback<Long>() {
             @Override
             public void onResponse(@NonNull Call<Long> call, @NonNull Response<Long> response) {
-
+                /*
                 Toast.makeText(requireContext(),
                         "pending-latest code=" + response.code(),
                         Toast.LENGTH_SHORT).show();
-
+                    */
                 if (!response.isSuccessful()) {
                     // 401/403 -> token / auth problem
                     return;
                 }
 
                 Long rideId = response.body();
-
+                /*
                 Toast.makeText(requireContext(),
                         "pending-latest rideId=" + rideId,
                         Toast.LENGTH_SHORT).show();
-
+                */
                 if (rideId == null) return;
 
                 if (alreadyShownForRide(rideId)) {
@@ -289,9 +289,7 @@ public class PassengerHomeFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<Long> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(),
-                        "pending-latest FAIL: " + t.getMessage(),
-                        Toast.LENGTH_LONG).show();
+
             }
         });
     }

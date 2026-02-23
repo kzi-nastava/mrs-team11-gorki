@@ -1,5 +1,6 @@
 package ftn.mrs_team11_gorki.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,7 +44,17 @@ public class DriverPasswordActivationFragment extends Fragment {
         btnActivate = view.findViewById(R.id.btnActivate);
         txtStatus = view.findViewById(R.id.txtStatus);
 
-        token = (getArguments() != null) ? getArguments().getString("activationToken") : null;
+        Bundle args = getArguments();
+        if (args != null) {
+            token = args.getString("activationToken");
+            if (token == null) token = args.getString("token");
+        }
+
+        // 2) fallback: iz Intent data (klasični deep link preko manifest-a)
+        if (token == null) {
+            Uri data = requireActivity().getIntent().getData();
+            if (data != null) token = data.getQueryParameter("token");
+        }
 
         if (token == null || token.trim().isEmpty()) {
             setLoading(false, "Missing activation token. Open the email link again.");

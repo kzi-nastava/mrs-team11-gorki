@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImpl implements EmailService {
 
+	//ip 172.20.10.7
+	
     @Autowired private JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}") private String sender;
@@ -80,14 +82,13 @@ public class EmailServiceImpl implements EmailService {
     public void sendActivationLinkToMail(String activationToken) {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
         String link = "http://localhost:8080/api/auth/activate?token=" + activationToken;
-        //Za mobilne: localhost se menja u IP adresu racunara npr.
-
+ 
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
         mailMessage.setTo(fixedEmail);
-        mailMessage.setSubject("Aktivacija naloga");
-        mailMessage.setText("Klikni na link za aktivaciju (vazi 24h):\n" + link);
+        mailMessage.setSubject("Account activation");
+        mailMessage.setText("Click the activation link to activate your account (lasts 24h):\n" + link);
 
         javaMailSender.send(mailMessage);
         System.out.println("Sending activation link to: " + fixedEmail);
@@ -112,13 +113,13 @@ public class EmailServiceImpl implements EmailService {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
         String link = "http://localhost:8080/api/auth/reset?token=" + resetToken;
         //Za mobilne: localhost se menja u IP adresu racunara npr.
-        // (omoguciti u Settings->Apps->mrs-team11-Gorki-Projekat->Set as default->Open supported links na true i u Supported web addresses ip adresa na true)
+        //(omoguciti u Settings->Apps->mrs-team11-Gorki-Projekat->Set as default->Open supported links na true i u Supported web addresses ip adresa na true)
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);
         mailMessage.setTo(fixedEmail);
-        mailMessage.setSubject("Reset lozinke");
-        mailMessage.setText("Klikni na link za reset lozinke za email " + email + ":\n" + link);
+        mailMessage.setSubject("Reset password");
+        mailMessage.setText("Click the reset link to reset your password " + email + ":\n" + link);
 
         javaMailSender.send(mailMessage);
     }
@@ -142,8 +143,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendDriverActivationMobileDeepLink(String activationToken) {
         String fixedEmail = "mrs.team11.gorki@gmail.com";
 
-        // Ovo je LINK KOJI ANDROID APP PRESRECE (deep link)
-        String link = "http://192.168.1.84:8080/api/auth/activate/driver/mobile?token=" + activationToken;
+        String link = "http://localhost:8080/api/auth/activate/driver/mobile?token=" + activationToken;
         
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(sender);

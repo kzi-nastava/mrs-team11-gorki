@@ -33,8 +33,10 @@ android {
         buildConfigField("String", "API_HOST", "\"$apiHost\"")
         buildConfigField("String", "API_PORT", "\"$apiPort\"")
         buildConfigField("String", "BASE_URL", "\"$apiScheme://$apiHost:$apiPort/\"")
-        manifestPlaceholders["DL_HOST"] = apiHost
-        manifestPlaceholders["DL_PORT"] = apiPort
+        manifestPlaceholders += mapOf(
+            "DL_HOST" to (localProps.getProperty("DL_HOST") ?: apiHost),
+            "DL_PORT" to (localProps.getProperty("DL_PORT") ?: apiPort)
+        )
     }
 
     buildTypes {

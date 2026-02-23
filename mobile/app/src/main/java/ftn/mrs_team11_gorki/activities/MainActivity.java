@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         handleResetLink(getIntent());
+        handleDriverActivateLink(getIntent());
     }
 
     @Override
@@ -267,19 +268,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void handleDriverActivateLinl(Intent intent){
+    private void handleDriverActivateLink(Intent intent) {
         Uri data = intent.getData();
         if (data == null) return;
 
         String path = data.getPath();
-        if (!"/api/auth/activate/driver/mobile".equals(path)) return;
+        if (path == null || !path.startsWith("/api/auth/activate/driver/mobile")) return;
 
         String token = data.getQueryParameter("token");
-        if (token == null || token.isEmpty()) return;
+        if (token == null || token.trim().isEmpty()) return;
 
         Bundle b = new Bundle();
-        b.putString("activateDriverToken", token);
+        b.putString("token", token); // BITNO: isti key koji fragment čita
         navController.navigate(R.id.driverPasswordActivationFragment, b);
+
+        // opcionalno: očisti intent da ne okine opet na rotate/recreate
+        setIntent(new Intent(intent).setData(null));
     }
 
     @Override
@@ -287,6 +291,6 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         handleResetLink(intent);
-        handleDriverActivateLinl(intent);
+        handleDriverActivateLink(intent);
     }
 }
