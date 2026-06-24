@@ -11,17 +11,36 @@
           <label class="email">Email:</label>
         </div>
         <div class="formElement">
-          <input class="emailInput" id="email" name="email" required="true" type="email" #emailInput>
+          <input
+            class="emailInput"
+            id="email"
+            name="email"
+            required="true"
+            type="email"
+            data-testid="login-email"
+            #emailInput>
         </div>
         <div class="formElement">
           <label class="password">Password:</label> 
           <a class="forgotPassword" type="button" (click)="forgotPassword(emailInput.value)">Forgot password?</a>
         </div>
         <div class="formElement">
-          <input class="passwordInput" name="password" #passwordInput required="true" type="password" >
+          <input
+            class="passwordInput"
+            name="password"
+            #passwordInput
+            required="true"
+            type="password"
+            data-testid="login-password">
         </div>
         <div class="formElement">
-          <button class="loginButton" type="button" (click)="login(emailInput.value, passwordInput.value)">Login</button>
+          <button
+            class="loginButton"
+            type="button"
+            data-testid="login-submit-button"
+            (click)="login(emailInput.value, passwordInput.value)">
+            Login
+          </button>
         </div>
     </div>
     
@@ -33,3 +52,4 @@
     } -->
     
 </form>
+
