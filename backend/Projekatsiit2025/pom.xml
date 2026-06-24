@@ -119,6 +119,20 @@
 		    <artifactId>spring-security-test</artifactId>
 		    <scope>test</scope>
 		</dependency>
+		<!--E2E selenium dependencies-->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-java</artifactId>
+		    <version>4.44.0</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>io.github.bonigarcia</groupId>
+		    <artifactId>webdrivermanager</artifactId>
+		    <version>6.3.4</version>
+		    <scope>test</scope>
+		</dependency>	
 	</dependencies>
 
 	<build>

@@ -1,14 +1,21 @@
-<div class="ride-card">
+<div
+  class="ride-card"
+  data-testid="ride-card"
+  [attr.data-ride-id]="ride.id">
+
   <h1>Ride No. {{ ride.id }}</h1>
 
   <div class="rating">
-    ☆☆☆☆☆ <span>{{ ride.rating }}</span>
-      <button
-        class="rateRide"
-        [disabled]="!canRate()"
-        (click)="openRatingModal()">
-        Rate
-      </button>
+    ☆☆☆☆☆
+    <span data-testid="ride-rating-value">{{ ride.rating }}</span>
+
+    <button
+      class="rateRide"
+      data-testid="rate-ride-button"
+      [disabled]="!canRate()"
+      (click)="openRatingModal()">
+      Rate
+    </button>
   </div>
 
   <hr />

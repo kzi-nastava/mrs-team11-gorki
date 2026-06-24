@@ -14,8 +14,13 @@
   </div>
 
   <div class="actions">
-    <button mat-stroked-button (click)="later()">Later</button>
-    <button mat-flat-button color="primary" (click)="rate()">Rate</button>
+    <button mat-stroked-button
+      data-testid="rating-confirm-later-button"
+      (click)="later()">Later
+    </button>
+    <button mat-flat-button color="primary"
+      data-testid="rating-confirm-rate-button"
+      (click)="rate()">Rate</button>
   </div>
 
 </div>

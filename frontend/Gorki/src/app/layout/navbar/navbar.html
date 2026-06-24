@@ -1,3 +1,4 @@
+```html
 @if(isLoginOpen) { 
     <app-login 
         (close)="closeLogin()" 
@@ -75,12 +76,22 @@
             <button class="logout" (click)="logout()"><a routerLink="/HomePage">Logout</a></button>
         } @else if (isRegistrationOpen) {
             <p class="hasAcc">Already have an account?</p>
-            <button class="login" (click)="openLogin()">Login</button>
+            <button
+                class="login"
+                data-testid="open-login-button"
+                (click)="openLogin()">
+                Login
+            </button>
         } @else{
             <p class="noAcc">Don't have an account?</p>
             <button class="register" routerLink="/register" (click)="openRegistration()">Register</button>
             <div class="divider"></div>
-            <button class="login" (click)="openLogin()">Login</button>
+            <button
+                class="login"
+                data-testid="open-login-button"
+                (click)="openLogin()">
+                Login
+            </button>
         }
     </div>
 </header>
@@ -88,3 +99,4 @@
 @if(ratingDialogOpen){
 <app-rating-panel></app-rating-panel>
 }
+```
