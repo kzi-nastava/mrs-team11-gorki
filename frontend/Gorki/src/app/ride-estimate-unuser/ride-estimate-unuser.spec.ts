@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RideEstimateCardComponent } from './ride-estimate-unuser';
 
-import { RideEstimateUnuser } from './ride-estimate-unuser';
-
-describe('RideEstimateUnuser', () => {
-  let component: RideEstimateUnuser;
-  let fixture: ComponentFixture<RideEstimateUnuser>;
+describe('RideEstimateCardComponent', () => {
+  let component: RideEstimateCardComponent;
+  let fixture: ComponentFixture<RideEstimateCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RideEstimateUnuser]
-    })
-    .compileComponents();
+      imports: [RideEstimateCardComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(RideEstimateUnuser);
+    fixture = TestBed.createComponent(RideEstimateCardComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {

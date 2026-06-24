@@ -1,13 +1,21 @@
 import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { PassengerRideInProgress } from './passenger-ride-in-progress';
+import { RideInProgressService } from './passenger-ride-in-progress';
 
-describe('PassengerRideInProgress', () => {
-  let service: PassengerRideInProgress;
+describe('RideInProgressService', () => {
+  let service: RideInProgressService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(PassengerRideInProgress);
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
+    });
+
+    service = TestBed.inject(RideInProgressService);
   });
 
   it('should be created', () => {
