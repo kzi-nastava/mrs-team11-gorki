@@ -27,7 +27,7 @@ Invoke-RestMethod `
     -ContentType "application/json" `
     -Body $body
 
-Student 1 pgAdmin komande.
+Student 2 pgAdmin komande.
 
 (Ako Rating prelazi preko ekrana): 1. pokrenuti .\mvnw.cmd clean "-Dtest=RatingE2ETest#passengerCanRateVehicleAndDriverFromConfirmationPanel" "-De2e.passenger.email=e2e.passenger@test.com" "-De2e.passenger.password=test123" test
 
