@@ -35,7 +35,7 @@ public class UserRideHistoryPage {
                 By.xpath("./ancestor::*[@data-testid='ride-card']")
         );
 
-        return card.getAttribute("data-ride-id");
+        return card.getDomAttribute("data-ride-id");
     }
 
     public void openRatingPanelForRide(String rideId) {
