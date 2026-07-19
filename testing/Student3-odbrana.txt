@@ -1,0 +1,68 @@
+Student 3 testovi pokretanje:
+
+*Otvoriti backend i i frontend u workspace-u.*
+
+U frontendu npm install ako nema node_modules folder.
+Backend sačekati da se učita.
+
+netstat -aon | findstr :8080
+taskkill /PID 1 /F
+
+Konfiguracija E2E Selenijum za racunar (1. put samo) Pravljenje test usera (ukoliko ga nema u bazi):
+
+U cmd sa pokrenutim backend i frontendom u posebnom terminalu: $body = @{
+    email = "e2e.passenger@test.com"
+    password = "test123"
+    confirmPassword = "test123"
+    firstName = "E2E"
+    lastName = "Passenger"
+    phoneNumber = "123456789"
+    address = "Test Address"
+    profileImage = ""
+} | ConvertTo-Json
+
+Invoke-RestMethod `
+    -Uri "http://localhost:8080/api/auth/register" `
+    -Method POST `
+    -ContentType "application/json" `
+    -Body $body
+
+Student 1 pgAdmin komande.
+
+(Ako Rating prelazi preko ekrana): 1. pokrenuti .\mvnw.cmd clean "-Dtest=RatingE2ETest#passengerCanRateVehicleAndDriverFromConfirmationPanel" "-De2e.passenger.email=e2e.passenger@test.com" "-De2e.passenger.password=test123" test
+
+Pa tek onda e2e selenijum test za ridehistory.
+
+1. Testiranje serverskog dela
+
+Terminal u folderu: 
+PS C:\Users\Luka\Desktop\mrs-team11-gorki\frontend\Gorki>
+
+Komanda:
+npx ng test --watch=false --include="src/app/registration/registration.spec.ts"
+
+
+2. Testiranje klijentskog dela
+
+U folderu:
+Projekatsiit2025\src\test\java\rs\ac\uns\ftn\asd\Projekatsiit2025\controller\RideControllerStopRideIT.java
+
+Kliknuti Run klase.
+
+
+3. E2E testiranje
+
+1. Terminal u folderu:
+C:\Users\Luka\Desktop\mrs-team11-gorki\backend\Projekatsiit2025
+
+Pokrenuti backend sa: mvn spring-boot:run
+
+2. Terminal u folderu:
+C:\Users\Luka\Desktop\mrs-team11-gorki\frontend\Gorki
+
+Pokrenuti frontend sa: ng serve
+
+3. Terminal u folderu:
+C:\Users\Luka\Desktop\mrs-team11-gorki\backend\Projekatsiit2025
+
+Pokrenuti E2E test komandom: mvn -Dtest=RideHistoryE2ETest test
