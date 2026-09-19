@@ -277,3 +277,25 @@ UPDATE ride
 –da bi id iterirao
 SELECT setval(pg_get_serial_sequence('"user"', 'id'), (SELECT MAX(id) FROM "user"));
 
+--OSTATK JE BITAN ZBOG JWT, ROLE U TABELI USER MORA DA SE CUVA KAO STRING,
+--A NE KAO 0,1,2
+--U USER KLASI KOD POLJA role, dodata anotacija
+--    @Enumerated(EnumType.STRING)
+--    private UserRole role;
+ALTER TABLE "user" DROP CONSTRAINT user_role_check;
+
+ALTER TABLE "user"
+ALTER COLUMN role TYPE varchar(30)
+USING (
+  CASE role
+    WHEN 0 THEN 'PASSENGER'
+    WHEN 1 THEN 'DRIVER'
+    WHEN 2 THEN 'ADMIN'
+    ELSE 'PASSENGER'
+  END
+);
+
+ALTER TABLE "user" ADD CONSTRAINT user_role_check
+    CHECK (role IN ('ADMIN', 'DRIVER', 'PASSENGER')); 
+---------------------------------------------------
+
